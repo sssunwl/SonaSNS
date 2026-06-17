@@ -162,11 +162,6 @@
             color: #333;
         }
 
-        .post-content p {
-            margin-bottom: 10px;
-            font-size: 0.95em;
-        }
-
         .post-preview {
             background: #f8f9fa;
             padding: 12px;
@@ -177,6 +172,26 @@
             margin: 10px 0;
             max-height: 120px;
             overflow: hidden;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .post-preview.expanded {
+            max-height: none;
+        }
+
+        .expand-btn {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .expand-btn:hover {
+            text-decoration: underline;
         }
 
         .hashtags {
@@ -198,10 +213,12 @@
             display: flex;
             gap: 10px;
             margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .btn {
             flex: 1;
+            min-width: 120px;
             padding: 10px;
             border: none;
             border-radius: 8px;
@@ -211,6 +228,15 @@
             transition: all 0.3s;
             text-decoration: none;
             text-align: center;
+        }
+
+        .btn-copy {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background: #229954;
         }
 
         .btn-download {
@@ -267,10 +293,42 @@
             border-top: 2px solid rgba(255, 255, 255, 0.5);
         }
 
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
         .empty-state {
             text-align: center;
             padding: 40px;
             color: #7f8c8d;
+        }
+
+        .copy-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @media (max-width: 768px) {
@@ -285,6 +343,15 @@
             .filters {
                 justify-content: flex-start;
                 overflow-x: auto;
+            }
+
+            .post-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                flex: 1;
+                min-width: auto;
             }
         }
     </style>
@@ -308,13 +375,13 @@
         </div>
 
         <footer>
-            <p>💡 提示：點「📥 下載媒體」可下載該天的資源 | 👉 編輯帖文請到 <a href="https://docs.google.com/spreadsheets/d/1gTbG5il6CtomkTfRXmFXwx7_4AIG8CjOnfsdoRynuS4" target="_blank" style="color: #667eea;">Google Sheet</a></p>
+            <p>💡 提示：點「📋 複製全部」可複製帖文正文 | 👉 編輯帖文請到 <a href="https://docs.google.com/spreadsheets/d/1gTbG5il6CtomkTfRXmFXwx7_4AIG8CjOnfsdoRynuS4" target="_blank">Google Sheet</a></p>
             <p>最後更新：<span id="lastUpdate">加載中...</span></p>
         </footer>
     </div>
 
     <script>
-        // 模擬數據 - 實際應該從 Google Sheet API 讀取
+        // 帖文數據（實際應從 API 讀取）
         const posts = [
             {
                 date: '2026/06/14',
@@ -322,22 +389,51 @@
                 platform: 'OB',
                 topic: 'Serena',
                 type: 'YT影片帖',
-                content: '🎬 一台七人座的真實問題，我們開出來讓你看 🎬\n租 Serena 之前，被問最多的三件事：「空間真的夠嗎？」「長輩上下車方便嗎？」「大車好不好開？」',
-                hashtags: ['#NissanSerena', '#OKIBLUES', '#沖繩自駕', '#家庭旅遊'],
-                mediaUrl: 'https://youtu.be/WNQ0ikXp4rE',
-                driveLink: 'https://drive.google.com/drive/folders/OkiMac/SonaSNS_Media',
-                status: '已發佈'
+                content: `🎬 一台七人座的真實問題，我們開出來讓你看 🎬
+
+租 Serena 之前，被問最多的三件事：
+「空間真的夠嗎？」「長輩上下車方便嗎？」「大車好不好開？」
+
+與其解釋，我們直接拍了影片。
+
+📍 影片裡你會看到：
+🚪 兩側電動滑門實測——窄停車場也能輕鬆使用，連長輩都說沒問題
+🛋️ 中排 ottoman 座椅翻轉，後座不是坐，是躺著到下一個景點
+⚡ e-POWER 電驅動力實際上路——起步安靜，爬坡輕鬆，不像在開大車
+
+暑假還在猶豫租幾人座？看完你就知道了。
+
+📺 Nissan Serena 完整體驗：
+👉 https://youtu.be/WNQ0ikXp4rE
+
+🔔 訂閱 OKIBLUES，每台車我們都親自試過再推薦：
+👉 https://www.youtube.com/@okiblues
+
+#NissanSerena #OKIBLUES #沖繩自駕 #家庭旅遊 #七人座推薦`,
+                hashtags: ['#NissanSerena', '#OKIBLUES', '#沖繩自駕'],
+                mediaLink: 'https://youtu.be/WNQ0ikXp4rE',
+                status: '待確認'
             },
             {
-                date: '2026/06/15',
-                weekday: '日',
-                platform: 'OKIP',
-                topic: '古宇利島',
-                type: '沖繩一眼景',
-                content: '🏝️ 今天的沖繩，是一條通往海的橋 🏝️\n有些地方不是一定要去做什麼才成立。古宇利島就是其中一個☀️',
-                hashtags: ['#沖繩一眼景', '#OKIPLAYGROUND', '#古宇利島'],
-                mediaUrl: null,
-                driveLink: 'https://drive.google.com/drive/folders/OkiMac/SonaSNS_Media',
+                date: '2026/06/16',
+                weekday: '一',
+                platform: 'OB',
+                topic: 'Noah',
+                type: 'FB推廣帖',
+                content: `🚐 七人座不一定要花大錢，Noah 是那個剛剛好的選擇 🚐
+
+全家人一起去沖繩，長輩、孩子、一週的行李——裝下這些的車，不一定要是 Alphard。Noah 90 系，空間夠、好開、進出方便，恰到好處。
+
+🚪 兩側電動滑門——窄停車場也能輕鬆開門，長輩不用側著身子進去
+📦 行李廂容量遠超外型預期，美國村掃貨完全不用煩惱怎麼塞
+🪑 第三排真的可以坐成人，不是應急位
+🆕 90 系外型比上一代年輕很多，開出去不顯老
+
+暑假檔期有限，立即預約 👉 wa.link/nmhzeq
+
+#ToyotaNoah #OKIBLUES #沖繩自駕 #家庭旅遊 #七人座推薦`,
+                hashtags: ['#ToyotaNoah', '#OKIBLUES', '#沖繩自駕'],
+                mediaLink: null,
                 status: '待確認'
             },
             {
@@ -346,23 +442,47 @@
                 platform: 'OB',
                 topic: 'Freed 3代',
                 type: 'FB規格帖',
-                content: '🚗 全新 Honda Freed 第三代 — 家庭出遊的剛剛好選擇\n想找一台「不會開起來很吃力、空間又夠用」的家庭車？',
+                content: `🌴 暑假家庭出遊新選擇：全新 Honda Freed 第三代 登場！
+
+想找一台空間夠用、開起來又沒壓力的家庭車？
+全新 Freed 第三代剛剛好，不大不小，帶著全家玩沖繩更輕鬆！☀️🚗
+
+🚪 電動滑門：小朋友上下車更方便，停車場也不怕開門碰撞。
+🛋️ 舒適空間：全家出遊不擁擠，長途移動也能坐得自在。
+🎯 靈活好開：車身尺寸適中，市區、景點停車都輕鬆。
+🛡️ Honda SENSING：搭載多項安全輔助功能，自駕更安心。
+
+家庭旅遊不一定要開大車，選對車，旅程反而更舒服。✨
+👉 立即預約：wa.link/nmhzeq
+
+#HondaFreed #Freed第三代 #OKIBLUES #沖繩租車 #沖繩自駕`,
                 hashtags: ['#HondaFreed', '#OKIBLUES', '#沖繩租車'],
-                mediaUrl: null,
-                driveLink: 'https://drive.google.com/drive/folders/OkiMac/SonaSNS_Media',
+                mediaLink: null,
                 status: '待確認'
             },
             {
                 date: '2026/06/19',
                 weekday: '四',
                 platform: 'OB',
-                topic: '機場接送',
+                topic: '機場接送指南',
                 type: 'FB規格帖',
-                content: '🚗 沖繩機場接送，選對車差很大\n從機場到飯店，看起來只是短短一段路，但選錯車，全家一上車就開始後悔。',
-                hashtags: ['#OKIBLUES', '#沖繩接送', '#機場租車'],
-                mediaUrl: null,
-                driveLink: 'https://drive.google.com/drive/folders/OkiMac/SonaSNS_Media',
-                status: '待起稿'
+                content: `🏁 【 OKIBLUES 取車指南：下機到上車，3 分鐘直達！ 】
+剛抵達那霸機場？別在大廳迷路了！
+OKIBLUES 錄製了「光速取車路線」，跟著影片走，輕鬆接軌沖繩假期！🔥✨
+📍 6 步驟光速抵達：
+🏃 Step 1：出境後右轉走 10 公尺。
+ℹ️ Step 2：遊客中心旁電梯直達 2F。
+🌉 Step 3：出電梯右轉，直奔 P3 停車場天橋。
+🚶 Step 4：天橋右轉直行，經過第一台電梯「別停」繼續走。
+🅿️ Step 5：看到 P3 停車場，搭左手邊電梯降至 1F。
+🤝 Step 6：工作人員接手行李，5 分鐘抵達租車店！
+不用在機場盲目找櫃檯，跟著影片走，取車就是這麼簡單、優雅！📸
+給自己一個最順暢的開頭，沖繩自駕首選 OKIBLUES！
+👉 立即預約：wa.link/nmhzeq
+#OKIBLUES #那霸機場 #租車教學 #出境指南`,
+                hashtags: ['#OKIBLUES', '#那霸機場', '#租車教學'],
+                mediaLink: 'https://drive.google.com/drive/folders/OkiMac/SonaSNS_Media',
+                status: '待確認'
             },
             {
                 date: '2026/06/21',
@@ -370,11 +490,24 @@
                 platform: 'OKIP',
                 topic: '今天是夏至',
                 type: '今天是',
-                content: '🌞 今天是沖繩最長的白晝 ☀️\n沖繩的夏至不只是「白晝最長」這麼簡單。本島各地會舉辦夏至祭',
-                hashtags: ['#沖繩遊樂園', '#夏至', '#沖繩夏天'],
-                mediaUrl: null,
-                driveLink: 'https://drive.google.com/drive/folders/OkiMac/SonaSNS_Media',
-                status: '待起稿'
+                content: `🌞 今天是沖繩最長的白晝 ☀️
+
+沖繩的夏至不只是「白晝最長」這麼簡單。本島各地會舉辦夏至祭，有些神社會點燃篝火迎接夏天的到來——這不只是季節的轉換，也是沖繩人對陽光和豐收的一種敬禮。
+
+📍 夏至的沖繩在做什麼：
+☀️ 紫外線急速上升 — UV 指數來到 8～9 級，帽子和防曬乳從今天開始必備
+🌊 海開き 季節 — 各地海灘即將進入最佳游泳季，海況逐漸穩定
+🌾 農業節點 — 沖繩農民會在這個季節檢查水稻和蔬菜長勢，預示著豐收
+🏮 夏至祭 — 部分地區有傳統慶祝活動，融合琉球和日本文化
+
+沖繩的夏天，從今天正式開場。
+
+👉 https://www.facebook.com/groups/okiplayground/
+
+#沖繩遊樂園 #OKIPLAYGROUND #夏至 #沖繩夏天 #沖繩生活`,
+                hashtags: ['#沖繩遊樂園', '#OKIPLAYGROUND', '#夏至'],
+                mediaLink: null,
+                status: '待確認'
             },
             {
                 date: '2026/06/21',
@@ -382,13 +515,198 @@
                 platform: 'OB',
                 topic: 'Sienta 3代',
                 type: 'FB帖文帖',
-                content: '🚗 小家庭暑假出遊首選：全新 Suzuki Sienta 3 代來了！\n找一台「剛剛好」的家庭車？不用 7 人座那麼大，但空間比小型車寬敞',
-                hashtags: ['#SuzukiSienta', '#OKIBLUES', '#小家庭出遊'],
-                mediaUrl: null,
-                driveLink: 'https://drive.google.com/drive/folders/OkiMac/SonaSNS_Media',
-                status: '待起稿'
+                content: `🚗 小家庭暑假出遊首選：全新 Suzuki Sienta 3 代來了！
+
+找一台「剛剛好」的家庭車？不用 7 人座那麼大，但空間比小型車寬敞——Sienta 3 代就是這樣的存在。五人座 + 靈活座椅，裝下全家和一週行李沒問題 ☀️
+
+✨ Sienta 3 代為什麼適合沖繩自駕：
+🚪 電動滑門 — 停車場狹窄也不怕，小朋友上下車超輕鬆
+🛋️ 座椅靈活 — 第二排座椅可前後滑動，行李空間自由調整
+📦 意外大的行李廂 — 美國村購物、沙灘用品都裝得下
+🎯 停車好手 — 車長 4.4 公尺，比 7 人座容易停，比小型車空間大
+🔋 油耗經濟 — Hybrid 動力省油，長途沖繩自駕預算更寬鬆
+
+不是每個家庭都需要 7 人座。有時候，「剛剛好」才是最舒服的選擇。
+
+暑假檔期有限，立即預約 👉 wa.link/nmhzeq
+
+#SuzukiSienta #OKIBLUES #沖繩租車 #沖繩自駕 #小家庭出遊`,
+                hashtags: ['#SuzukiSienta', '#OKIBLUES', '#沖繩租車'],
+                mediaLink: null,
+                status: '待確認'
+            },
+            {
+                date: '2026/06/23',
+                weekday: '二',
+                platform: 'OKIP',
+                topic: '今天是慰靈之日',
+                type: '今天是',
+                content: `🕊️ 今天是沖繩最莊重的日子 — 慰靈之日
+
+1945 年 6 月 23 日，沖繩戰役劃上句點。73 歲的今天，整座沖繩島會停下來，悼念那 23 萬逝去的生命——不只是數字，而是每個家庭的祖父母、父親、朋友。
+
+📍 這一天，沖繩在做什麼：
+🕊️ 糸滿平和祈念公園 — 全島最大的悼念儀式在這裡舉行，政界領袖都會出席
+🌺 獻花和默哀 — 全島中午 12 時統一鳴放警報，學校、公司都停下來靜默
+📖 祖父母的故事 — 許多人會回家聽上一代述說那段歷史
+⛩️ 神社祭祀 — 傳統慰靈儀式在各地進行，祈願和平
+
+作為旅客，如果恰好在這天來沖繩，可以選擇參與悼念活動，感受沖繩人對歷史的尊重，也是認識真實沖繩的方式。
+
+慰靈之日不是「假日」，而是沖繩社會的集體記憶。
+
+👉 https://www.facebook.com/groups/okiplayground/
+
+#沖繩遊樂園 #OKIPLAYGROUND #沖繩慰靈之日 #和平紀念 #沖繩歷史`,
+                hashtags: ['#沖繩遊樂園', '#OKIPLAYGROUND', '#沖繩慰靈之日'],
+                mediaLink: null,
+                status: '待確認'
+            },
+            {
+                date: '2026/06/24',
+                weekday: '三',
+                platform: 'OKIP',
+                topic: '一周天氣',
+                type: '天氣速報',
+                content: `🌤️ 沖繩本週天氣：初夏悶熱 + 午後陣雨的經典組合 ☀️
+
+本週進入「梅雨尾聲、初夏開場」的交界點。前半周降雨機率較高（特別是週二、三），週末才會放晴——如果你這週來沖繩，行程最好保留室內備案活動。
+
+☔ 降雨重點日：週二、三的午後雷陣雨機率 60% 以上
+🌞 放晴最佳日：週五至週日，紫外線強勢回歸
+🕶️ UV 指數飆高：週末 UV 來到 8～9，帽子 + 防曬乳必備
+🌊 海況提醒：南風持續較強，離島活動前記得查詢海況公告
+
+📋 本週穿搭建議：全週短袖 + 涼鞋，週二、三隨身折疊傘，週末備好太陽眼鏡。
+
+詳細天氣數據與當地人實況，都在社團裡——歡迎即時提問👇
+
+👉 https://www.facebook.com/groups/okiplayground/
+
+#沖繩遊樂園 #OKIPLAYGROUND #沖繩天氣 #沖繩自由行 #旅遊情報`,
+                hashtags: ['#沖繩遊樂園', '#OKIPLAYGROUND', '#沖繩天氣'],
+                mediaLink: null,
+                status: '待確認'
+            },
+            {
+                date: '2026/06/25',
+                weekday: '四',
+                platform: 'OB',
+                topic: '取還車指南',
+                type: '實用指南',
+                content: `📍 沖繩租車「取還車」完整流程，一次看懂
+
+第一次在沖繩租車，很多人都卡在取還車這關。其實流程很簡單，只要事前準備好，現場根本不會出問題。
+
+✈️ 抵達機場到領車（預留 30-40 分鐘）：
+1. 從機場出關進大廳，找租車公司服務台（通常在一樓國內線廳區）
+2. 出示預訂確認函 + 護照 + 國際駕照翻譯本
+3. 簽署租賃合約，講解車輛基本操作
+4. 配鑰匙、出示停車位，你的車就等著你了
+
+🛞 驗車（5-10 分鐘，必做）：
+— 繞車走一圈，指出任何既有的擦痕或凹陷
+— 檢查油表（通常滿油交，滿油還）
+— 試試雨刷、大燈、轉向燈有沒有問題
+— 拍照記錄車況（自己手機留證）
+
+🔑 還車當日（預留 20-30 分鐘）：
+1. 到達租車公司指定還車點
+2. 出示預訂號和駕照
+3. 工作人員驗車
+4. 簽署還車單據確認無誤
+5. 領取押金收據或信用卡簽帳單
+6. 完成！
+
+一切順利的話，沖繩自駕就從這一步開始愉快了。有任何問題，記得我們的 WhatsApp 24 小時都能回應。
+
+👉 立即預約：wa.link/nmhzeq
+
+#OKIBLUES #沖繩租車 #沖繩自駕 #機場取車 #實用指南`,
+                hashtags: ['#OKIBLUES', '#沖繩租車', '#沖繩自駕'],
+                mediaLink: null,
+                status: '待確認'
+            },
+            {
+                date: '2026/06/27',
+                weekday: '六',
+                platform: 'OB',
+                topic: 'Voxy 90',
+                type: 'YT影片帖',
+                content: `🎬 八人座也能開得輕鬆——Toyota Voxy 90 系真實路試 🎬
+
+「Voxy 是不是很難開？」「八人座停車是不是噩夢？」「小孩坐在最後面，能看得到景色嗎？」
+
+三代同堂去沖繩，Voxy 解決的不只是「人多沒位」的問題——它怎麼開、怎麼停、坐起來舒不舒服，我們全部實測給你看。
+
+📍 影片裡的三個實測重點：
+🚪 電動滑門 + 地台設計 — 長輩上下車的「親和力」遠超預期
+👨‍👩‍👧‍👦 第三排視野 — 小朋友坐最後面也不會感到被冷落，風景一樣看得到
+⚡ 路面反應 — 即使滿載 8 人，起步、轉向都穩定，開起來沒有你想像的「大車感」
+
+八人座不是奢侈品，是讓全家都舒服的選擇。
+
+📺 Toyota Voxy 90 系完整體驗：
+👉 https://youtu.be/am3LXZOiGcQ
+
+🔔 訂閱 OKIBLUES，每台車我們都親自試過再推薦。
+
+#ToyotaVoxy #OKIBLUES #沖繩自駕 #家庭旅遊 #八人座推薦`,
+                hashtags: ['#ToyotaVoxy', '#OKIBLUES', '#沖繩自駕'],
+                mediaLink: 'https://youtu.be/am3LXZOiGcQ',
+                status: '待確認'
+            },
+            {
+                date: '2026/06/28',
+                weekday: '日',
+                platform: 'OKIP',
+                topic: '沖繩7月活動預告',
+                type: '主題文章',
+                content: `📌 沖繩 7 月不能錯過的文化活動 + 限定體驗
+
+6 月末進入 7 月，沖繩的夏天正式展開——除了天氣熱、海開き 季節開始，還有一整個月的祭典、文化活動和限定美食等著你！
+
+🎊 Eisa 太鼓舞季（7 月中旬～8 月）
+全島各地的夏祭盛典，最著名的是「全島 Eisa 祭」。那種用傳統太鼓和舞蹈慶祝豐收的模樣，是認識沖繩文化最直接的方式。
+
+🌊 海開きフェスタ（7 月上旬）
+沖繩全島海灘正式開放。各地海灘會舉辦「海開き」祭典，邀請旅客和當地人一起祝福海的季節開始。
+
+🐚 限定海鮮季
+7 月是當季海鮮的高峰期。沖繩餐廳會推出限定料理——特別是居酒屋和海邊小店，絕對不能錯過。
+
+🍹 沖繩限定飲品 + 冰品
+高溫天氣帶來的是各種消暑飲品：紅芋冰淇淋、泡盛剉冰等。超市和夜市都有季節限定款。
+
+7 月的沖繩，不只是季節，更是文化與自然的交會。
+
+👉 https://www.facebook.com/groups/okiplayground/
+
+#沖繩遊樂園 #OKIPLAYGROUND #沖繩7月 #沖繩活動 #夏祭`,
+                hashtags: ['#沖繩遊樂園', '#OKIPLAYGROUND', '#沖繩7月'],
+                mediaLink: null,
+                status: '待確認'
             }
         ];
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showCopySuccess();
+            });
+        }
+
+        function showCopySuccess() {
+            const msg = document.createElement('div');
+            msg.className = 'copy-success';
+            msg.textContent = '✅ 已複製到剪貼簿';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        }
+
+        function toggleExpand(btn, previewElement) {
+            previewElement.classList.toggle('expanded');
+            btn.textContent = previewElement.classList.contains('expanded') ? '▼ 收起' : '▶ 展開全文';
+        }
 
         function renderPosts(filtered = 'all') {
             const container = document.getElementById('postsContainer');
@@ -402,48 +720,49 @@
                 return;
             }
 
-            container.innerHTML = filtered_posts.map(post => `
-                <div class="post-card ${post.platform === 'OKIP' ? 'okip' : post.platform === 'The Blues' ? 'blues' : ''}">
-                    <div class="post-header">
-                        <div>
-                            <div class="post-date">${post.date} (${post.weekday})</div>
+            container.innerHTML = filtered_posts.map((post, idx) => {
+                const previewId = `preview-${idx}`;
+                const btnId = `expand-btn-${idx}`;
+                return `
+                    <div class="post-card ${post.platform === 'OKIP' ? 'okip' : post.platform === 'The Blues' ? 'blues' : ''}">
+                        <div class="post-header">
+                            <div>
+                                <div class="post-date">${post.date} (${post.weekday})</div>
+                            </div>
+                            <span class="post-platform ${post.platform === 'OKIP' ? 'okip' : post.platform === 'The Blues' ? 'blues' : ''}">${post.platform}</span>
                         </div>
-                        <span class="post-platform ${post.platform === 'OKIP' ? 'okip' : post.platform === 'The Blues' ? 'blues' : ''}">${post.platform}</span>
+
+                        <div class="post-meta">
+                            <span class="post-meta-item"><strong>📌 ${post.topic}</strong></span>
+                            <span class="post-meta-item post-type">${post.type}</span>
+                        </div>
+
+                        <div class="post-preview" id="${previewId}">${post.content}</div>
+                        <button class="expand-btn" id="${btnId}" onclick="toggleExpand(document.getElementById('${btnId}'), document.getElementById('${previewId}'))">▶ 展開全文</button>
+
+                        <div class="hashtags">
+                            ${post.hashtags.map(tag => `<a href="#" onclick="return false">${tag}</a>`).join('')}
+                        </div>
+
+                        <span class="status-badge status-${post.status}">${post.status}</span>
+
+                        <div class="post-actions">
+                            <button class="btn btn-copy" onclick="copyToClipboard(\`${post.content.replace(/`/g, '\\`')}\`)">📋 複製全部</button>
+                            ${post.mediaLink ? `<a href="${post.mediaLink}" target="_blank" class="btn btn-download">📥 媒體資料夾</a>` : `<button class="btn btn-disabled">📥 媒體待補</button>`}
+                        </div>
                     </div>
-
-                    <div class="post-meta">
-                        <span class="post-meta-item"><strong>📌 ${post.topic}</strong></span>
-                        <span class="post-meta-item post-type">${post.type}</span>
-                    </div>
-
-                    <div class="post-preview">${post.content.substring(0, 100)}...</div>
-
-                    <div class="hashtags">
-                        ${post.hashtags.map(tag => `<a href="#" onclick="return false">${tag}</a>`).join('')}
-                    </div>
-
-                    <span class="status-badge status-${post.status}">${post.status}</span>
-
-                    <div class="post-actions">
-                        <a href="${post.driveLink}" target="_blank" class="btn btn-download">📥 媒體資料夾</a>
-                        ${post.mediaUrl ? `<a href="${post.mediaUrl}" target="_blank" class="btn btn-download">🎬 查看媒體</a>` : `<button class="btn btn-disabled">📥 媒體待補</button>`}
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function filterPosts(platform) {
-            // 更新按鍵狀態
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
-
-            // 重新渲染
             renderPosts(platform);
         }
 
-        // 初始化
         document.addEventListener('DOMContentLoaded', () => {
             renderPosts();
             document.getElementById('lastUpdate').textContent = new Date().toLocaleString('zh-TW');
