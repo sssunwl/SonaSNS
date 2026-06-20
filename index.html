@@ -72,6 +72,154 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
+        /* 月曆樣式 */
+        .calendar-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h2 {
+            font-size: 1.5em;
+            color: #2c3e50;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav button {
+            padding: 8px 15px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .calendar-nav button:hover {
+            background: #5568d3;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .weekday {
+            text-align: center;
+            font-weight: 700;
+            color: #667eea;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .calendar-day.empty {
+            background: #f5f5f5;
+            cursor: default;
+            border-color: #f5f5f5;
+        }
+
+        .calendar-day.empty:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .calendar-day.has-post {
+            border-color: #667eea;
+            background: #f8faff;
+        }
+
+        .calendar-day.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .calendar-day.selected .day-count {
+            color: white;
+        }
+
+        .calendar-day.ob {
+            border-left: 3px solid #667eea;
+        }
+
+        .calendar-day.okip {
+            border-left: 3px solid #f39c12;
+        }
+
+        .calendar-day.blues {
+            border-left: 3px solid #3498db;
+        }
+
+        .day-number {
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .calendar-day.selected .day-number {
+            color: white;
+        }
+
+        .day-count {
+            font-size: 0.75em;
+            color: #667eea;
+            margin-top: 2px;
+        }
+
+        /* 帖文網格 */
+        .posts-section {
+            margin-bottom: 30px;
+        }
+
+        .posts-section h3 {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
         .posts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -353,6 +501,23 @@
                 flex: 1;
                 min-width: auto;
             }
+
+            .calendar-section {
+                padding: 20px;
+            }
+
+            .weekday {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+
+            .day-number {
+                font-size: 0.9em;
+            }
+
+            .day-count {
+                font-size: 0.65em;
+            }
         }
     </style>
 </head>
@@ -364,14 +529,43 @@
         </header>
 
         <div class="filters">
-            <button class="filter-btn active" onclick="filterPosts('all')">📋 全部</button>
-            <button class="filter-btn" onclick="filterPosts('OB')">🚗 OKIBLUES</button>
-            <button class="filter-btn okip" onclick="filterPosts('OKIP')">🏝️ OKIPLAYGROUND</button>
-            <button class="filter-btn blues" onclick="filterPosts('The Blues')">🤿 The Blues</button>
+            <button class="filter-btn active" onclick="filterByBrand('all')">📋 全部品牌</button>
+            <button class="filter-btn" onclick="filterByBrand('OB')">🚗 OKIBLUES</button>
+            <button class="filter-btn okip" onclick="filterByBrand('OKIP')">🏝️ OKIPLAYGROUND</button>
+            <button class="filter-btn blues" onclick="filterByBrand('The Blues')">🤿 The Blues</button>
         </div>
 
-        <div class="posts-grid" id="postsContainer">
-            <div class="empty-state">⏳ 正在加載排程...</div>
+        <!-- 月曆 -->
+        <div class="calendar-section">
+            <div class="calendar-header">
+                <h2 id="monthDisplay">2026年 6月</h2>
+                <div class="calendar-nav">
+                    <button onclick="previousMonth()">← 上月</button>
+                    <button onclick="nextMonth()">下月 →</button>
+                </div>
+            </div>
+
+            <div class="weekdays">
+                <div class="weekday">日</div>
+                <div class="weekday">一</div>
+                <div class="weekday">二</div>
+                <div class="weekday">三</div>
+                <div class="weekday">四</div>
+                <div class="weekday">五</div>
+                <div class="weekday">六</div>
+            </div>
+
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- 動態生成 -->
+            </div>
+        </div>
+
+        <!-- 帖文列表 -->
+        <div class="posts-section">
+            <h3 id="postsTitle">2026年6月 — 全部帖文</h3>
+            <div class="posts-grid" id="postsContainer">
+                <div class="empty-state">⏳ 正在加載排程...</div>
+            </div>
         </div>
 
         <footer>
@@ -381,7 +575,7 @@
     </div>
 
     <script>
-        // 帖文數據（實際應從 API 讀取）
+        // 帖文數據
         const posts = [
             {
                 date: '2026/06/14',
@@ -506,32 +700,6 @@ OKIBLUES 錄製了「光速取車路線」，跟著影片走，輕鬆接軌沖�
 
 #沖繩遊樂園 #OKIPLAYGROUND #夏至 #沖繩夏天 #沖繩生活`,
                 hashtags: ['#沖繩遊樂園', '#OKIPLAYGROUND', '#夏至'],
-                mediaLink: null,
-                status: '待確認'
-            },
-            {
-                date: '2026/06/21',
-                weekday: '日',
-                platform: 'OB',
-                topic: 'Sienta 3代',
-                type: 'FB帖文帖',
-                content: `🚗 小家庭暑假出遊首選：全新 Suzuki Sienta 3 代來了！
-
-找一台「剛剛好」的家庭車？不用 7 人座那麼大，但空間比小型車寬敞——Sienta 3 代就是這樣的存在。五人座 + 靈活座椅，裝下全家和一週行李沒問題 ☀️
-
-✨ Sienta 3 代為什麼適合沖繩自駕：
-🚪 電動滑門 — 停車場狹窄也不怕，小朋友上下車超輕鬆
-🛋️ 座椅靈活 — 第二排座椅可前後滑動，行李空間自由調整
-📦 意外大的行李廂 — 美國村購物、沙灘用品都裝得下
-🎯 停車好手 — 車長 4.4 公尺，比 7 人座容易停，比小型車空間大
-🔋 油耗經濟 — Hybrid 動力省油，長途沖繩自駕預算更寬鬆
-
-不是每個家庭都需要 7 人座。有時候，「剛剛好」才是最舒服的選擇。
-
-暑假檔期有限，立即預約 👉 wa.link/nmhzeq
-
-#SuzukiSienta #OKIBLUES #沖繩租車 #沖繩自駕 #小家庭出遊`,
-                hashtags: ['#SuzukiSienta', '#OKIBLUES', '#沖繩租車'],
                 mediaLink: null,
                 status: '待確認'
             },
@@ -689,38 +857,140 @@ OKIBLUES 錄製了「光速取車路線」，跟著影片走，輕鬆接軌沖�
             }
         ];
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showCopySuccess();
+        let currentMonth = 6;
+        let currentYear = 2026;
+        let selectedDate = null;
+        let currentBrand = 'all';
+
+        // 計算某月有多少帖文
+        function getPostsForDate(dateStr) {
+            return posts.filter(p => p.date === dateStr);
+        }
+
+        // 計算某天的品牌
+        function getBrandsForDate(dateStr) {
+            const dayPosts = getPostsForDate(dateStr);
+            return [...new Set(dayPosts.map(p => p.platform))];
+        }
+
+        // 生成月曆
+        function renderCalendar() {
+            const firstDay = new Date(currentYear, currentMonth - 1, 1);
+            const lastDay = new Date(currentYear, currentMonth, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDate = firstDay.getDay();
+
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            // 上月空白
+            for (let i = 0; i < startDate; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            // 本月日期
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${currentYear}/${String(currentMonth).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+                const dayPosts = getPostsForDate(dateStr);
+                const brands = getBrandsForDate(dateStr);
+
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+
+                if (dayPosts.length > 0) {
+                    dayElement.classList.add('has-post');
+                    brands.forEach(brand => {
+                        if (brand === 'OB') dayElement.classList.add('ob');
+                        if (brand === 'OKIP') dayElement.classList.add('okip');
+                        if (brand === 'The Blues') dayElement.classList.add('blues');
+                    });
+                }
+
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = day;
+
+                if (dayPosts.length > 0) {
+                    const dayCount = document.createElement('div');
+                    dayCount.className = 'day-count';
+                    dayCount.textContent = `${dayPosts.length}件`;
+                    dayElement.appendChild(dayNumber);
+                    dayElement.appendChild(dayCount);
+                } else {
+                    dayElement.appendChild(dayNumber);
+                }
+
+                dayElement.onclick = () => selectDate(dateStr, dayElement);
+
+                calendarGrid.appendChild(dayElement);
+            }
+
+            document.getElementById('monthDisplay').textContent = `${currentYear}年 ${currentMonth}月`;
+        }
+
+        // 選擇日期
+        function selectDate(dateStr, element) {
+            document.querySelectorAll('.calendar-day.selected').forEach(el => {
+                el.classList.remove('selected');
             });
+
+            element.classList.add('selected');
+            selectedDate = dateStr;
+            renderPosts();
         }
 
-        function showCopySuccess() {
-            const msg = document.createElement('div');
-            msg.className = 'copy-success';
-            msg.textContent = '✅ 已複製到剪貼簿';
-            document.body.appendChild(msg);
-            setTimeout(() => msg.remove(), 2000);
+        // 按品牌過濾
+        function filterByBrand(brand) {
+            currentBrand = brand;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            renderPosts();
         }
 
-        function toggleExpand(btn, previewElement) {
-            previewElement.classList.toggle('expanded');
-            btn.textContent = previewElement.classList.contains('expanded') ? '▼ 收起' : '▶ 展開全文';
-        }
-
-        function renderPosts(filtered = 'all') {
+        // 渲染帖文
+        function renderPosts() {
             const container = document.getElementById('postsContainer');
 
-            const filtered_posts = filtered === 'all'
-                ? posts
-                : posts.filter(p => p.platform === filtered);
+            let filteredPosts = posts;
 
-            if (filtered_posts.length === 0) {
+            // 按日期過濾
+            if (selectedDate) {
+                filteredPosts = filteredPosts.filter(p => p.date === selectedDate);
+            }
+
+            // 按品牌過濾
+            if (currentBrand !== 'all') {
+                filteredPosts = filteredPosts.filter(p => p.platform === currentBrand);
+            }
+
+            // 更新標題
+            let title = `${currentYear}年${currentMonth}月`;
+            if (selectedDate) {
+                title += ` — ${selectedDate}`;
+            }
+            if (currentBrand !== 'all') {
+                const brandNames = {'OB': 'OKIBLUES', 'OKIP': 'OKIPLAYGROUND'};
+                title += ` — ${brandNames[currentBrand] || currentBrand}`;
+            } else {
+                title += ' — ';
+                if (selectedDate) {
+                    title += '全部品牌';
+                } else {
+                    title += '全部帖文';
+                }
+            }
+            document.getElementById('postsTitle').textContent = title;
+
+            if (filteredPosts.length === 0) {
                 container.innerHTML = '<div class="empty-state">❌ 沒有符合條件的帖文</div>';
                 return;
             }
 
-            container.innerHTML = filtered_posts.map((post, idx) => {
+            container.innerHTML = filteredPosts.map((post, idx) => {
                 const previewId = `preview-${idx}`;
                 const btnId = `expand-btn-${idx}`;
                 return `
@@ -755,15 +1025,55 @@ OKIBLUES 錄製了「光速取車路線」，跟著影片走，輕鬆接軌沖�
             }).join('');
         }
 
-        function filterPosts(platform) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
+        // 複製功能
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showCopySuccess();
             });
-            event.target.classList.add('active');
-            renderPosts(platform);
         }
 
+        function showCopySuccess() {
+            const msg = document.createElement('div');
+            msg.className = 'copy-success';
+            msg.textContent = '✅ 已複製到剪貼簿';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        }
+
+        // 展開/收起
+        function toggleExpand(btn, previewElement) {
+            previewElement.classList.toggle('expanded');
+            btn.textContent = previewElement.classList.contains('expanded') ? '▼ 收起' : '▶ 展開全文';
+        }
+
+        // 上月/下月
+        function previousMonth() {
+            if (currentMonth === 1) {
+                currentMonth = 12;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            selectedDate = null;
+            renderCalendar();
+            renderPosts();
+        }
+
+        function nextMonth() {
+            if (currentMonth === 12) {
+                currentMonth = 1;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            selectedDate = null;
+            renderCalendar();
+            renderPosts();
+        }
+
+        // 初始化
         document.addEventListener('DOMContentLoaded', () => {
+            renderCalendar();
             renderPosts();
             document.getElementById('lastUpdate').textContent = new Date().toLocaleString('zh-TW');
         });
