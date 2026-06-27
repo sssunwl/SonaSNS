@@ -1316,6 +1316,7 @@ Nbox canbus hustler delica jimmy ',
 
         // 渲染帖文
         function renderPosts() {
+            console.log('🔍 renderPosts called, total posts:', posts.length);
             const container = document.getElementById('postsContainer');
 
             let filteredPosts = posts;
@@ -1436,7 +1437,11 @@ Nbox canbus hustler delica jimmy ',
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ DOM loaded, posts count:', posts.length);
+            console.log('📅 Month:', currentMonth, 'Year:', currentYear);
+            console.log('🎨 Calling renderCalendar...');
             renderCalendar();
+            console.log('📝 Calling renderPosts...');
             renderPosts();
             document.getElementById('lastUpdate').textContent = new Date().toLocaleString('zh-TW');
         });
