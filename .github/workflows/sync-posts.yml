@@ -1,0 +1,54 @@
+name: Auto Sync Posts
+
+on:
+  schedule:
+    # 每天早上 8:00 UTC（台灣時間 16:00）執行
+    - cron: '0 8 * * *'
+  workflow_dispatch:  # 允許手動觸發
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install gspread google-auth-httplib2 google-auth-oauthlib
+
+      - name: Sync posts from Google Sheet
+        env:
+          GSPREAD_CREDENTIALS: ${{ secrets.GSPREAD_CREDENTIALS }}
+          GSPREAD_AUTH: ${{ secrets.GSPREAD_AUTH }}
+        run: python3 sync_posts.py
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.name "SonaSNS Bot"
+          git config --local user.email "noreply@github.com"
+
+          if git diff --quiet index.html; then
+            echo "ℹ️ 沒有新更改，跳過提交"
+          else
+            echo "📝 發現更改，正在提交..."
+            git add index.html
+            git commit -m "chore: auto sync posts from Google Sheet
+
+時間：$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+
+Co-Authored-By: SonaSNS Bot <noreply@github.com>"
+            git push
+            echo "✅ 已推送到 GitHub"
+          fi
+
+      - name: Workflow summary
+        if: always()
+        run: |
+          echo "🔄 同步完成"
+          echo "📊 時間：$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
