@@ -38,11 +38,7 @@ jobs:
           else
             echo "📝 發現更改，正在提交..."
             git add index.html
-            git commit -m "chore: auto sync posts from Google Sheet
-
-時間：$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-
-Co-Authored-By: SonaSNS Bot <noreply@github.com>"
+            git commit -m "chore: auto sync posts from Google Sheet" -m "時間：$(date -u '+%Y-%m-%d %H:%M:%S UTC')" -m "Co-Authored-By: SonaSNS Bot <noreply@github.com>"
             git push
             echo "✅ 已推送到 GitHub"
           fi
