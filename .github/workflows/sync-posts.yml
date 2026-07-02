@@ -1,10 +1,7 @@
 name: Auto Sync Posts
 
 on:
-  schedule:
-    # 每天早上 8:00 UTC（台灣時間 16:00）執行
-    - cron: '0 8 * * *'
-  workflow_dispatch:  # 允許手動觸發
+  workflow_dispatch:  # 僅允許手動觸發，自動同步已禁用
 
 jobs:
   sync:
