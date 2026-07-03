@@ -12,31 +12,21 @@ import json
 import sys
 from datetime import datetime
 
-def setup_credentials():
-    """從環境變數中設置 gspread 認證"""
-    creds_json = os.environ.get('GSPREAD_CREDENTIALS')
-    auth_json = os.environ.get('GSPREAD_AUTH')
+def get_service_account_info():
+    """從環境變數中讀取 Service Account 憑證"""
+    creds_json = os.environ.get('GOOGLE_SERVICE_ACCOUNT_JSON')
 
-    if not creds_json or not auth_json:
-        print("❌ 缺少認證信息")
+    if not creds_json:
+        print("❌ 缺少 GOOGLE_SERVICE_ACCOUNT_JSON 認證信息")
         sys.exit(1)
 
-    # 寫入臨時檔案
-    with open('/tmp/credentials.json', 'w') as f:
-        f.write(creds_json)
-    with open('/tmp/authorized_user.json', 'w') as f:
-        f.write(auth_json)
-
-    return '/tmp/credentials.json', '/tmp/authorized_user.json'
+    return json.loads(creds_json)
 
 def get_posts_from_sheet():
     """從 Google Sheet 讀取帖文"""
-    creds_file, auth_file = setup_credentials()
+    service_account_info = get_service_account_info()
 
-    gc = gspread.oauth(
-        credentials_filename=creds_file,
-        authorized_user_filename=auth_file
-    )
+    gc = gspread.service_account_from_dict(service_account_info)
 
     sheet = gc.open_by_key('1gTbG5il6CtomkTfRXmFXwx7_4AIG8CjOnfsdoRynuS4')
     worksheet = sheet.sheet1
