@@ -58,9 +58,9 @@ def get_posts_from_sheet():
             if not content and ig_fb_idx < len(row):
                 content = row[ig_fb_idx]
 
-            if content:
-                topic = (row[topic_idx] if topic_idx < len(row) else '').replace('\n', ' ').replace('\r', ' ').strip()
+            topic = (row[topic_idx] if topic_idx < len(row) else '').replace('\n', ' ').replace('\r', ' ').strip()
 
+            if content or topic:
                 post = {
                     'date': date,
                     'weekday': row[weekday_idx],
