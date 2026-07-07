@@ -134,7 +134,7 @@ def main():
             return 0
         else:
             print("ℹ️ 沒有新的更改")
-            return 1
+            return 0
 
     except Exception as e:
         print(f"❌ 同步失敗：{e}")
