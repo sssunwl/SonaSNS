@@ -60,8 +60,8 @@
     box-shadow:0 0 0 6px rgba(63,208,201,.16); }
   .step-name{ font-size:11px; color:#bbb; margin-top:8px; font-weight:600; }
   .step-node.active .step-name{ color:#3FD0C9; }
-  .step-choice{ font-size:10px; color:#7fded7; margin-top:3px; max-width:96px; text-align:center;
-    line-height:1.3; min-height:13px; }
+  .step-choice{ font-size:10px; color:#7fded7; margin-top:3px; max-width:100px; text-align:center;
+    line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .float-marker{ position:absolute; top:2px; left:10%; transform:translateX(-50%);
     transition:left .45s cubic-bezier(.34,1.4,.5,1); z-index:4; font-size:22px; pointer-events:none;
     animation:buoyBob 1.8s ease-in-out infinite; filter:drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
@@ -84,6 +84,10 @@
     font-size:12.5px; cursor:pointer; max-width:210px; line-height:1.35; text-align:left; }
   .idea-card:hover{ border-color:#3FD0C9; }
   .idea-card.active{ background:#0f2b2a; border-color:#3FD0C9; color:#8fe9e3; }
+
+  /* 第5步：預覽圖之後才顯示的「文字複製＋填入」區，只在 step5 出現 */
+  .step5-bottom{ display:none; flex-direction:column; align-items:center; gap:16px; width:100%; }
+  .step5-bottom.show{ display:flex; animation:stepIn .35s ease; }
 
   .custom-panel{
     width:100%; max-width:436px; background:#0e0e0e; border:1px dashed #3FD0C9; border-radius:14px;
@@ -394,35 +398,14 @@
     <div class="step-nav"><button onclick="goStep(3)">← 上一步</button><button class="primary" onclick="goStep(5)">下一步：匯出 →</button></div>
   </div>
 
-  <!-- STEP 5 匯出 -->
+  <!-- STEP 5 匯出：選比例＋下載在預覽圖之前 -->
   <div class="step-panel" data-panel="5">
-    <div class="step-hint">選比例、貼文字自動填、複製 Caption、下載圖片。</div>
+    <div class="step-hint">① 選比例 → ② 下載 → 下方看預覽圖 → 複製文案 → 貼文字自動填。</div>
     <div class="ratio-toggle" id="ratioToggle"></div>
-    <div class="paste-box">
-      <h4>✏️ 貼上文字，自動填入這個內容結構</h4>
-      <textarea id="pasteInput" placeholder="貼上一段文字，用空白行分段（每段對應一張內容頁）。第一段會當封面 Hook，最後一段會當 CTA，中間依序填入 6 個內容頁。"></textarea>
-      <div class="row">
-        <small>目前是「先簡單」規則式拆字（依空白行分段），之後可以升級成真的 AI 判斷。填完仍可直接點圖上文字微調。</small>
-        <button id="applyPaste">更新輪播</button>
-      </div>
-    </div>
     <div class="download-row">
       <button id="downloadOne">⬇️ 下載本張圖片</button>
       <button id="downloadAll" class="primary">⬇️ 下載全部（打包逐張）</button>
     </div>
-    <div class="caption-box">
-      <div class="cb-head"><h4 id="capTitle">本張 Caption（第 1 張）</h4><button class="copy-btn" id="copySlide">複製</button></div>
-      <p id="slideCaption">—</p>
-      <div class="full-caption">
-        <div class="cb-head"><h4>整篇圖片 Caption（全部張數合併）</h4><button class="copy-btn" id="copyAllImageCaptions">複製</button></div>
-        <p id="allImageCaptions">—</p>
-      </div>
-      <div class="full-caption">
-        <div class="cb-head"><h4>整篇貼文文案</h4><button class="copy-btn" id="copyFull">複製</button></div>
-        <p id="fullCaption">—</p>
-      </div>
-    </div>
-    <div class="step-nav"><button onclick="goStep(4)">← 上一步</button></div>
   </div>
 </div>
 
@@ -445,6 +428,31 @@
   </div>
 </div>
 <p class="hint">👆 上方 5 步驟：點數字浮標會展開該步驟。用鍵盤 ← → 或點兩側箭頭切換 · 直接點圖上的標題／內文可微調文字</p>
+
+<!-- 第5步：預覽圖之後的「文字複製 → 填入」 -->
+<div class="step5-bottom" id="step5bottom">
+  <div class="caption-box">
+    <div class="cb-head"><h4 id="capTitle">本張 Caption（第 1 張）</h4><button class="copy-btn" id="copySlide">複製</button></div>
+    <p id="slideCaption">—</p>
+    <div class="full-caption">
+      <div class="cb-head"><h4>整篇圖片 Caption（全部張數合併）</h4><button class="copy-btn" id="copyAllImageCaptions">複製</button></div>
+      <p id="allImageCaptions">—</p>
+    </div>
+    <div class="full-caption">
+      <div class="cb-head"><h4>整篇貼文文案</h4><button class="copy-btn" id="copyFull">複製</button></div>
+      <p id="fullCaption">—</p>
+    </div>
+  </div>
+  <div class="paste-box">
+    <h4>✏️ 貼上文字，自動填入這個內容結構</h4>
+    <textarea id="pasteInput" placeholder="貼上一段文字，用空白行分段（每段對應一張內容頁）。第一段會當封面 Hook，最後一段會當 CTA，中間依序填入 6 個內容頁。"></textarea>
+    <div class="row">
+      <small>目前是「先簡單」規則式拆字（依空白行分段），之後可以升級成真的 AI 判斷。填完仍可直接點圖上文字微調。</small>
+      <button id="applyPaste">更新輪播</button>
+    </div>
+  </div>
+  <div class="step-nav"><button onclick="goStep(4)">← 上一步</button></div>
+</div>
 
 <div class="specsheet">
   <h3>📐 IG / Meta 尺寸速查（2026）</h3>
@@ -1067,6 +1075,7 @@ function goStep(n){
     node.classList.toggle('done', s<n);
   });
   document.querySelectorAll('.step-panel').forEach(p=> p.classList.toggle('show', +p.dataset.panel===n));
+  document.getElementById('step5bottom').classList.toggle('show', n===5);
   const center = 10 + (n-1)*20;               // 節點中心：10/30/50/70/90 %
   floatMarker.style.left = center + '%';
   stepFill.style.width = ((n-1)*20) + '%';
