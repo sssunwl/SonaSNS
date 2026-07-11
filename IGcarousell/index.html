@@ -25,11 +25,15 @@
 
   .panel-label{ width:100%; max-width:436px; color:#777; font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin:2px 0 -8px; }
 
-  .picker{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:460px; }
+  .picker{ display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-start; width:100%; max-width:600px;
+    overflow-x:auto; padding:2px 2px 8px; scrollbar-width:thin; scrollbar-color:#3a3a3a transparent; }
+  .picker::-webkit-scrollbar{ height:6px; }
+  .picker::-webkit-scrollbar-thumb{ background:#3a3a3a; border-radius:3px; }
+  .picker::-webkit-scrollbar-track{ background:transparent; }
   .picker button{
     border:1px solid #444; background:#232323; color:#ddd;
     padding:8px 14px; border-radius:20px; font-size:12.5px; cursor:pointer;
-    font-family:'Noto Sans TC', sans-serif;
+    font-family:'Noto Sans TC', sans-serif; white-space:nowrap; flex-shrink:0;
   }
   .picker button.active{ background:#eee; color:#111; border-color:#eee; }
   .picker button.custom-btn{ border-style:dashed; }
@@ -67,8 +71,8 @@
     animation:buoyBob 1.8s ease-in-out infinite; filter:drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
   @keyframes buoyBob{ 0%,100%{ transform:translateX(-50%) translateY(0); } 50%{ transform:translateX(-50%) translateY(-6px); } }
 
-  .step-panels{ width:100%; max-width:460px; }
-  .step-panel{ display:none; flex-direction:column; align-items:center; gap:14px; }
+  .step-panels{ width:100%; max-width:600px; }
+  .step-panel{ display:none; flex-direction:column; align-items:center; gap:10px; }
   .step-panel.show{ display:flex; animation:stepIn .35s ease; }
   @keyframes stepIn{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:translateY(0); } }
   .step-hint{ color:#888; font-size:11px; text-align:center; max-width:420px; line-height:1.5; }
@@ -79,9 +83,12 @@
   .step-nav button:disabled{ opacity:.35; cursor:default; }
 
   /* 推薦內容卡片 */
-  .idea-grid{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:460px; }
-  .idea-card{ border:1px solid #444; background:#202020; color:#ddd; padding:10px 14px; border-radius:12px;
-    font-size:12.5px; cursor:pointer; max-width:210px; line-height:1.35; text-align:left; }
+  .idea-grid{ display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-start; width:100%; max-width:600px;
+    overflow-x:auto; padding:2px 2px 8px; scrollbar-width:thin; scrollbar-color:#3a3a3a transparent; }
+  .idea-grid::-webkit-scrollbar{ height:6px; }
+  .idea-grid::-webkit-scrollbar-thumb{ background:#3a3a3a; border-radius:3px; }
+  .idea-card{ border:1px solid #444; background:#202020; color:#ddd; padding:8px 14px; border-radius:12px;
+    font-size:12.5px; cursor:pointer; flex-shrink:0; max-width:220px; line-height:1.35; text-align:left; }
   .idea-card:hover{ border-color:#3FD0C9; }
   .idea-card.active{ background:#0f2b2a; border-color:#3FD0C9; color:#8fe9e3; }
 
@@ -312,7 +319,6 @@
   [data-layout="photo-split"] .bottom-label{ font-size:10px; letter-spacing:.12em; font-weight:600; opacity:.6; }
 
   /* ================= LAYOUT 10 — polaroid（拍立得復古感） ================= */
-  [data-layout="polaroid"]{ background:#efece6 !important; }
   [data-layout="polaroid"] .frame{ position:absolute; inset:22px; background:#fff; box-shadow:0 10px 26px rgba(0,0,0,.18); transform:rotate(-1.2deg); padding:14px 14px 0; }
   [data-layout="polaroid"] .photo-bg{ position:relative; width:100%; height:64%; }
   [data-layout="polaroid"] .cap{ padding:14px 6px; color:#2a2a2a; }
@@ -323,6 +329,68 @@
   [data-layout="polaroid"] .subline{ font-size:12.5px; line-height:1.55; color:#555; }
   [data-layout="polaroid"] .bottom-row{ display:flex; justify-content:space-between; margin-top:10px; }
   [data-layout="polaroid"] .bottom-label{ font-size:9.5px; letter-spacing:.1em; color:#888; }
+
+  /* ================= LAYOUT 11 — big-type（大字海報） ================= */
+  [data-layout="big-type"] .inner{ height:100%; padding:34px 32px; display:flex; flex-direction:column; justify-content:space-between; }
+  [data-layout="big-type"] .top-row{ display:flex; justify-content:space-between; align-items:baseline; }
+  [data-layout="big-type"] .top-row .handle{ position:static; }
+  [data-layout="big-type"] .big-idx{ font-family:'Space Mono',monospace; font-size:13px; font-weight:700; letter-spacing:.1em; opacity:.5; }
+  [data-layout="big-type"] .content{ flex:1; display:flex; flex-direction:column; justify-content:center; }
+  [data-layout="big-type"] .eyebrow{ font-family:'Space Mono',monospace; color:var(--accent); opacity:1; margin-bottom:14px; }
+  [data-layout="big-type"] .accent-bar{ width:64px; height:6px; background:var(--accent); margin-bottom:18px; border-radius:2px; }
+  [data-layout="big-type"] .headline{ font-size:42px; line-height:1.18; font-weight:900; letter-spacing:-.01em; margin-bottom:16px; }
+  [data-layout="big-type"] .subline{ font-size:15.5px; line-height:1.65; opacity:.85; max-width:92%; }
+  [data-layout="big-type"] .bottom-row{ display:flex; justify-content:space-between; border-top:1px solid currentColor; padding-top:12px; opacity:.75; }
+  [data-layout="big-type"] .bottom-label{ font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:.12em; }
+
+  /* ================= LAYOUT 12 — gradient-glass（品牌漸層玻璃卡） ================= */
+  [data-layout="gradient-glass"] .orb{ position:absolute; border-radius:50%; background:rgba(255,255,255,.13); }
+  [data-layout="gradient-glass"] .inner{ position:relative; height:100%; padding:56px 26px 30px; display:flex; flex-direction:column; justify-content:center; }
+  [data-layout="gradient-glass"] .glass{ background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.4); border-radius:22px; padding:30px 26px; box-shadow:0 18px 50px rgba(0,0,0,.28); }
+  [data-layout="gradient-glass"] .eyebrow{ opacity:.9; margin-bottom:12px; }
+  [data-layout="gradient-glass"] .headline{ font-size:30px; line-height:1.3; margin-bottom:12px; }
+  [data-layout="gradient-glass"] .subline{ font-size:15px; line-height:1.65; opacity:.92; }
+  [data-layout="gradient-glass"] .bottom-row{ display:flex; justify-content:space-between; margin-top:18px; padding:0 8px; opacity:.85; }
+  [data-layout="gradient-glass"] .bottom-label{ font-size:10.5px; letter-spacing:.12em; font-weight:600; }
+
+  /* ================= LAYOUT 13 — sticker-note（手帳便條） ================= */
+  [data-layout="sticker-note"] .inner{ height:100%; padding:44px 30px 34px; display:flex; align-items:center; }
+  [data-layout="sticker-note"] .note{ position:relative; background:#FFFDF6; color:#2C2620; width:100%; padding:34px 26px 22px; border-radius:6px; box-shadow:0 14px 32px rgba(0,0,0,.16); transform:rotate(-1deg); }
+  [data-layout="sticker-note"] .tape{ position:absolute; top:-13px; left:50%; transform:translateX(-50%) rotate(2deg); width:112px; height:26px; background:var(--accent); opacity:.7; border-radius:2px; }
+  [data-layout="sticker-note"] .eyebrow{ color:var(--accent); opacity:1; margin-bottom:10px; }
+  [data-layout="sticker-note"] .headline{ font-size:26px; line-height:1.4; margin-bottom:10px; color:#2C2620; }
+  [data-layout="sticker-note"] .subline{ font-size:14.5px; line-height:1.7; color:#5A5248; }
+  [data-layout="sticker-note"] .note .bottom-row{ display:flex; justify-content:space-between; margin-top:18px; border-top:1px dashed #D8CFC0; padding-top:10px; }
+  [data-layout="sticker-note"] .bottom-label{ font-size:10px; letter-spacing:.1em; color:#A09684; }
+
+  /* ================= LAYOUT 14 — bento（圓角卡格） ================= */
+  [data-layout="bento"] .inner{ height:100%; padding:24px 22px; display:flex; flex-direction:column; gap:12px; }
+  [data-layout="bento"] .cellA{ background:var(--accent); border-radius:18px; padding:15px 18px; display:flex; justify-content:space-between; align-items:center; }
+  [data-layout="bento"] .cellA .handle{ position:static; opacity:1; }
+  [data-layout="bento"] .cellA .idx{ font-family:'Space Mono',monospace; font-size:12px; font-weight:700; }
+  [data-layout="bento"] .cellB{ flex:1; background:rgba(127,127,127,.10); border:1px solid rgba(127,127,127,.20); border-radius:18px; padding:26px 22px; display:flex; flex-direction:column; justify-content:center; }
+  [data-layout="bento"] .eyebrow{ color:var(--accent); opacity:1; font-weight:700; margin-bottom:10px; }
+  [data-layout="bento"] .headline{ font-size:28px; line-height:1.32; margin-bottom:10px; }
+  [data-layout="bento"] .subline{ font-size:14.5px; line-height:1.65; opacity:.85; }
+  [data-layout="bento"] .cellC{ display:flex; gap:12px; }
+  [data-layout="bento"] .chip{ flex:1; border-radius:14px; padding:10px 12px; font-size:10.5px; letter-spacing:.08em; text-align:center; border:1px solid rgba(127,127,127,.3); opacity:.8; }
+
+  /* ===== 角色差異化（封面 / CTA）＋ 逐頁換圖 ===== */
+  .swipe-pill{ position:absolute; bottom:58px; left:50%; transform:translateX(-50%); z-index:7;
+    border:1.5px solid currentColor; border-radius:20px; padding:6px 16px; font-size:11px; letter-spacing:.1em;
+    font-weight:600; opacity:.9; white-space:nowrap; pointer-events:none; }
+  .follow-pill{ position:absolute; bottom:58px; left:50%; transform:translateX(-50%); z-index:7;
+    background:rgba(0,0,0,.28); border:1.5px solid currentColor; border-radius:20px; padding:7px 18px;
+    font-size:12px; font-weight:700; letter-spacing:.04em; white-space:nowrap; pointer-events:none; }
+  /* photo-split：膠囊移到照片區，不壓到下半卡片文字 */
+  [data-layout="photo-split"] .swipe-pill, [data-layout="photo-split"] .follow-pill{ bottom:auto; top:calc(55% - 46px); color:#fff; }
+  /* 文字貼底的版型：膠囊移到上方空位 */
+  [data-layout="photo-cover"] .swipe-pill, [data-layout="photo-cover"] .follow-pill,
+  [data-layout="bold-diagonal"] .swipe-pill, [data-layout="bold-diagonal"] .follow-pill{ bottom:auto; top:64px; }
+  [data-layout="bento"] .swipe-pill, [data-layout="bento"] .follow-pill{ bottom:84px; }
+  .photo-swap{ position:absolute; top:44px; right:12px; z-index:9; border:none; background:rgba(0,0,0,.55);
+    color:#fff; font-size:10.5px; padding:5px 10px; border-radius:14px; cursor:pointer; }
+  .photo-swap:hover{ background:rgba(0,0,0,.8); }
 </style>
 </head>
 <body>
@@ -350,7 +418,7 @@
 <div class="step-panels">
   <!-- STEP 1 品牌 -->
   <div class="step-panel" data-panel="1">
-    <div class="step-hint">選一個品牌的視覺風格；風格會套用它的預設款式與配色，之後每一步都能再換。</div>
+    <div class="step-hint">選品牌 → 自動套用它的 Brand DNA（配色・字體・語氣），之後每步都能再換。</div>
     <div class="picker" id="picker"></div>
     <div class="custom-panel" id="customPanel">
       <h4>➕ 其他 · 自訂品牌</h4>
@@ -370,7 +438,7 @@
 
   <!-- STEP 2 設計款式（含配圖組） -->
   <div class="step-panel" data-panel="2">
-    <div class="step-hint">10 款版型任選；標📷的可配背景圖，選了才會出現「配圖組」。第 10 格「自訂關鍵詞」可輸入關鍵字生成整組圖。</div>
+    <div class="step-hint">14 款版型左右滑動任選，顏色全跟品牌 DNA；📷 款可配圖組＋逐頁換自己的照片。</div>
     <div class="picker" id="stylePicker"></div>
     <div class="custom-panel" id="imagePackPanel">
       <h4>🖼️ 配圖組（此款式支援背景圖）</h4>
@@ -386,14 +454,14 @@
 
   <!-- STEP 3 內容結構 -->
   <div class="step-panel" data-panel="3">
-    <div class="step-hint">選一種輪播骨架（Hook→承諾→6 頁內容→總結→CTA 的節奏），套上任何品牌都能用。</div>
+    <div class="step-hint">選輪播骨架：Hook → 承諾 → 內容×6 → 總結 → CTA，封面同 CTA 會自動用不同版面。</div>
     <div class="picker" id="structurePicker"></div>
     <div class="step-nav"><button onclick="goStep(2)">← 上一步</button><button class="primary" onclick="goStep(4)">下一步：推薦內容 →</button></div>
   </div>
 
   <!-- STEP 4 推薦內容 -->
   <div class="step-panel" data-panel="4">
-    <div class="step-hint">這個品牌可以發的主題範例（先放幾個示意，之後再細調＋定期更新）。點一個會套進封面標題。</div>
+    <div class="step-hint">📅 本週推薦主題（按品牌每週更新）— 點一個直接套進封面。</div>
     <div class="idea-grid" id="ideaGrid"></div>
     <div class="step-nav"><button onclick="goStep(3)">← 上一步</button><button class="primary" onclick="goStep(5)">下一步：匯出 →</button></div>
   </div>
@@ -427,7 +495,8 @@
     <div class="ig-actions"><span>♡</span><span>💬</span><span>↗</span></div>
   </div>
 </div>
-<p class="hint">👆 上方 5 步驟：點數字浮標會展開該步驟。用鍵盤 ← → 或點兩側箭頭切換 · 直接點圖上的標題／內文可微調文字</p>
+<p class="hint">👆 上方 5 步驟：點數字浮標會展開該步驟。用鍵盤 ← → 或點兩側箭頭切換 · 直接點圖上的標題／內文可微調文字 · 📷 款右下角可逐頁換自己的照片</p>
+<input type="file" id="photoFile" accept="image/*" style="display:none">
 
 <!-- 第5步：預覽圖之後的「文字複製 → 填入」 -->
 <div class="step5-bottom" id="step5bottom">
@@ -468,19 +537,19 @@
 </div>
 
 <script>
-/* ========== 品牌（純視覺風格，不含內容） ========== */
+/* ========== 品牌 Brand DNA（配色・字體・語氣；所有款式的顏色都由這裡驅動） ========== */
 const BRANDS = {
-  okiblues:      { label:"🚗 OkiBlues 沖繩租車", layout:"photo-split", handle:"@okiblues", sub:"沖繩自駕 · 租車情報", accent:"#2E86DE", bgLight:"#EAF2FB", bgDark:"#0C2136", font:"'Noto Sans TC', sans-serif", hashtags:"#沖繩租車 #沖繩自駕 #OKIBLUES" },
-  okiplayground: { label:"🏝️ OkiPlayground 沖繩旅遊", layout:"editorial-center", handle:"@okiplayground", sub:"沖繩旅遊資訊網", accent:"#FF8A3D", bgLight:"#FFF3E8", bgDark:"#2A1810", font:"'Noto Serif TC', serif", hashtags:"#沖繩 #沖繩自由行 #OkiPlayground" },
-  diveinout:     { label:"🤿 DiveInOut 潛旅", layout:"photo-cover", handle:"@diveinout", sub:"潛水 × 旅遊生活誌", accent:"#3FD0C9", bgLight:"#EAF6F6", bgDark:"#052A32", font:"'Noto Sans TC', sans-serif", hashtags:"#潛水 #DiveInOut #scubadiving" },
-  sosolsunday:   { label:"🌏 SoSolsunday 亞洲旅遊", layout:"map-corner", handle:"@sosolsunday", sub:"亞洲旅遊 · 日韓泰港", accent:"#E85D9A", bgLight:"#FDEFF4", bgDark:"#241019", font:"'Cormorant Garamond', serif", hashtags:"#亞洲旅遊 #日本旅遊 #韓國旅遊 #SoSolsunday" },
-  aiuni:         { label:"🤖 AIUni（暫名）", layout:"magazine-grid", handle:"@aiuni", sub:"AI 工具 × 學習", accent:"#7C5CFF", bgLight:"#F1EEFF", bgDark:"#15112B", font:"'Noto Sans TC', sans-serif", hashtags:"#AI工具 #AIUni #生產力" },
-  otf:           { label:"📰 OTF 教育型框架", layout:"magazine-grid", handle:"@offthefeed", sub:"OTF Series · 教育型內容", accent:"#FF3B30", bgLight:"#FFFFFF", bgDark:"#111111", font:"'Noto Sans TC', sans-serif", hashtags:"#IG演算法 #社群經營 #內容行銷" },
-  kuji:          { label:"🎴 KUJI 宇宙", layout:"tarot-card", handle:"@kuji.universe", sub:"一番賞 · 扭蛋 · 收藏情報", accent:"#F5C542", bgLight:"#FBF3D9", bgDark:"#1A1205", font:"'Cinzel', serif", hashtags:"#一番賞 #扭蛋 #KUJI宇宙" },
-  tarot:         { label:"🔮 塔羅", layout:"tarot-card", handle:"@moon.tarot", sub:"塔羅占卜 · 每週指引", accent:"#C9A66B", bgLight:"#F0E9DA", bgDark:"#0D0812", font:"'Cinzel', serif", hashtags:"#塔羅 #塔羅占卜 #心靈成長" },
-  runes:         { label:"ᚱ Runes 盧恩符文", layout:"tarot-card", handle:"@rune.whispers", sub:"盧恩符文 · 北歐神秘學", accent:"#9AA7B0", bgLight:"#E9EDF0", bgDark:"#12171B", font:"'Cinzel', serif", hashtags:"#盧恩符文 #Runes #北歐神話" },
-  solis_aroma:   { label:"🌸 Solis Aroma 香氛", layout:"scent-pyramid", handle:"@solis.aroma", sub:"香氛品牌 · 氣味故事", accent:"#C9A66B", bgLight:"#F3E9E0", bgDark:"#3A2A22", font:"'Cormorant Garamond', serif", hashtags:"#香氛 #香水 #SolisAroma" },
-  custom:        { label:"➕ 其他（自訂）", layout:"editorial-center", handle:"@your.brand", sub:"自訂品牌", accent:"#3FD0C9", bgLight:"#F7F4EE", bgDark:"#1F2A24", font:"'Noto Sans TC', sans-serif", hashtags:"#你的品牌 #IGcarousell", logo:null },
+  okiblues:      { label:"🚗 OkiBlues 沖繩租車", layout:"photo-split", handle:"@okiblues", sub:"沖繩自駕 · 租車情報", accent:"#2E86DE", bgLight:"#EAF2FB", bgDark:"#0C2136", font:"'Noto Sans TC', sans-serif", hashtags:"#沖繩租車 #沖繩自駕 #OKIBLUES", ctaLine:"🚗 租車有問題？留言或 DM 我哋幫你睇" },
+  okiplayground: { label:"🏝️ OkiPlayground 沖繩旅遊", layout:"editorial-center", handle:"@okiplayground", sub:"沖繩旅遊資訊網", accent:"#FF8A3D", bgLight:"#FFF3E8", bgDark:"#2A1810", font:"'Noto Serif TC', serif", hashtags:"#沖繩 #沖繩自由行 #OkiPlayground", ctaLine:"🌺 得閒就嚟沖繩，下次沖繩見" },
+  diveinout:     { label:"🤿 DiveInOut 潛旅", layout:"photo-cover", handle:"@diveinout", sub:"潛水 × 旅遊生活誌", accent:"#3FD0C9", bgLight:"#EAF6F6", bgDark:"#052A32", font:"'Noto Sans TC', sans-serif", hashtags:"#潛水 #DiveInOut #scubadiving", ctaLine:"🤿 潛水路上，我們一起慢慢進步" },
+  sosolsunday:   { label:"🌏 SoSolsunday 亞洲旅遊", layout:"map-corner", handle:"@sosolsunday", sub:"亞洲旅遊 · 日韓泰港", accent:"#E85D9A", bgLight:"#FDEFF4", bgDark:"#241019", font:"'Cormorant Garamond', serif", hashtags:"#亞洲旅遊 #日本旅遊 #韓國旅遊 #SoSolsunday", ctaLine:"✈️ 下一站想去邊？留言話我知" },
+  aiuni:         { label:"🤖 AIUni（暫名）", layout:"big-type", handle:"@aiuni", sub:"AI 工具 × 學習", accent:"#7C5CFF", bgLight:"#F1EEFF", bgDark:"#15112B", font:"'Noto Sans TC', sans-serif", hashtags:"#AI工具 #AIUni #生產力", ctaLine:"🤖 追蹤我，每週學會一個 AI 技能" },
+  otf:           { label:"📰 OTF 教育型框架", layout:"magazine-grid", handle:"@offthefeed", sub:"OTF Series · 教育型內容", accent:"#FF3B30", bgLight:"#FFFFFF", bgDark:"#111111", font:"'Noto Sans TC', sans-serif", hashtags:"#IG演算法 #社群經營 #內容行銷", ctaLine:"📈 追蹤 OTF，演算法不再是謎" },
+  kuji:          { label:"🎴 KUJI 宇宙", layout:"tarot-card", handle:"@kuji.universe", sub:"一番賞 · 扭蛋 · 收藏情報", accent:"#F5C542", bgLight:"#FBF3D9", bgDark:"#1A1205", font:"'Cinzel', serif", hashtags:"#一番賞 #扭蛋 #KUJI宇宙", ctaLine:"🎴 想代抽？DM 我幫你安排" },
+  tarot:         { label:"🔮 塔羅", layout:"tarot-card", handle:"@moon.tarot", sub:"塔羅占卜 · 每週指引", accent:"#C9A66B", bgLight:"#F0E9DA", bgDark:"#0D0812", font:"'Cinzel', serif", hashtags:"#塔羅 #塔羅占卜 #心靈成長", ctaLine:"🔮 你抽到邊張牌？留言你嘅直覺" },
+  runes:         { label:"ᚱ Runes 盧恩符文", layout:"tarot-card", handle:"@rune.whispers", sub:"盧恩符文 · 北歐神秘學", accent:"#9AA7B0", bgLight:"#E9EDF0", bgDark:"#12171B", font:"'Cinzel', serif", hashtags:"#盧恩符文 #Runes #北歐神話", ctaLine:"ᚱ 追蹤每週符文指引" },
+  solis_aroma:   { label:"🌸 Solis Aroma 香氛", layout:"scent-pyramid", handle:"@solis.aroma", sub:"香氛品牌 · 氣味故事", accent:"#C9A66B", bgLight:"#F3E9E0", bgDark:"#3A2A22", font:"'Cormorant Garamond', serif", hashtags:"#香氛 #香水 #SolisAroma", ctaLine:"🌸 你最愛哪種香調？留言聊聊" },
+  custom:        { label:"➕ 其他（自訂）", layout:"editorial-center", handle:"@your.brand", sub:"自訂品牌", accent:"#3FD0C9", bgLight:"#F7F4EE", bgDark:"#1F2A24", font:"'Noto Sans TC', sans-serif", hashtags:"#你的品牌 #IGcarousell", ctaLine:"❤️ 追蹤看更多", logo:null },
 };
 
 /* 每品牌的「推薦內容」主題範例（先放示意，之後細調＋定期更新） */
@@ -498,15 +567,19 @@ const CONTENT_IDEAS = {
   custom:        ["範例主題一","範例主題二","範例主題三"],
 };
 
-/* ========== 設計款式（跟品牌解耦，任何品牌都可以套任何款式） ========== */
+/* ========== 設計款式（跟品牌解耦；scheme 決定用品牌 DNA 的哪種配色方案） ========== */
 const STYLES = {
-  "editorial-center": { label:"編輯置中", photoCapable:false },
-  "bold-diagonal":    { label:"大膽斜角", photoCapable:false },
-  "map-corner":       { label:"極簡地圖角標", photoCapable:false },
-  "depth-gauge":      { label:"深度計", photoCapable:false },
-  "scent-pyramid":    { label:"香調金字塔", photoCapable:false },
-  "tarot-card":       { label:"卡牌邊框", photoCapable:false },
-  "magazine-grid":    { label:"雜誌出血編號", photoCapable:false },
+  "big-type":         { label:"🅰️ 大字海報", photoCapable:false, scheme:"alt" },
+  "gradient-glass":   { label:"🫧 品牌漸層玻璃", photoCapable:false, scheme:"gradient" },
+  "bento":            { label:"🍱 Bento 卡格", photoCapable:false, scheme:"light" },
+  "sticker-note":     { label:"📒 手帳便條", photoCapable:false, scheme:"light" },
+  "editorial-center": { label:"編輯置中", photoCapable:false, scheme:"alt" },
+  "bold-diagonal":    { label:"大膽斜角", photoCapable:false, scheme:"accent-alt" },
+  "map-corner":       { label:"極簡地圖角標", photoCapable:false, scheme:"alt" },
+  "depth-gauge":      { label:"深度計", photoCapable:false, scheme:"dark" },
+  "scent-pyramid":    { label:"香調金字塔", photoCapable:false, scheme:"light" },
+  "tarot-card":       { label:"卡牌邊框", photoCapable:false, scheme:"dark" },
+  "magazine-grid":    { label:"雜誌出血編號", photoCapable:false, scheme:"alt" },
   "photo-cover":      { label:"📷 滿版照片(國家地理風)", photoCapable:true },
   "photo-split":      { label:"📷 雜誌上下分割", photoCapable:true },
   "polaroid":         { label:"📷 拍立得復古", photoCapable:true },
@@ -804,11 +877,22 @@ function getPackState(){
   if(!imagePacks[k]) imagePacks[k] = { packIndex:1, seed:`${currentBrandKey}-pack-1` };
   return imagePacks[k];
 }
-/* deterministic "photo-like" CSS gradient from a text seed — free placeholder until real AI image packs are wired in */
+/* deterministic "photo-like" CSS gradient from a text seed — free placeholder until real AI image packs are wired in.
+   色相以品牌主色為基調（±35°），令示意圖組都在 Brand DNA 色系內 */
+function hexToHue(hex){
+  const [r,g,b] = hexToRgbArr(hex).map(v=>v/255);
+  const mx = Math.max(r,g,b), mn = Math.min(r,g,b);
+  if(mx===mn) return 0;
+  const d = mx-mn;
+  let h;
+  if(mx===r) h = ((g-b)/d) % 6; else if(mx===g) h = (b-r)/d + 2; else h = (r-g)/d + 4;
+  return (Math.round(h*60) + 360) % 360;
+}
 function seedGradient(seed){
   let h = 0;
   for(const c of seed) h = (h*31 + c.charCodeAt(0)) >>> 0;
-  const hue1 = h % 360, hue2 = (hue1+45)%360, hue3 = (hue1+210)%360;
+  const base = hexToHue(BRANDS[currentBrandKey].accent);
+  const hue1 = (base + (h % 70) - 35 + 360) % 360, hue2 = (hue1+28)%360, hue3 = (base+205)%360;
   const x1 = 15+(h%50), y1 = 15+((h>>3)%50), x2 = 50+(h%40), y2 = 50+((h>>5)%40);
   return `radial-gradient(circle at ${x1}% ${y1}%, hsl(${hue1} 70% 55% / .85), transparent 60%),
           radial-gradient(circle at ${x2}% ${y2}%, hsl(${hue2} 65% 45% / .85), transparent 60%),
@@ -842,28 +926,56 @@ function getSlides(){
 }
 function hasRealContent(brandKey){ return !!CONTENT_OVERRIDES[brandKey]; }
 
-/* per-slide background + ink, driven by the selected STYLE (not the brand) */
-function slideColors(layout, i){
-  const even = i%2===0;
-  if(STYLES[layout].photoCapable) return { bg: layout==='polaroid' ? '#efece6' : '#0c0c0c', ink: null };
-  const BG = {
-    'tarot-card': even?'#0D0812':'#1A1025', 'depth-gauge': even?'#012028':'#053A4C',
-    'scent-pyramid': even?'#3A2A22':'#F3E9E0', 'bold-diagonal': even?'#FF6B4A':'#1A0E0A',
-    'map-corner': even?'#F7F4EE':'#1F2A24', 'magazine-grid': even?'#111111':'#FFFFFF',
-    'editorial-center': even?'#12333B':'#EDEAE3',
-  };
-  const INK = {
-    'tarot-card':'#E8D9B5', 'depth-gauge': even?'#8FD8E8':'#DCEFF2',
-    'scent-pyramid': even?'#EAD9C8':'#5B4438', 'bold-diagonal': even?'#1A0E0A':'#FFD9C4',
-    'map-corner': even?'#1F2A24':'#F7F4EE', 'magazine-grid': even?'#FFFFFF':'#111111',
-    'editorial-center': even?'#E8DCC4':'#3D4F2A',
-  };
-  /* custom brand's palette drives the two "flat" layouts so 隨機配色 is visible */
-  if(currentBrandKey==='custom' && (layout==='editorial-center' || layout==='map-corner')){
-    const b = BRANDS.custom;
-    return even ? { bg: b.bgDark, ink: b.bgLight } : { bg: b.bgLight, ink: b.bgDark };
+/* ===== Brand DNA 配色引擎：所有款式的顏色由「品牌調色盤 × 款式 scheme × 頁面角色」算出 ===== */
+function hexToRgbArr(hex){
+  hex = hex.replace('#','');
+  if(hex.length===3) hex = [...hex].map(c=>c+c).join('');
+  const n = parseInt(hex,16);
+  return [(n>>16)&255,(n>>8)&255,n&255];
+}
+function mixColor(a,b,t){
+  const A = hexToRgbArr(a), B = hexToRgbArr(b);
+  return '#'+A.map((v,idx)=>Math.round(v+(B[idx]-v)*t).toString(16).padStart(2,'0')).join('');
+}
+function luma(hex){ const [r,g,b] = hexToRgbArr(hex); return (0.299*r+0.587*g+0.114*b)/255; }
+
+/* 逐頁照片覆蓋：slidePhotos[brandKey][slideIndex] = dataURL */
+const slidePhotos = {};
+function photoBg(i){
+  const ph = (slidePhotos[currentBrandKey]||{})[i];
+  if(ph) return `url(${ph}) center/cover no-repeat`;
+  return seedGradient(`${getPackState().seed}-p${i}`);
+}
+
+function slideColors(layout, i, brand, role){
+  const st = STYLES[layout];
+  if(st.photoCapable){
+    return { bg: layout==='polaroid' ? mixColor(brand.bgLight,'#EFECE6',.5) : mixColor(brand.bgDark,'#000000',.5), ink:null };
   }
-  return { bg: BG[layout] || (even?'#12333B':'#EDEAE3'), ink: INK[layout] };
+  const light = brand.bgLight, dark = brand.bgDark, accent = brand.accent;
+  const inkOn = bg => luma(bg) > .55 ? mixColor(dark,'#000000',.2) : mixColor(light,'#ffffff',.35);
+  if(st.scheme==='gradient'){
+    const g1 = mixColor(accent, dark, i%2 ? .3 : .08);
+    const g2 = mixColor(accent, dark, .82);
+    return { bg:`linear-gradient(160deg, ${g1}, ${g2})`, ink:'#FFFFFF', accentOverride:'#FFFFFF' };
+  }
+  if(role==='cta'){
+    return { bg: accent, ink: luma(accent) > .55 ? mixColor(dark,'#000000',.35) : '#FFFFFF', accentOverride: luma(accent) > .55 ? mixColor(dark,'#000000',.35) : '#FFFFFF' };
+  }
+  if(role==='cover'){
+    const bg = st.scheme==='light' ? light : st.scheme==='accent-alt' ? accent : dark;
+    const r = { bg, ink: inkOn(bg) };
+    if(bg===accent) r.accentOverride = r.ink;
+    return r;
+  }
+  let bg;
+  if(st.scheme==='dark')            bg = i%2 ? mixColor(dark,'#000000',.28) : dark;
+  else if(st.scheme==='light')      bg = i%2 ? mixColor(light,'#ffffff',.45) : light;
+  else if(st.scheme==='accent-alt') bg = i%2 ? dark : accent;
+  else                              bg = i%2===0 ? dark : light; /* alt */
+  const r = { bg, ink: inkOn(bg) };
+  if(bg===accent) r.accentOverride = r.ink;
+  return r;
 }
 
 /* auto-generate layout-specific decorative fields (tag/coord/depth/note/drop/cardnum/moon) from index — content stays brand-agnostic */
@@ -915,6 +1027,19 @@ const downloadOneBtn = document.getElementById('downloadOne');
 const downloadAllBtn = document.getElementById('downloadAll');
 const pasteInput = document.getElementById('pasteInput');
 const applyPasteBtn = document.getElementById('applyPaste');
+const photoFile = document.getElementById('photoFile');
+photoFile.onchange = (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    if(!slidePhotos[currentBrandKey]) slidePhotos[currentBrandKey] = {};
+    slidePhotos[currentBrandKey][photoFile.dataset.slide] = reader.result;
+    renderTemplate();
+  };
+  reader.readAsDataURL(file);
+  photoFile.value = '';
+};
 
 function buildRatioToggle(){
   Object.values(RATIOS).forEach(r=>{
@@ -1197,7 +1322,7 @@ function slideInner(brand, s, i, total, layout){
       </div>`;
   }
   if(layout === "photo-cover"){
-    const bg = seedGradient(getPackState().seed);
+    const bg = photoBg(i);
     return `
       <div class="photo-bg" style="background:${bg}"></div>
       <div class="scrim"></div>
@@ -1208,7 +1333,7 @@ function slideInner(brand, s, i, total, layout){
       </div>`;
   }
   if(layout === "photo-split"){
-    const bg = seedGradient(getPackState().seed);
+    const bg = photoBg(i);
     return `
       <div class="photo-bg" style="background:${bg}"></div>
       <div class="handle">${brand.handle}</div>
@@ -1218,7 +1343,7 @@ function slideInner(brand, s, i, total, layout){
       </div>`;
   }
   if(layout === "polaroid"){
-    const bg = seedGradient(getPackState().seed);
+    const bg = photoBg(i);
     return `
       <div class="handle">${brand.handle}</div>
       <div class="slide-num">${numLabel}</div>
@@ -1227,6 +1352,46 @@ function slideInner(brand, s, i, total, layout){
         <div class="cap">${eb}${hl}${sl}
           <div class="bottom-row"><div class="bottom-label">SHARE · SAVE</div><div class="bottom-label">${numLabel}</div></div>
         </div>
+      </div>`;
+  }
+  if(layout === "big-type"){
+    return `
+      <div class="inner">
+        <div class="top-row"><div class="handle">${brand.handle}</div><div class="big-idx">${String(i+1).padStart(2,'0')}/${String(total).padStart(2,'0')}</div></div>
+        <div class="content">${eb}<div class="accent-bar"></div>${hl}${sl}</div>
+        <div class="bottom-row"><div class="bottom-label">SHARE</div><div class="bottom-label">SAVE</div></div>
+      </div>`;
+  }
+  if(layout === "gradient-glass"){
+    return `
+      <div class="orb" style="width:150px;height:150px;top:-46px;right:-36px"></div>
+      <div class="orb" style="width:90px;height:90px;bottom:70px;left:-24px"></div>
+      <div class="handle" style="color:#fff">${brand.handle}</div>
+      <div class="slide-num" style="position:absolute;top:22px;right:28px;font-size:11px;color:#fff;opacity:.8;z-index:6">${numLabel}</div>
+      <div class="inner">
+        <div class="glass">${eb}${hl}${sl}</div>
+        <div class="bottom-row"><div class="bottom-label">SHARE</div><div class="bottom-label">SAVE</div></div>
+      </div>`;
+  }
+  if(layout === "sticker-note"){
+    return `
+      <div class="handle">${brand.handle}</div>
+      <div class="slide-num" style="position:absolute;top:22px;right:28px;font-size:11px;opacity:.55">${numLabel}</div>
+      <div class="inner">
+        <div class="note">
+          <div class="tape"></div>
+          ${eb}${hl}${sl}
+          <div class="bottom-row"><div class="bottom-label">${brand.handle.replace('@','').toUpperCase()}</div><div class="bottom-label">${numLabel} · SAVE</div></div>
+        </div>
+      </div>`;
+  }
+  if(layout === "bento"){
+    const accInk = luma(brand.accent) > .6 ? '#181818' : '#FFFFFF';
+    return `
+      <div class="inner">
+        <div class="cellA" style="background:${brand.accent};color:${accInk}"><div class="handle">${brand.handle}</div><div class="idx">${String(i+1).padStart(2,'0')}/${String(total).padStart(2,'0')}</div></div>
+        <div class="cellB">${eb}${hl}${sl}</div>
+        <div class="cellC"><div class="chip">SHARE</div><div class="chip">SAVE</div><div class="chip">SWIPE →</div></div>
       </div>`;
   }
   return '';
@@ -1255,17 +1420,51 @@ function renderTemplate(){
   track.innerHTML = '';
   slides.forEach((s, i)=>{
     Object.assign(s, autoDecor(layout, i, slides.length, s.headline));
+    const role = i===0 ? 'cover' : i===slides.length-1 ? 'cta' : i===slides.length-2 ? 'summary' : i===1 ? 'promise' : 'content';
     const div = document.createElement('div');
     div.className = 'slide';
     div.dataset.layout = layout;
     div.dataset.index = i;
-    const col = slideColors(layout, i);
+    div.dataset.role = role;
+    const col = slideColors(layout, i, brand, role);
     div.style.background = col.bg;
     if(col.ink) div.style.color = col.ink;
+    if(col.accentOverride) div.style.setProperty('--accent', col.accentOverride);
     div.style.fontFamily = brand.font;
     div.style.height = r.h + 'px';
     div.innerHTML = slideInner(brand, s, i, slides.length, layout) + cropWarningHtml();
+
+    /* 封面加「往左滑」、CTA 加「追蹤」膠囊 — 一組圖不再每張同格式 */
+    if(role==='cover' && layout!=='polaroid'){
+      const pill = document.createElement('div');
+      pill.className = 'swipe-pill';
+      pill.textContent = '往左滑 →';
+      div.appendChild(pill);
+    }
+    if(role==='cta' && layout!=='polaroid'){
+      const pill = document.createElement('div');
+      pill.className = 'follow-pill';
+      pill.textContent = `+ 追蹤 ${brand.handle}`;
+      div.appendChild(pill);
+    }
+    /* 📷 款：逐頁換自己的照片 */
+    if(STYLES[layout].photoCapable){
+      const swap = document.createElement('button');
+      swap.className = 'photo-swap';
+      swap.textContent = '📷 換此頁圖';
+      swap.onclick = ()=>{ photoFile.dataset.slide = i; photoFile.click(); };
+      div.appendChild(swap);
+    }
     track.appendChild(div);
+
+    /* 封面／CTA 標題自動放大（依該款式原字級等比放大） */
+    if(role==='cover' || role==='cta'){
+      const h = div.querySelector('.headline');
+      if(h){
+        const fs = parseFloat(getComputedStyle(h).fontSize);
+        h.style.fontSize = Math.round(fs * (role==='cover' ? 1.16 : 1.06)) + 'px';
+      }
+    }
 
     div.querySelectorAll('[data-field]').forEach(el=>{
       el.addEventListener('input', ()=>{
@@ -1281,10 +1480,18 @@ function renderTemplate(){
 function syncCaptions(){
   const brand = BRANDS[currentBrandKey];
   const slides = getSlides();
+  const nums = ['①','②','③','④','⑤','⑥'];
+  const bullets = slides.slice(2,8).map((s,idx)=>{
+    const h = strip(s.headline), sub = strip(s.subline);
+    return `${nums[idx]} ${h}${sub ? ' — ' + (sub.length>26 ? sub.slice(0,26)+'…' : sub) : ''}`;
+  }).join('\n');
   fullCaptionEl.textContent =
-    `${strip(slides[0].headline)}\n\n${strip(slides[1].subline)}\n\n` +
-    slides.slice(2,8).map(s=>`✓ ${strip(s.headline)}`).join('\n') +
-    `\n\n${strip(slides[9].headline)} ${strip(slides[9].subline)}\n\n${brand.hashtags}`;
+    `${strip(slides[0].headline)}\n${strip(slides[1].subline)}\n\n` +
+    bullets +
+    `\n\n📌 ${strip(slides[8].headline)}，記得收藏這篇` +
+    `\n${strip(slides[9].headline)} ${strip(slides[9].subline)}` +
+    `\n\n${brand.ctaLine || ''}` +
+    `\n.\n${brand.hashtags}`;
   allImageCaptionsEl.textContent = slides.map((s,i)=> `【第 ${i+1} 張】${s.eyebrow}\n${strip(s.headline)}\n${strip(s.subline)}`).join('\n\n');
 }
 function strip(html){ return (html||'').replace(/<br\s*\/?>/g,' ').replace(/<[^>]+>/g,''); }
@@ -1360,10 +1567,10 @@ copyFullBtn.onclick = ()=> copyText(fullCaptionEl.textContent, copyFullBtn);
 copyAllImageCaptionsBtn.onclick = ()=> copyText(allImageCaptionsEl.textContent, copyAllImageCaptionsBtn);
 
 async function captureSlide(slideEl){
-  const warns = slideEl.querySelectorAll('.crop-warn');
-  warns.forEach(w => w.style.visibility = 'hidden');
+  const hides = slideEl.querySelectorAll('.crop-warn, .photo-swap');
+  hides.forEach(w => w.style.visibility = 'hidden');
   const canvas = await html2canvas(slideEl, { backgroundColor: null, scale: 2.7 });
-  warns.forEach(w => w.style.visibility = 'visible');
+  hides.forEach(w => w.style.visibility = 'visible');
   return canvas;
 }
 function downloadCanvas(canvas, filename){
