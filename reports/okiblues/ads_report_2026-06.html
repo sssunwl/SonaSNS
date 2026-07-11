@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKIBLUES 2026年6月 廣告成效月報</title>
+<style>
+  :root{
+    --bg-0:#071019;
+    --bg-1:#0c1c2e;
+    --bg-2:#122b45;
+    --teal:#2dd9c4;
+    --teal-dim:rgba(45,217,196,.15);
+    --coral:#ff6b6b;
+    --gold:#f5c451;
+    --ink:#eaf3f6;
+    --ink-dim:#9fb3bf;
+    --card:#0f2338;
+    --card-border:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:linear-gradient(180deg,var(--bg-0),var(--bg-1) 20%,var(--bg-1) 80%,var(--bg-0));
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Helvetica Neue",Arial,sans-serif;
+    overflow-x:hidden;
+  }
+  section{
+    min-height:100vh;
+    padding:8vh 8vw;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+  }
+  h2{
+    font-size:clamp(1.6rem,3.2vw,2.4rem);
+    margin-bottom:.3em;
+    display:flex;
+    align-items:baseline;
+    gap:.6em;
+    flex-wrap:wrap;
+  }
+  h2 span.tag{
+    font-size:.4em;
+    font-weight:400;
+    color:var(--ink-dim);
+    background:rgba(255,255,255,.06);
+    padding:.3em .8em;
+    border-radius:999px;
+  }
+  p{color:var(--ink-dim);line-height:1.7;font-size:1.02rem;}
+
+  #progress{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:linear-gradient(90deg,var(--teal),var(--gold));
+    z-index:999;transition:width .1s linear;
+  }
+
+  /* HERO */
+  .hero{
+    align-items:center;text-align:center;position:relative;
+    background:radial-gradient(ellipse at 50% 30%, var(--bg-2) 0%, var(--bg-0) 70%);
+  }
+  .hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5;}
+  .hero-content{position:relative;z-index:2;}
+  .hero h1{
+    font-size:clamp(2.8rem,8vw,5.5rem);
+    letter-spacing:.08em;
+    background:linear-gradient(90deg,#fff,var(--teal));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-weight:800;
+  }
+  .hero .subtitle{font-size:clamp(1.1rem,2.4vw,1.6rem);color:var(--ink);margin-top:.6em;font-weight:600;}
+  .hero .meta{margin-top:1em;color:var(--ink-dim);font-size:.95rem;letter-spacing:.03em;}
+  .scroll-cue{
+    margin-top:3em;color:var(--teal);font-size:.9rem;
+    animation:bob 1.8s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0);opacity:.6;}50%{transform:translateY(10px);opacity:1;}}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* OVERVIEW */
+  .badges{display:flex;gap:.6em;flex-wrap:wrap;margin:1em 0;}
+  .badge{
+    background:var(--teal-dim);border:1px solid rgba(45,217,196,.35);color:var(--teal);
+    padding:.4em 1em;border-radius:999px;font-size:.85rem;font-weight:600;
+  }
+  .big-number{
+    font-size:clamp(3rem,7vw,5rem);font-weight:800;color:var(--ink);
+    font-variant-numeric:tabular-nums;margin-top:.2em;
+  }
+  .stat-label{color:var(--ink-dim);font-size:.95rem;margin-bottom:1.4em;}
+  .split-bar{display:flex;height:34px;border-radius:10px;overflow:hidden;width:min(560px,90%);border:1px solid var(--card-border);}
+  .split-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#04211c;
+    width:0; transition:width 1.2s cubic-bezier(.2,.8,.2,1);}
+  .split-seg.aw{background:var(--teal);}
+  .split-seg.tr{background:var(--gold);color:#3a2900;}
+  .split-legend{display:flex;gap:1.6em;margin-top:.8em;font-size:.85rem;color:var(--ink-dim);}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:.4em;vertical-align:middle;}
+  .check-note{
+    margin-top:1.6em;padding:.9em 1.2em;border-left:3px solid var(--teal);background:rgba(45,217,196,.06);
+    border-radius:0 8px 8px 0;color:var(--ink);font-size:.92rem;max-width:640px;
+  }
+
+  /* RANK BARS */
+  .bars{margin-top:1.2em;display:flex;flex-direction:column;gap:.55em;max-width:760px;}
+  .bar-row{display:grid;grid-template-columns:150px 1fr 90px;align-items:center;gap:.8em;font-size:.85rem;cursor:pointer;}
+  .bar-row .name{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .bar-track{background:rgba(255,255,255,.06);border-radius:6px;height:20px;overflow:hidden;position:relative;}
+  .bar-fill{height:100%;width:0%;border-radius:6px;transition:width 1s cubic-bezier(.2,.8,.2,1);}
+  .bar-row .cpm-val{color:var(--ink-dim);text-align:right;font-variant-numeric:tabular-nums;}
+  .bar-row.best .bar-fill{background:linear-gradient(90deg,#1fae9c,var(--teal));}
+  .bar-row.mid .bar-fill{background:linear-gradient(90deg,#c99a3a,var(--gold));}
+  .bar-row.worst .bar-fill{background:linear-gradient(90deg,#c73f3f,var(--coral));}
+  .exclude-note{margin-top:1.2em;font-size:.8rem;color:var(--ink-dim);opacity:.75;}
+  .detail-pop{
+    max-width:760px;margin-top:1em;padding:1em 1.2em;border-radius:10px;background:var(--card);
+    border:1px solid var(--card-border);font-size:.88rem;display:none;
+  }
+  .detail-pop.show{display:block;}
+
+  /* HK INSIGHT */
+  .toggle-row{margin:1em 0 1.6em;}
+  #toggleHK{
+    background:var(--teal);color:#04211c;border:none;padding:.7em 1.5em;border-radius:999px;
+    font-weight:700;font-size:.9rem;cursor:pointer;transition:transform .15s ease;
+  }
+  #toggleHK:hover{transform:scale(1.04);}
+  .hk-bars{display:flex;flex-direction:column;gap:1em;max-width:760px;}
+  .hk-row .name-row{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.3em;color:var(--ink);}
+  .hk-track{display:flex;height:26px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.06);}
+  .hk-seg{height:100%;width:0;transition:width 1s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;font-size:.72rem;font-weight:700;color:#04211c;padding-left:.4em;}
+  .hk-seg.hk{background:var(--coral);color:#2b0b0b;}
+  .hk-seg.tw{background:var(--teal);}
+  .hk-pct{color:var(--ink-dim);font-size:.78rem;}
+  .insight-callout{
+    margin-top:2em;max-width:700px;padding:1.2em 1.4em;border-radius:12px;
+    background:linear-gradient(135deg,rgba(245,196,81,.08),rgba(45,217,196,.06));
+    border:1px solid rgba(245,196,81,.3);color:var(--ink);font-size:.95rem;line-height:1.8;
+  }
+
+  /* TRAFFIC */
+  .campaign-card{
+    background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:1.8em;max-width:760px;
+  }
+  .campaign-card h3{color:var(--gold);font-size:1.1rem;margin-bottom:1em;}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1em;}
+  .stat-cell{background:rgba(255,255,255,.03);border-radius:10px;padding:1em;text-align:center;}
+  .stat-cell .val{font-size:1.5rem;font-weight:800;color:var(--teal);}
+  .stat-cell .lbl{font-size:.75rem;color:var(--ink-dim);margin-top:.3em;}
+
+  /* CREATIVE */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4em;max-width:900px;}
+  .flip-card{perspective:1400px;height:320px;}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
+  .flip-card:hover .flip-inner{transform:rotateY(180deg);}
+  .flip-front,.flip-back{
+    position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;padding:1.4em;
+    border:1px solid var(--card-border);display:flex;flex-direction:column;
+  }
+  .flip-front{background:var(--card);justify-content:space-between;}
+  .flip-front .cpm-tag{align-self:flex-start;padding:.3em .8em;border-radius:999px;font-size:.75rem;font-weight:700;}
+  .flip-front.worst .cpm-tag{background:rgba(255,107,107,.15);color:var(--coral);}
+  .flip-front.mid .cpm-tag{background:rgba(245,196,81,.15);color:var(--gold);}
+  .flip-front h4{font-size:1.2rem;margin:.6em 0;}
+  .flip-front .hint{font-size:.8rem;color:var(--ink-dim);}
+  .flip-back{background:var(--bg-2);transform:rotateY(180deg);overflow-y:auto;}
+  .flip-back p{color:var(--ink);font-size:.85rem;white-space:pre-line;}
+  .diagnosis-note{margin-top:1.6em;max-width:760px;padding:1em 1.3em;border-left:3px solid var(--gold);background:rgba(245,196,81,.06);border-radius:0 8px 8px 0;font-size:.9rem;color:var(--ink);}
+
+  /* RECS */
+  .rec-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2em;max-width:1000px;}
+  .rec-card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:1.4em;}
+  .rec-card .num{color:var(--teal);font-weight:800;font-size:1.3rem;}
+  .rec-card h4{margin:.4em 0 .6em;font-size:1.05rem;color:var(--ink);}
+  .rec-card .why{font-size:.85rem;color:var(--ink-dim);margin-bottom:.6em;}
+  .rec-card .why b{color:var(--gold);}
+  .rec-card .how{font-size:.85rem;color:var(--ink-dim);}
+  .rec-card .how b{color:var(--teal);}
+
+  footer{padding:4em 8vw;text-align:center;color:var(--ink-dim);font-size:.8rem;border-top:1px solid var(--card-border);}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<section class="hero">
+  <canvas id="waves"></canvas>
+  <div class="hero-content">
+    <h1>OKIBLUES</h1>
+    <div class="subtitle">2026年6月 廣告成效月報</div>
+    <div class="meta">沖繩中文租車 · Meta Ads 帳戶 Oki_Blues</div>
+    <div class="scroll-cue">↓ 往下滑看報告</div>
+  </div>
+</section>
+
+<section id="overview">
+  <h2 class="reveal">帳戶總覽 <span class="tag">Account Snapshot</span></h2>
+  <div class="badges reveal">
+    <span class="badge">Travel / Auto Rental</span>
+    <span class="badge">Multi-Funnel：Awareness + Consideration</span>
+  </div>
+  <div class="big-number reveal" id="bigSpend">¥0</div>
+  <div class="stat-label reveal">6 月總花費（JPY）</div>
+  <div class="split-bar reveal" id="splitBar">
+    <div class="split-seg aw" id="segAw"></div>
+    <div class="split-seg tr" id="segTr"></div>
+  </div>
+  <div class="split-legend reveal">
+    <span><i class="dot" style="background:var(--teal)"></i>Awareness ¥559,157（82%）</span>
+    <span><i class="dot" style="background:var(--gold)"></i>Traffic ¥120,117（18%）</span>
+  </div>
+  <div class="check-note reveal">✅ 目標宣稱與實際設定一致：11 個 Awareness 活動負責觸及新客，1 個 Traffic 活動（連結點擊）負責導流官網 — 符合帳戶設定的「雙階段漏斗」策略，沒有目標錯置的問題。</div>
+</section>
+
+<section id="rank">
+  <h2 class="reveal">Awareness 組排名 <span class="tag">同組才能比 CPM</span></h2>
+  <p class="reveal" style="max-width:640px">Awareness 目標的演算法是針對觸及優化，不是點擊率，所以這組只比 CPM / Reach / Frequency。點一下每一列可以看詳細數字。</p>
+  <div class="bars reveal" id="rankBars"></div>
+  <div class="detail-pop" id="detailPop"></div>
+  <p class="exclude-note reveal">＊OB_sienta3rd_20260520 花費僅 ¥5,560、觸及 6 萬，樣本太小，已排除本次排名，不列入比較。</p>
+</section>
+
+<section id="insight">
+  <h2 class="reveal">異常值排除：CPM 差異的真正原因 <span class="tag">Why, not just What</span></h2>
+  <p class="reveal" style="max-width:640px">看起來 Solio 素材「表現最好」，YarisCross / Alphard「表現最差」——但先別急著檢討素材，看看每支活動的受眾地區組成。</p>
+  <div class="toggle-row reveal"><button id="toggleHK">切換看 HK / TW 拆分</button></div>
+  <div class="hk-bars reveal" id="hkBars"></div>
+  <div class="insight-callout reveal">
+    💡 <b>Solio 的 HK 受眾只佔花費的 12.8%</b>，其餘四支活動（Noah／Raize／Alphard／YarisCross）HK 佔比都在 40% 上下。HK 受眾的 CPM 系統性比 TW 貴約 2 倍（例：YarisCross HK ¥185 vs TW ¥87）——這是香港市場競價本來就比較貴的結構性因素，不是素材優劣的問題。真正該問的不是「Yaris Cross 文案哪裡差」，而是「這支活動的 HK/TW 受眾配比要不要調整」。
+  </div>
+</section>
+
+<section id="traffic">
+  <h2 class="reveal">Traffic 組表現 <span class="tag">導流官網</span></h2>
+  <div class="campaign-card reveal">
+    <h3>OB_Branding_LinkClick_Ali</h3>
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="val">¥120,117</div><div class="lbl">花費</div></div>
+      <div class="stat-cell"><div class="val">4.54%</div><div class="lbl">CTR</div></div>
+      <div class="stat-cell"><div class="val">¥6</div><div class="lbl">CPC</div></div>
+      <div class="stat-cell"><div class="val">11,608</div><div class="lbl">Landing Page Views</div></div>
+      <div class="stat-cell"><div class="val">¥10</div><div class="lbl">每次 LPV 成本</div></div>
+    </div>
+  </div>
+  <p class="reveal" style="margin-top:1.4em;max-width:640px">這支是本月效率最好的活動，CTR 遠高於一般水準。但它跟 Awareness 組的目標不同，不能拿 CTR 去比較 Awareness 那 11 支活動的好壞 — 兩組本來就不該混著比。</p>
+</section>
+
+<section id="creative">
+  <h2 class="reveal">素材診斷 <span class="tag">滑鼠移上去翻面看文案</span></h2>
+  <div class="cards reveal">
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front worst">
+          <div>
+            <span class="cpm-tag">CPM ¥111・本月最高</span>
+            <h4>🎒 Yaris Cross</h4>
+            <div class="hint">HK ¥185 / TW ¥87</div>
+          </div>
+          <div class="hint">滑鼠移上來看文案原文 →</div>
+        </div>
+        <div class="flip-back">
+          <p>🎒 巷弄小車身大視野：Toyota Yaris Cross 🎒
+
+暑假去沖繩自駕，既想有休旅車的開闊視野，又怕車太大在窄巷難開。這台 Yaris Cross 剛好平衡所有需求，車身靈巧、路邊停車超輕鬆⋯
+
+結構：emoji 鉤子 → 情境代入 → 賣點 1
+缺：沒有「檔期有限」類的急迫感 CTA</p>
+        </div>
+      </div>
+    </div>
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front mid">
+          <div>
+            <span class="cpm-tag">CPM ¥101・組內中段</span>
+            <h4>🚐 Noah</h4>
+            <div class="hint">HK ¥181 / TW ¥78</div>
+          </div>
+          <div class="hint">滑鼠移上來看文案原文 →</div>
+        </div>
+        <div class="flip-back">
+          <p>🚗七人座不一定要花大錢 Noah 是那個剛剛好的選擇 🚐
+
+全家人一起去沖繩，長輩、孩子、一週的行李——裝下這些的車，Noah 空間夠、好開、進出方便，恰到好處。
+🚪 兩側電動滑門——窄停車場也能⋯
+
+結構：emoji 鉤子 → 情境代入 → 賣點 1
+同樣缺急迫感 CTA，跟 Yaris Cross 是同個共通問題</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="diagnosis-note reveal">兩支文案結構幾乎一樣：emoji 鉤子 + 情境代入 + 賣點條列，但都沒有「暑假檔期有限，立即預約」這類急迫感 CTA。這是整組 Awareness 活動共通的優化空間，不是單一車款的問題。</div>
+</section>
+
+<section id="actions">
+  <h2 class="reveal">可執行建議 <span class="tag">Next Steps</span></h2>
+  <div class="rec-cards reveal">
+    <div class="rec-card">
+      <div class="num">01</div>
+      <h4>幫全系列素材補上急迫感 CTA</h4>
+      <div class="why"><b>為什麼：</b>11 支 Awareness 素材都缺「檔期有限／立即預約」字眼，跟已知的 Alphard 案例是同一個坑。</div>
+      <div class="how"><b>怎麼測試：</b>挑 2-3 支活動追加一版有急迫感 CTA 的素材，同預算跑 2 週，比較同組內 CPM／Reach 是否有變化。</div>
+    </div>
+    <div class="rec-card">
+      <div class="num">02</div>
+      <h4>檢視高 HK 佔比活動的受眾配比</h4>
+      <div class="why"><b>為什麼：</b>HK CPM 系統性比 TW 貴約 2 倍，Alphard／YarisCross／Noah／Raize 的 HK 佔比都在 40% 上下，拉高了整體 CPM。</div>
+      <div class="how"><b>怎麼測試：</b>把 Solio 的受眾配比（HK 僅 12.8%）套用到這幾支活動，兩週後比較整體 CPM 變化。</div>
+    </div>
+    <div class="rec-card">
+      <div class="num">03</div>
+      <h4>把 Traffic 組的高 CTR 經驗複製過去</h4>
+      <div class="why"><b>為什麼：</b>OB_Branding_LinkClick_Ali 的 CTR 4.54% 遠高於一般水準，值得拆解它的鉤子跟受眾設定。</div>
+      <div class="how"><b>怎麼測試：</b>抽出該活動素材的開場鉤子邏輯，套用到下一支新車款首發廣告，觀察 CTR 是否維持高水準。</div>
+    </div>
+    <div class="rec-card">
+      <div class="num">04</div>
+      <h4>盤點掛在帳戶裡的 ¥0 花費活動</h4>
+      <div class="why"><b>為什麼：</b>本月帳戶內有大量已建立但花費 ¥0 的活動（7 月新車款、Voxy90、Stepwagon 等），需要確認是刻意排程還是卡在審核。</div>
+      <div class="how"><b>怎麼測試：</b>逐一檢查這些活動的排程日期與審核狀態，避免預算或素材卡住卻沒人發現。</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  由 Sona 廣告雷達分析 · 資料來源：Meta Ads（Oki_Blues 849811070241169，2026年6月）· 分析方法依循「廣告分析五層框架」（依目標分組、排除干擾、素材診斷、可執行建議）
+</footer>
+
+<script>
+// scroll progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+
+// reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+// animated big number
+function animateNumber(el, target, duration=1400){
+  const start = performance.now();
+  function step(now){
+    const p = Math.min(1, (now-start)/duration);
+    const eased = 1 - Math.pow(1-p, 3);
+    el.textContent = '¥' + Math.round(target*eased).toLocaleString('en-US');
+    if (p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+let spendAnimated = false;
+const overviewSection = document.getElementById('overview');
+const spendObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting && !spendAnimated){
+      spendAnimated = true;
+      animateNumber(document.getElementById('bigSpend'), 679274);
+      document.getElementById('segAw').style.width = '82.3%';
+      document.getElementById('segTr').style.width = '17.7%';
+      document.getElementById('segAw').textContent = 'Awareness 82%';
+      document.getElementById('segTr').textContent = 'Traffic 18%';
+    }
+  });
+}, {threshold:0.3});
+spendObserver.observe(overviewSection);
+
+// rank bars data
+const rankData = [
+  {name:'Solio_0524', cpm:87, spend:69732, reach:503060, ctr:0.31, cls:'best'},
+  {name:'Sienta3rd_0625', cpm:98, spend:24092, reach:241690, ctr:0.69, cls:'best'},
+  {name:'Serena_0527', cpm:99, spend:35053, reach:345545, ctr:0.39, cls:'best'},
+  {name:'Noah_0617', cpm:101, spend:52085, reach:427519, ctr:0.63, cls:'mid'},
+  {name:'Raize_0613', cpm:106, spend:54025, reach:431730, ctr:0.41, cls:'mid'},
+  {name:'Branding_202605', cpm:107, spend:119794, reach:729438, ctr:0.29, cls:'mid'},
+  {name:'Freed3rd_0603', cpm:107, spend:54518, reach:415113, ctr:0.39, cls:'mid'},
+  {name:'Freed3rd_0622', cpm:108, spend:33650, reach:291010, ctr:0.32, cls:'worst'},
+  {name:'Alphard_0604', cpm:110, spend:55430, reach:416996, ctr:0.26, cls:'worst'},
+  {name:'YarisCross_0608', cpm:111, spend:55218, reach:419212, ctr:0.35, cls:'worst'},
+];
+const maxCpm = Math.max(...rankData.map(d=>d.cpm));
+const rankBarsEl = document.getElementById('rankBars');
+rankData.forEach((d,i)=>{
+  const row = document.createElement('div');
+  row.className = 'bar-row ' + d.cls;
+  row.innerHTML = `<div class="name">${d.name}</div>
+    <div class="bar-track"><div class="bar-fill" data-w="${(d.cpm/maxCpm*100).toFixed(1)}"></div></div>
+    <div class="cpm-val">¥${d.cpm}</div>`;
+  row.addEventListener('click', ()=>{
+    const pop = document.getElementById('detailPop');
+    pop.innerHTML = `<b>${d.name}</b><br>花費 ¥${d.spend.toLocaleString()} · 觸及 ${d.reach.toLocaleString()} · CTR ${d.ctr}% · CPM ¥${d.cpm}`;
+    pop.classList.add('show');
+  });
+  rankBarsEl.appendChild(row);
+});
+const rankObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.bar-fill').forEach(b=> b.style.width = b.dataset.w + '%');
+    }
+  });
+}, {threshold:0.2});
+rankObserver.observe(document.getElementById('rankBars'));
+
+// HK/TW insight bars
+const hkData = [
+  {name:'Solio_0524', hk:8904, tw:60828, hkCpm:153, twCpm:82},
+  {name:'Noah_0617', hk:21128, tw:30957, hkCpm:181, twCpm:78},
+  {name:'Raize_0613', hk:21635, tw:32390, hkCpm:175, twCpm:84},
+  {name:'Alphard_0604', hk:22635, tw:32795, hkCpm:174, twCpm:87},
+  {name:'YarisCross_0608', hk:22604, tw:32614, hkCpm:185, twCpm:87},
+];
+const hkBarsEl = document.getElementById('hkBars');
+let showingSplit = false;
+function renderHkBars(){
+  hkBarsEl.innerHTML = '';
+  hkData.forEach(d=>{
+    const total = d.hk + d.tw;
+    const hkPct = (d.hk/total*100).toFixed(1);
+    const twPct = (100-hkPct).toFixed(1);
+    const row = document.createElement('div');
+    row.className = 'hk-row';
+    if(showingSplit){
+      row.innerHTML = `<div class="name-row"><span>${d.name}</span><span class="hk-pct">HK ${hkPct}% · CPM HK ¥${d.hkCpm} / TW ¥${d.twCpm}</span></div>
+        <div class="hk-track">
+          <div class="hk-seg hk" data-w="${hkPct}">HK</div>
+          <div class="hk-seg tw" data-w="${twPct}">TW</div>
+        </div>`;
+    } else {
+      row.innerHTML = `<div class="name-row"><span>${d.name}</span><span class="hk-pct">花費佔比（未拆分）</span></div>
+        <div class="hk-track"><div class="hk-seg tw" data-w="100">整體</div></div>`;
+    }
+    hkBarsEl.appendChild(row);
+  });
+  requestAnimationFrame(()=>{
+    hkBarsEl.querySelectorAll('.hk-seg').forEach(s=> s.style.width = s.dataset.w + '%');
+  });
+}
+renderHkBars();
+document.getElementById('toggleHK').addEventListener('click', ()=>{
+  showingSplit = !showingSplit;
+  document.getElementById('toggleHK').textContent = showingSplit ? '切回整體檢視' : '切換看 HK / TW 拆分';
+  renderHkBars();
+});
+
+// hero wave canvas
+const canvas = document.getElementById('waves');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+resize();
+window.addEventListener('resize', resize);
+let t = 0;
+function drawWaves(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const colors = ['rgba(45,217,196,0.18)','rgba(245,196,81,0.10)','rgba(45,217,196,0.08)'];
+  colors.forEach((c,i)=>{
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height);
+    for(let x=0;x<=canvas.width;x+=10){
+      const y = canvas.height*0.7 + Math.sin(x*0.006 + t*(0.4+i*0.2) + i*2)*30*(i+1) - i*40;
+      ctx.lineTo(x,y);
+    }
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.closePath();
+    ctx.fillStyle = c;
+    ctx.fill();
+  });
+  t += 0.02;
+  requestAnimationFrame(drawWaves);
+}
+drawWaves();
+</script>
+</body>
+</html>

@@ -43,6 +43,35 @@
             color: #555;
         }
 
+        .site-nav {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .site-nav a {
+            padding: 10px 22px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .site-nav a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .site-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
         .filters {
             display: flex;
             gap: 10px;
@@ -523,6 +552,11 @@
 </head>
 <body>
     <div class="container">
+        <div class="site-nav">
+            <a href="index.html" class="active">📅 帖文預覽</a>
+            <a href="okiblues.html">🚗 OKIBLUES</a>
+        </div>
+
         <header>
             <h1>🌟 SonaSNS 每日帖文預覽</h1>
             <p>OKIBLUES × OKIPLAYGROUND × The Blues — 內容排程中心</p>

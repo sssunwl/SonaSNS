@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKIBLUES — 品牌介紹與報告 | SonaSNS</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: #2c3e50;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .site-nav {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .site-nav a {
+        padding: 10px 22px;
+        border: 2px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 25px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .site-nav a.active {
+        background: #667eea;
+        color: white;
+    }
+
+    .site-nav a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 36px;
+    }
+
+    header h1 {
+        font-size: 2.6em;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    header p { font-size: 1.05em; color: #555; }
+
+    .card {
+        background: white;
+        border-radius: 14px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .card h2 {
+        font-size: 1.3em;
+        color: #2c3e50;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .snapshot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 4px;
+    }
+
+    .snapshot-item {
+        background: #f8faff;
+        border-left: 4px solid #667eea;
+        border-radius: 8px;
+        padding: 14px 16px;
+    }
+
+    .snapshot-item .label { font-size: 0.8em; color: #888; margin-bottom: 4px; }
+    .snapshot-item .value { font-size: 1.05em; font-weight: 700; color: #2c3e50; }
+    .snapshot-item .value a { color: #667eea; text-decoration: none; }
+    .snapshot-item .value a:hover { text-decoration: underline; }
+
+    .selling-points {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 14px;
+    }
+
+    .selling-point {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 14px 16px;
+    }
+
+    .selling-point strong { color: #667eea; }
+
+    .fleet-summary {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+    }
+
+    .fleet-badge {
+        background: #ecf0f1;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 0.9em;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .report-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .report-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8faff;
+        border-radius: 10px;
+        padding: 16px 20px;
+        text-decoration: none;
+        border-left: 4px solid #667eea;
+        transition: all 0.2s;
+    }
+
+    .report-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .report-item .title { color: #2c3e50; font-weight: 700; }
+    .report-item .desc { color: #777; font-size: 0.85em; margin-top: 2px; }
+    .report-item .arrow { color: #667eea; font-size: 1.3em; }
+
+    footer {
+        text-align: center;
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    footer a { color: #667eea; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="site-nav">
+        <a href="index.html">📅 帖文預覽</a>
+        <a href="okiblues.html" class="active">🚗 OKIBLUES</a>
+    </div>
+
+    <header>
+        <h1>🚗 OKIBLUES</h1>
+        <p>沖繩最大中文租車品牌 — 品牌介紹與廣告成效報告</p>
+    </header>
+
+    <div class="card">
+        <h2>📋 品牌概覽</h2>
+        <div class="snapshot-grid">
+            <div class="snapshot-item"><div class="label">定位</div><div class="value">沖繩規模最大的中文租車品牌</div></div>
+            <div class="snapshot-item"><div class="label">成立</div><div class="value">2021 年</div></div>
+            <div class="snapshot-item"><div class="label">車隊</div><div class="value">130+ 台（25 種車型）</div></div>
+            <div class="snapshot-item"><div class="label">受眾</div><div class="value">華人自由行旅客（普通話為主）</div></div>
+            <div class="snapshot-item"><div class="label">官網</div><div class="value"><a href="https://okiblues.com" target="_blank">okiblues.com</a></div></div>
+            <div class="snapshot-item"><div class="label">預訂 CTA</div><div class="value"><a href="https://wa.link/nmhzeq" target="_blank">wa.link/nmhzeq（WhatsApp）</a></div></div>
+            <div class="snapshot-item"><div class="label">YouTube</div><div class="value"><a href="https://www.youtube.com/@okiblues" target="_blank">@okiblues</a></div></div>
+            <div class="snapshot-item"><div class="label">社群</div><div class="value">FB 1.7萬追蹤・IG 7,207 粉絲</div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>✨ 核心賣點</h2>
+        <div class="selling-points">
+            <div class="selling-point"><strong>免費接送</strong> — 那霸機場 / 那霸市區飯店均可接送</div>
+            <div class="selling-point"><strong>最快 10 分鐘取還車</strong> — 流程極簡，不浪費旅遊時間</div>
+            <div class="selling-point"><strong>一價全包</strong> — 含稅金、保險，無隱藏費用</div>
+            <div class="selling-point"><strong>專屬中文客服群</strong> — 每組客人獨立群組，即時回覆</div>
+            <div class="selling-point"><strong>車款選擇最齊全</strong> — K-Car 到豪華跑車，25 種車型</div>
+            <div class="selling-point"><strong>沖繩旅遊支援</strong> — 景點推薦、美食、行程建議</div>
+        </div>
+        <div class="fleet-summary">
+            <span class="fleet-badge">🚙 K-Car / 小型（4座）× 7</span>
+            <span class="fleet-badge">🚗 中型（5座）× 8</span>
+            <span class="fleet-badge">🚐 大型（7-8座）× 5</span>
+            <span class="fleet-badge">👑 豪華 × 4</span>
+            <span class="fleet-badge">🏎️ 特殊車款 × 2</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📊 廣告成效報告</h2>
+        <div class="report-list">
+            <a class="report-item" href="reports/okiblues/ads_report_2026-06.html">
+                <div>
+                    <div class="title">2026年6月 廣告成效互動報告</div>
+                    <div class="desc">Meta Ads 帳戶成效分析 — Awareness 組排名、HK/TW 受眾異常值拆解、素材診斷、可執行建議</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>語調：專業有溫度、質感、不誇張 ｜ Meta 廣告合規：禁用最高級詞（最便宜/第一/保證）</p>
+        <p><a href="index.html">← 回帖文預覽</a></p>
+    </footer>
+</div>
+</body>
+</html>
