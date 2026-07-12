@@ -940,12 +940,19 @@ function mixColor(a,b,t){
 }
 function luma(hex){ const [r,g,b] = hexToRgbArr(hex); return (0.299*r+0.587*g+0.114*b)/255; }
 
-/* 逐頁照片覆蓋：slidePhotos[brandKey][slideIndex] = dataURL */
+/* 逐頁照片覆蓋：slidePhotos[brandKey][slideIndex] = dataURL（手動上傳，優先） */
 const slidePhotos = {};
+function weeklyImages(){
+  const wk = WEEKLY && WEEKLY.brands && WEEKLY.brands[currentBrandKey];
+  return (wk && wk.images && wk.images.length) ? wk.images : null;
+}
 function photoBg(i){
+  /* 注意：此值會塞進 style="background:${bg}" 的雙引號屬性內，url() 只能用單引號，不能用雙引號 */
   const ph = (slidePhotos[currentBrandKey]||{})[i];
-  if(ph) return `url(${ph}) center/cover no-repeat`;
-  return seedGradient(`${getPackState().seed}-p${i}`);
+  if(ph) return `url('${ph}') center/cover no-repeat`;       // ① 使用者手動上傳
+  const imgs = weeklyImages();                               // ② 本週真照片（Unsplash/Pexels）
+  if(imgs) return `url('${imgs[i % imgs.length].url}') center/cover no-repeat`;
+  return seedGradient(`${getPackState().seed}-p${i}`);       // ③ 後備：品牌色系漸層示意
 }
 
 function slideColors(layout, i, brand, role){
@@ -1591,7 +1598,7 @@ copyAllImageCaptionsBtn.onclick = ()=> copyText(allImageCaptionsEl.textContent, 
 async function captureSlide(slideEl){
   const hides = slideEl.querySelectorAll('.crop-warn, .photo-swap');
   hides.forEach(w => w.style.visibility = 'hidden');
-  const canvas = await html2canvas(slideEl, { backgroundColor: null, scale: 2.7 });
+  const canvas = await html2canvas(slideEl, { backgroundColor: null, scale: 2.7, useCORS: true });
   hides.forEach(w => w.style.visibility = 'visible');
   return canvas;
 }
