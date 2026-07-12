@@ -946,13 +946,30 @@ function weeklyImages(){
   const wk = WEEKLY && WEEKLY.brands && WEEKLY.brands[currentBrandKey];
   return (wk && wk.images && wk.images.length) ? wk.images : null;
 }
+/* 抽象/氛圍品牌：不用照片，改用免費「程式底」= 品牌 mesh 漸層（永遠對品牌色、零版權、零成本） */
+const ABSTRACT_BRANDS = new Set(['tarot','runes','solis_aroma']);
+function hexA(hex,a){ const [r,g,b]=hexToRgbArr(hex); return `rgba(${r},${g},${b},${a})`; }
+function brandMesh(i){
+  const b = BRANDS[currentBrandKey];
+  let h = 0; const seed = `${currentBrandKey}-mesh-${i}`;
+  for(const c of seed) h = (h*31 + c.charCodeAt(0)) >>> 0;
+  const x1=12+(h%46), y1=8+((h>>3)%38), x2=48+((h>>5)%42), y2=30+((h>>7)%36);
+  const mid = mixColor(b.bgDark, b.accent, .34);
+  return [
+    `radial-gradient(120% 95% at ${x1}% ${y1}%, ${hexA(b.bgLight,.75)} 0%, transparent 55%)`,
+    `radial-gradient(105% 85% at ${x2}% ${y2}%, ${hexA(b.accent,.55)} 0%, transparent 52%)`,
+    `radial-gradient(150% 120% at 50% 128%, ${b.bgDark} 24%, transparent 72%)`,
+    `linear-gradient(158deg, ${b.bgDark} 0%, ${mid} 100%)`
+  ].join(',');
+}
 function photoBg(i){
   /* 注意：此值會塞進 style="background:${bg}" 的雙引號屬性內，url() 只能用單引號，不能用雙引號 */
   const ph = (slidePhotos[currentBrandKey]||{})[i];
   if(ph) return `url('${ph}') center/cover no-repeat`;       // ① 使用者手動上傳
-  const imgs = weeklyImages();                               // ② 本週真照片（Unsplash/Pexels）
+  if(ABSTRACT_BRANDS.has(currentBrandKey)) return brandMesh(i); // ② 抽象品牌：免費程式底
+  const imgs = weeklyImages();                               // ③ 本週真照片（Unsplash/Pexels）
   if(imgs) return `url('${imgs[i % imgs.length].url}') center/cover no-repeat`;
-  return seedGradient(`${getPackState().seed}-p${i}`);       // ③ 後備：品牌色系漸層示意
+  return seedGradient(`${getPackState().seed}-p${i}`);       // ④ 後備：品牌色系漸層示意
 }
 
 function slideColors(layout, i, brand, role){
@@ -1202,17 +1219,42 @@ function buildIdeaGrid(){
   ideas.forEach(title=>{
     const c = document.createElement('div');
     c.className = 'idea-card';
-    c.textContent = title;
+    const full = !!getPost(title);
+    c.innerHTML = (full ? '📄 ' : '') + title.replace(/</g,'&lt;');
+    if(full) c.title = '整篇 10 頁內容已寫好，點一下全部填入';
     c.onclick = ()=> selectIdea(title, c);
     ideaGrid.appendChild(c);
   });
 }
+/* 找本週為這個主題預先寫好的整篇內容（pipeline 產出） */
+function getPost(title){
+  const wk = WEEKLY && WEEKLY.brands && WEEKLY.brands[currentBrandKey];
+  if(!wk || !wk.posts) return null;
+  return wk.posts.find(p => p.title === title) || null;
+}
 function selectIdea(title, el){
   currentIdea = title;
   [...ideaGrid.children].forEach(c=> c.classList.toggle('active', c===el));
-  const slides = getSlides();
-  slides[0].headline = title;   // 套進封面標題（示意；文字之後可再細改）
-  renderTemplate();
+  const post = getPost(title);
+  if(post && STRUCTURES[post.structure]){
+    // 整篇填入：切到該結構，把 10 頁 headline/subline 覆蓋進去（eyebrow/role 沿用結構）
+    currentStructureKey = post.structure;
+    const base = JSON.parse(JSON.stringify(STRUCTURES[post.structure].slides));
+    post.items.slice(0,10).forEach((it,i)=>{
+      if(base[i]){ base[i].headline = it.h || base[i].headline; base[i].subline = it.s || base[i].subline; }
+    });
+    if(!content[currentBrandKey]) content[currentBrandKey] = {};
+    content[currentBrandKey][post.structure] = base;
+    current = 0;
+    renderTemplate();
+    updateStructureActive();
+    setChoice(3, STRUCTURES[post.structure].label.replace(/^[^\s]+\s/,''));
+  } else {
+    // 無整篇內容：只套封面（後備）
+    const slides = getSlides();
+    slides[0].headline = title;
+    renderTemplate();
+  }
   setChoice(4, title);
 }
 
