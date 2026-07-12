@@ -129,6 +129,15 @@ def main():
 
         changed = update_index_html(js_code)
 
+        try:  # 鏡射到 Discord #n-sona(失敗不影響同步)
+            from _discord import notify_discord
+            notify_discord(
+                f"🔄 SonaSNS 同步完成:{len(posts)} 條帖文"
+                + ("(index.html 已更新)" if changed else "(無新更改)")
+            )
+        except Exception:
+            pass
+
         if changed:
             print("✅ index.html 已更新")
             return 0
