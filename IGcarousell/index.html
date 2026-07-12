@@ -462,6 +462,7 @@
   <!-- STEP 4 推薦內容 -->
   <div class="step-panel" data-panel="4">
     <div class="step-hint">📅 本週推薦主題（按品牌每週更新）— 點一個直接套進封面。</div>
+    <div id="weeklyBadge" style="font-size:11px;color:#7fded7;text-align:center;display:none"></div>
     <div class="idea-grid" id="ideaGrid"></div>
     <div class="step-nav"><button onclick="goStep(3)">← 上一步</button><button class="primary" onclick="goStep(5)">下一步：匯出 →</button></div>
   </div>
@@ -1165,10 +1166,31 @@ function selectStructure(key){
 
 /* ===== STEP 4 推薦內容 ===== */
 const ideaGrid = document.getElementById('ideaGrid');
+const weeklyBadge = document.getElementById('weeklyBadge');
 let currentIdea = null;
+
+/* 每週由 weekly_topics.py 產生、推到 repo 的本週題材（負責人 persona 每週更新）。
+   抓不到就用內建的 CONTENT_IDEAS 當後備。 */
+let WEEKLY = null;
+if(typeof fetch === 'function'){
+  fetch('weekly_topics.json?_t=' + Date.now())
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { WEEKLY = d; buildIdeaGrid(); })
+    .catch(() => {});
+}
+
 function buildIdeaGrid(){
   ideaGrid.innerHTML = '';
-  const ideas = CONTENT_IDEAS[currentBrandKey] || CONTENT_IDEAS.custom;
+  const wk = WEEKLY && WEEKLY.brands && WEEKLY.brands[currentBrandKey];
+  const ideas = (wk && wk.topics && wk.topics.length)
+    ? wk.topics
+    : (CONTENT_IDEAS[currentBrandKey] || CONTENT_IDEAS.custom);
+  if(wk && WEEKLY.generated){
+    weeklyBadge.style.display = 'block';
+    weeklyBadge.textContent = `🟢 本週更新 ${WEEKLY.generated} · 負責人 ${wk.owner || '—'}`;
+  } else {
+    weeklyBadge.style.display = 'none';
+  }
   currentIdea = null;
   ideas.forEach(title=>{
     const c = document.createElement('div');
