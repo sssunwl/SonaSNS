@@ -9,10 +9,10 @@
 
     body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: linear-gradient(135deg, #eff7fc 0%, #c2e0f0 100%);
         min-height: 100vh;
         padding: 20px;
-        color: #2c3e50;
+        color: #0d2637;
     }
 
     .container { max-width: 1100px; margin: 0 auto; }
@@ -27,9 +27,9 @@
 
     .site-nav a {
         padding: 10px 22px;
-        border: 2px solid #667eea;
+        border: 2px solid #0b6ea8;
         background: white;
-        color: #667eea;
+        color: #0b6ea8;
         border-radius: 25px;
         font-weight: 600;
         text-decoration: none;
@@ -37,13 +37,13 @@
     }
 
     .site-nav a.active {
-        background: #667eea;
+        background: #0b6ea8;
         color: white;
     }
 
     .site-nav a:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 12px rgba(11, 110, 168, 0.3);
     }
 
     header {
@@ -54,7 +54,7 @@
     header h1 {
         font-size: 2.6em;
         margin-bottom: 8px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #0b6ea8 0%, #062a44 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -72,7 +72,7 @@
 
     .card h2 {
         font-size: 1.3em;
-        color: #2c3e50;
+        color: #0d2637;
         margin-bottom: 16px;
         display: flex;
         align-items: center;
@@ -87,15 +87,15 @@
     }
 
     .snapshot-item {
-        background: #f8faff;
-        border-left: 4px solid #667eea;
+        background: #f7f3ec;
+        border-left: 4px solid #0b6ea8;
         border-radius: 8px;
         padding: 14px 16px;
     }
 
     .snapshot-item .label { font-size: 0.8em; color: #888; margin-bottom: 4px; }
-    .snapshot-item .value { font-size: 1.05em; font-weight: 700; color: #2c3e50; }
-    .snapshot-item .value a { color: #667eea; text-decoration: none; }
+    .snapshot-item .value { font-size: 1.05em; font-weight: 700; color: #0d2637; }
+    .snapshot-item .value a { color: #0b6ea8; text-decoration: none; }
     .snapshot-item .value a:hover { text-decoration: underline; }
 
     .selling-points {
@@ -110,7 +110,7 @@
         padding: 14px 16px;
     }
 
-    .selling-point strong { color: #667eea; }
+    .selling-point strong { color: #0b6ea8; }
 
     .fleet-summary {
         display: flex;
@@ -125,7 +125,7 @@
         padding: 8px 16px;
         font-size: 0.9em;
         font-weight: 600;
-        color: #2c3e50;
+        color: #0d2637;
     }
 
     .report-list {
@@ -138,22 +138,22 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #f8faff;
+        background: #f7f3ec;
         border-radius: 10px;
         padding: 16px 20px;
         text-decoration: none;
-        border-left: 4px solid #667eea;
+        border-left: 4px solid #0b6ea8;
         transition: all 0.2s;
     }
 
     .report-item:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 4px 12px rgba(11, 110, 168, 0.2);
     }
 
-    .report-item .title { color: #2c3e50; font-weight: 700; }
+    .report-item .title { color: #0d2637; font-weight: 700; }
     .report-item .desc { color: #777; font-size: 0.85em; margin-top: 2px; }
-    .report-item .arrow { color: #667eea; font-size: 1.3em; }
+    .report-item .arrow { color: #0b6ea8; font-size: 1.3em; }
 
     footer {
         text-align: center;
@@ -164,19 +164,76 @@
         border-top: 2px solid rgba(255, 255, 255, 0.5);
     }
 
-    footer a { color: #667eea; text-decoration: none; }
+    footer a { color: #0b6ea8; text-decoration: none; }
+
+    .slogan { font-size: 1.25em; font-weight: 700; color: #0b6ea8; margin-bottom: 4px; }
+    .section-note { color: #5a6c7d; font-size: 0.88em; margin-bottom: 14px; }
+    .series-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .series-badge { background: #eff7fc; color: #0b5a87; border: 1px solid #c2e0f0; border-radius: 20px; padding: 7px 14px; font-size: 0.86em; font-weight: 600; }
+    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #e6edf2; }
+    table.cars { width: 100%; border-collapse: collapse; font-size: 0.88em; min-width: 520px; }
+    table.cars th, table.cars td { padding: 9px 12px; text-align: left; border-bottom: 1px solid #eef2f5; white-space: nowrap; }
+    table.cars th { background: #f7f3ec; color: #0d2637; font-weight: 700; }
+    table.cars td.price { color: #0b6ea8; font-weight: 700; }
+    table.cars tr:last-child td { border-bottom: none; }
+    .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 14px; }
+    .tier { border: 1px solid #e2e8ee; border-radius: 12px; padding: 18px; }
+    .tier.hl { border-color: #0b6ea8; box-shadow: 0 4px 14px rgba(11, 110, 168, 0.12); }
+    .tier h3 { font-size: 1.05em; color: #0d2637; margin-bottom: 4px; }
+    .tier .price { color: #0b6ea8; font-weight: 700; margin-bottom: 10px; font-size: 0.92em; }
+    .tier ul { list-style: none; }
+    .tier li { color: #4a5a67; font-size: 0.85em; padding: 3px 0 3px 15px; position: relative; }
+    .tier li::before { content: "•"; color: #0b6ea8; position: absolute; left: 2px; }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: 14px; }
+    .contact-item { background: #f7f3ec; border-radius: 10px; padding: 13px 16px; }
+    .contact-item .k { font-size: 0.76em; color: #7a8a98; margin-bottom: 3px; }
+    .contact-item .v { font-weight: 600; color: #0d2637; font-size: 0.92em; word-break: break-all; }
+    .contact-item .v a { color: #0b6ea8; text-decoration: none; }
+
+    /* YouTube 頻道成效 */
+    .yt-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .yt-updated { color: #9aa8b3; font-size: 0.78em; }
+    .yt-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+    .yt-stat { background: #fdf1f1; border: 1px solid #f3d6d6; border-radius: 12px; padding: 16px; text-align: center; }
+    .yt-stat .num { font-size: 1.7em; font-weight: 800; color: #c4302b; line-height: 1.1; }
+    .yt-stat .lbl { color: #7a8a98; font-size: 0.82em; margin-top: 4px; }
+    .yt-videos { list-style: none; }
+    .yt-video { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 4px; border-bottom: 1px solid #eef2f5; }
+    .yt-video:last-child { border-bottom: none; }
+    .yt-video .vt { color: #0d2637; font-weight: 600; font-size: 0.9em; text-decoration: none; }
+    .yt-video .vt:hover { color: #c4302b; }
+    .yt-video .vmeta { color: #9aa8b3; font-size: 0.78em; margin-top: 2px; }
+    .yt-video .vnums { white-space: nowrap; text-align: right; color: #4a5a67; font-size: 0.82em; }
+    .yt-video .vnums b { color: #c4302b; }
+    .yt-empty { color: #9aa8b3; font-size: 0.88em; padding: 8px 0; }
+
+    /* Google 商家評價 */
+    .gm-summary { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 16px; }
+    .gm-score { font-size: 2.4em; font-weight: 800; color: #0d2637; line-height: 1; }
+    .gm-stars { color: #fbbc04; font-size: 1.15em; letter-spacing: 1px; }
+    .gm-count { color: #7a8a98; font-size: 0.85em; margin-top: 3px; }
+    .gm-count a { color: #0b6ea8; text-decoration: none; }
+    .gm-reviews { list-style: none; display: grid; gap: 12px; }
+    .gm-review { background: #f7f9fb; border: 1px solid #e6edf2; border-radius: 10px; padding: 13px 16px; }
+    .gm-review .rh { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+    .gm-review .ra { font-weight: 700; color: #0d2637; font-size: 0.9em; }
+    .gm-review .rs { color: #fbbc04; font-size: 0.85em; }
+    .gm-review .rt { color: #9aa8b3; font-size: 0.76em; }
+    .gm-review .rtext { color: #4a5a67; font-size: 0.86em; line-height: 1.55; }
 </style>
 </head>
 <body>
 <div class="container">
     <div class="site-nav">
         <a href="index.html">📅 帖文預覽</a>
+        <a href="brand.html">🏢 Brand</a>
         <a href="okiblues.html" class="active">🚗 OKIBLUES</a>
         <a href="IGcarousell/">🎠 IGcarousell</a>
     </div>
 
     <header>
         <h1>🚗 OKIBLUES</h1>
+        <p class="slogan">把沖繩的藍，開進你的行程裡。</p>
         <p>沖繩最大中文租車品牌 — 品牌介紹與廣告成效報告</p>
     </header>
 
@@ -212,6 +269,297 @@
             <span class="fleet-badge">🏎️ 特殊車款 × 2</span>
         </div>
     </div>
+
+    <div class="card">
+        <h2>🚘 車隊與價格</h2>
+        <div class="series-badges">
+            <span class="series-badge">低燃油車系列</span>
+            <span class="series-badge">商務型系列</span>
+            <span class="series-badge">大空間系列</span>
+            <span class="series-badge">眾樂樂系列</span>
+            <span class="series-badge">跑車系列</span>
+            <span class="series-badge">輕型系列</span>
+        </div>
+        <p class="section-note">130+ 台、25 車型。價格為每 24 小時（日圓），依日期價單 1–5 號浮動；全車系標配 GPS、倒車影像、行車記錄儀、手機支架＆充電、ETC。</p>
+        <div class="table-wrap">
+            <table class="cars">
+                <thead><tr><th>車款</th><th>座位</th><th>車型</th><th>排氣量</th><th>價格區間</th></tr></thead>
+                <tbody>
+                    <tr><td>Daihatsu Canbus</td><td>4</td><td>輕型車</td><td>660cc</td><td class="price">6,500–12,000</td></tr>
+                    <tr><td>Honda Freed</td><td>5</td><td>小型家庭車</td><td>1500cc</td><td class="price">8,000–15,000</td></tr>
+                    <tr><td>Honda Freed 第三代</td><td>5</td><td>小型家庭車</td><td>1500cc</td><td class="price">10,000–17,000</td></tr>
+                    <tr><td>Honda N-Box</td><td>4</td><td>輕型車</td><td>660cc</td><td class="price">4,500–9,000</td></tr>
+                    <tr><td>Honda N-One</td><td>4</td><td>輕型車</td><td>660cc</td><td class="price">4,000–8,500</td></tr>
+                    <tr><td>Honda Stepwagon</td><td>8</td><td>大型家庭車</td><td>1500cc</td><td class="price">8,000–14,000</td></tr>
+                    <tr><td>Mitsubishi Delica Mini</td><td>4</td><td>輕型 SUV</td><td>660cc</td><td class="price">7,000–13,000</td></tr>
+                    <tr><td>Nissan Serena</td><td>8</td><td>大型家庭車</td><td>2000cc</td><td class="price">12,000–20,000</td></tr>
+                    <tr><td>Porsche 718</td><td>2</td><td>跑車</td><td>2000cc</td><td class="price">24,000–32,000</td></tr>
+                    <tr><td>Range Rover Evoque</td><td>5</td><td>豪華 SUV</td><td>2000cc</td><td class="price">13,000–22,000</td></tr>
+                    <tr><td>Suzuki Hustler hybrid</td><td>4</td><td>輕型 SUV</td><td>660cc</td><td class="price">6,500–12,000</td></tr>
+                    <tr><td>Suzuki Jimny 660cc</td><td>4</td><td>輕型越野車</td><td>660cc</td><td class="price">7,000–13,000</td></tr>
+                    <tr><td>Suzuki Jimny 1500cc</td><td>4</td><td>越野 SUV</td><td>1500cc</td><td class="price">8,000–15,000</td></tr>
+                    <tr><td>Suzuki Solio 1200cc</td><td>5</td><td>低燃油家庭車</td><td>1200cc</td><td class="price">7,000–14,000</td></tr>
+                    <tr><td>Toyota Alphard 30系（8座）</td><td>8</td><td>豪華 MPV</td><td>2500cc</td><td class="price">16,000–28,000</td></tr>
+                    <tr><td>Toyota Alphard New30系（7座）</td><td>7</td><td>豪華 MPV</td><td>2500cc</td><td class="price">16,000–28,000</td></tr>
+                    <tr><td>Toyota Alphard 40系豪華（7座）</td><td>7</td><td>豪華 MPV</td><td>2500cc</td><td class="price">25,000–40,000</td></tr>
+                    <tr><td>Toyota Prius</td><td>5</td><td>低燃油車</td><td>1800cc</td><td class="price">9,000–16,000</td></tr>
+                    <tr><td>Toyota Raize SUV</td><td>5</td><td>小型 SUV</td><td>1000cc</td><td class="price">8,000–15,000</td></tr>
+                    <tr><td>Toyota Sienta</td><td>5</td><td>小型家庭車</td><td>1500cc</td><td class="price">7,000–14,000</td></tr>
+                    <tr><td>Toyota Sienta 第三代</td><td>5</td><td>低燃油家庭車</td><td>1500cc</td><td class="price">9,000–16,000</td></tr>
+                    <tr><td>Toyota Vellfire</td><td>7</td><td>豪華 MPV</td><td>2500cc</td><td class="price">11,000–18,000</td></tr>
+                    <tr><td>Toyota Voxy 80系</td><td>7</td><td>大型家庭車</td><td>2000cc</td><td class="price">12,000–16,000</td></tr>
+                    <tr><td>Toyota Voxy 90系</td><td>7</td><td>大型家庭車</td><td>2000cc</td><td class="price">9,000–20,000</td></tr>
+                    <tr><td>Toyota Yaris Cross</td><td>5</td><td>低燃油 SUV</td><td>1500cc</td><td class="price">8,000–15,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="section-note" style="margin-top:14px;">📅 長租優惠：15 日以上 85 折｜30 日以上月租 7 折。</p>
+    </div>
+
+    <div class="card">
+        <h2>🛡️ 保險方案</h2>
+        <div class="tier-grid">
+            <div class="tier">
+                <h3>基本保險</h3>
+                <div class="price">已含租金內</div>
+                <ul>
+                    <li>車輛自負額 15–40 萬日圓（依車款）</li>
+                    <li>含第三者責任保險（無上限）</li>
+                    <li>含 NOC 營業損失費</li>
+                    <li>輪胎/輪圈/鑰匙等另計</li>
+                </ul>
+            </div>
+            <div class="tier">
+                <h3>一般保險</h3>
+                <div class="price">+¥1,500／天</div>
+                <ul>
+                    <li>自負額降為 5–10 萬日圓</li>
+                    <li>對人／對物／車輛皆適用</li>
+                    <li>第三者責任無上限、含 NOC</li>
+                    <li>輪胎/輪圈/鑰匙遺失另計</li>
+                </ul>
+            </div>
+            <div class="tier hl">
+                <h3>全面保險</h3>
+                <div class="price">+¥2,500／天</div>
+                <ul>
+                    <li>事故自負額 0 日圓</li>
+                    <li>NOC 0 日圓</li>
+                    <li>對人／對物／車損皆免負擔</li>
+                    <li>部分車款不適用</li>
+                </ul>
+            </div>
+        </div>
+        <p class="section-note" style="margin-top:14px;">⚠️ 所有方案為一次性保險，首次事故理賠後失效；車輛仍可行駛且欲續用，需另購二次保險 ¥3,000／24h（僅基本等級保障）。</p>
+    </div>
+
+    <div class="card">
+        <h2>👑 會員制度</h2>
+        <p class="section-note">依帳號生涯累積消費分級，永久有效、只升不降。</p>
+        <div class="tier-grid">
+            <div class="tier"><h3>OkiBlues</h3><div class="price">0 – 100,000 日圓</div><ul><li>標準會員</li><li>享全車隊升級配備</li></ul></div>
+            <div class="tier"><h3>OkiGold</h3><div class="price">100,001 – 300,000</div><ul><li>達標永久升級</li><li>訂單直接享 95 折</li></ul></div>
+            <div class="tier hl"><h3>OkiDiamond</h3><div class="price">300,001 以上</div><ul><li>頂級白金禮遇</li><li>不限車款享 9 折</li></ul></div>
+            <div class="tier"><h3>OkiCorp</h3><div class="price">企業會員／無限制</div><ul><li>商務專屬通道</li><li>全單享 9 折</li></ul></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📞 聯絡我們</h2>
+        <div class="contact-grid">
+            <div class="contact-item"><div class="k">電話</div><div class="v">+81 70-4095-1403</div></div>
+            <div class="contact-item"><div class="k">WhatsApp</div><div class="v"><a href="https://wa.me/8107040951403" target="_blank">wa.me/8107040951403</a></div></div>
+            <div class="contact-item"><div class="k">WeChat</div><div class="v">sunokiblues</div></div>
+            <div class="contact-item"><div class="k">LINE</div><div class="v">sunokiblues</div></div>
+            <div class="contact-item"><div class="k">地址</div><div class="v">沖繩縣那霸市山下町3-16 OAS航空大樓4樓</div></div>
+            <div class="contact-item"><div class="k">緊急・事故支援</div><div class="v">+81 90-9655-5559</div></div>
+            <div class="contact-item"><div class="k">社群</div><div class="v"><a href="https://www.facebook.com/okibluesrentalcar" target="_blank">FB</a>・<a href="https://www.instagram.com/okiblues/" target="_blank">IG</a>・<a href="https://www.youtube.com/@OkiBlues" target="_blank">YT</a>・<a href="https://www.threads.com/@okiblues" target="_blank">Threads</a></div></div>
+            <div class="contact-item"><div class="k">Google Map</div><div class="v"><a href="https://maps.app.goo.gl/7Y6C2uuhU87gKZ7j6" target="_blank">開啟地圖</a></div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="yt-head">
+            <h2>🔴 YouTube 頻道成效</h2>
+            <span class="yt-updated" id="yt-updated"></span>
+        </div>
+        <p class="section-note">Organic 自然成效(公開數據)。與付費廣告分開呈現,不互相比較。</p>
+        <div class="yt-stats" id="yt-stats"></div>
+        <ul class="yt-videos" id="yt-videos"></ul>
+    </div>
+
+    <script>
+        const youtubeData = {
+  "channelTitle": "OKIBLUES",
+  "handle": "okiblues",
+  "channelUrl": "https://www.youtube.com/@okiblues",
+  "subscriberCount": 246,
+  "viewCount": 143370,
+  "videoCount": 36,
+  "updatedAt": "2026-07-13 18:45",
+  "recentVideos": [
+    {
+      "id": "jrNFu1yUBvg",
+      "title": "沖繩最萌風景！Daihatsu Canbus 開箱：復古 5 色、雙側電動滑門，女孩自駕的夢幻首選｜OKIBLUES",
+      "publishedAt": "2026-05-07",
+      "viewCount": 797,
+      "likeCount": 4
+    },
+    {
+      "id": "pqvRADh9x2w",
+      "title": "這才是真正的空間魔法！Stepwagon 深度評測：超低地板、超大窗戶視野，全家出遊最舒適的 8 人座｜OKIBLUES",
+      "publishedAt": "2026-04-19",
+      "viewCount": 569,
+      "likeCount": 2
+    },
+    {
+      "id": "ANabCTyB24o",
+      "title": "經典豪華巔峰！Toyota Vellfire 20系開箱：超霸氣外型、豪華雙天窗，多人旅遊最高 CP 首選｜OKIBLUES",
+      "publishedAt": "2026-04-16",
+      "viewCount": 504,
+      "likeCount": 0
+    },
+    {
+      "id": "LglYJJbh5Io",
+      "title": "沖繩租車高 CP 首選！Toyota Voxy 80系開箱：經典黑武士、超低地板，家庭旅遊最實用的 7/8 人座｜OKIBLUES",
+      "publishedAt": "2026-04-14",
+      "viewCount": 1002,
+      "likeCount": 2
+    },
+    {
+      "id": "cbX4Zf33FlI",
+      "title": "日本銷量傳奇！Honda N-Box 開箱：空間大到能在車內換衣服？這台 K-Car 憑什麼賣這麼好？｜OKIBLUES",
+      "publishedAt": "2026-04-12",
+      "viewCount": 1352,
+      "likeCount": 7
+    },
+    {
+      "id": "0lBbPEMyUqE",
+      "title": "沖繩豪華自駕首選！Toyota Alphard 30系深度開箱：這座「陸地頭等艙」到底有多舒服？｜OKIBLUES",
+      "publishedAt": "2026-04-09",
+      "viewCount": 747,
+      "likeCount": 0
+    }
+  ]
+};
+
+        (function renderYouTube() {
+            const d = window.youtubeData || {};
+            const fmt = n => (typeof n === 'number' ? n.toLocaleString('en-US') : '—');
+            const statsEl = document.getElementById('yt-stats');
+            const vidsEl = document.getElementById('yt-videos');
+            const updEl = document.getElementById('yt-updated');
+
+            if (!d.subscriberCount && !d.viewCount && !d.videoCount) {
+                statsEl.innerHTML = '<div class="yt-empty">尚未同步資料 — 執行 <code>python3 sync_youtube.py okiblues</code> 後即會顯示。</div>';
+                return;
+            }
+
+            updEl.textContent = d.updatedAt ? '更新於 ' + d.updatedAt : '';
+            statsEl.innerHTML = [
+                ['訂閱數', d.subscriberCount],
+                ['總觀看數', d.viewCount],
+                ['影片總數', d.videoCount],
+            ].map(([lbl, num]) =>
+                `<div class="yt-stat"><div class="num">${fmt(num)}</div><div class="lbl">${lbl}</div></div>`
+            ).join('');
+
+            const vids = d.recentVideos || [];
+            vidsEl.innerHTML = vids.length ? vids.map(v =>
+                `<li class="yt-video">
+                    <div>
+                        <a class="vt" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">${v.title}</a>
+                        <div class="vmeta">${v.publishedAt}</div>
+                    </div>
+                    <div class="vnums"><b>${fmt(v.viewCount)}</b> 次觀看<br>👍 ${fmt(v.likeCount)}</div>
+                </li>`
+            ).join('') : '<li class="yt-empty">近期無影片資料。</li>';
+        })();
+    </script>
+
+    <div class="card">
+        <div class="yt-head">
+            <h2>⭐ Google 商家評價</h2>
+            <span class="yt-updated" id="gm-updated"></span>
+        </div>
+        <p class="section-note">Google 地圖上的公開評價(Organic)。反映真實用戶口碑,與付費廣告分開看。</p>
+        <div id="gm-summary"></div>
+        <ul class="gm-reviews" id="gm-reviews"></ul>
+    </div>
+
+    <script>
+        const googleMapsData = {
+  "name": "Oki Blues Car Rental 沖繩中文租車",
+  "rating": 5,
+  "userRatingCount": 2626,
+  "mapsUri": "https://maps.google.com/?cid=14682448759833771176&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+  "reviews": [
+    {
+      "rating": 5,
+      "text": "Had a really great experience with Oki Blues. Communication throughout the entire process was smooth, friendly, and very easy. They also provided complimentary airport pickup and drop-off, which made everything so convenient and stress-free.\n\nThe rental price was very reasonable, and the condition of the car was above average — clean, well-maintained, and comfortable to drive. Overall, the service exceeded expectations, and I would definitely recommend them to anyone looking for a reliable and hassle-free car rental experience. Thank you again for the excellent service!",
+      "author": "Eve Jak",
+      "time": ""
+    },
+    {
+      "rating": 5,
+      "text": "Smooth rental arrangement and staff are friendly and supportive. So glad they support service in Chinese/Cantonese, and explain all information very detailedly. The Hustler that we requested was in very good condition: clean and tidy like a brand new one!",
+      "author": "Dennis Chan",
+      "time": ""
+    },
+    {
+      "rating": 5,
+      "text": "Oki Blues is an excellent car rental service. They provided a free upgrade to an Alphard for trip, and the staff were very helpful, taking the time to explain the contract and important road safety tips. In addition, they provided free transport to my hotel after I returned the car. I highly recommend this company! (非常值得推薦). Period: 6 - 10 April 2026.",
+      "author": "maxim li",
+      "time": ""
+    },
+    {
+      "rating": 5,
+      "text": "Rental Car Review – Okinawa\n⭐⭐⭐⭐⭐\n\nWe had a great experience renting a car in Okinawa. The service was smooth and efficient from start to finish. The staff were incredibly friendly and welcoming, which made the pickup process stress-free—especially after a flight.\n\nThe car itself was easy to drive and very comfortable inside. It handled the local roads perfectly, whether we were cruising along the coast or navigating narrow streets in town. The interior was clean, spacious, and made every trip feel relaxed.\n\nIf you're planning to explore Okinawa by car, we'll definitely recommend renting from here. Good service, nice people, and a solid ride.",
+      "author": "Quek Quek Quek",
+      "time": ""
+    }
+  ],
+  "updatedAt": "2026-07-13 18:34"
+};
+
+        (function renderGoogleMaps() {
+            const d = window.googleMapsData || {};
+            const sumEl = document.getElementById('gm-summary');
+            const revEl = document.getElementById('gm-reviews');
+            const updEl = document.getElementById('gm-updated');
+            const stars = r => {
+                const full = Math.round(r || 0);
+                return '★'.repeat(full) + '☆'.repeat(Math.max(0, 5 - full));
+            };
+
+            if (d.rating == null && !d.userRatingCount) {
+                sumEl.innerHTML = '<div class="yt-empty">尚未同步資料 — 執行 <code>python3 sync_maps.py okiblues</code> 後即會顯示。</div>';
+                return;
+            }
+
+            updEl.textContent = d.updatedAt ? '更新於 ' + d.updatedAt : '';
+            const link = d.mapsUri ? `<a href="${d.mapsUri}" target="_blank" rel="noopener">在 Google 地圖查看 →</a>` : '';
+            sumEl.innerHTML =
+                `<div class="gm-summary">
+                    <div class="gm-score">${d.rating != null ? d.rating.toFixed(1) : '—'}</div>
+                    <div>
+                        <div class="gm-stars">${stars(d.rating)}</div>
+                        <div class="gm-count">${(d.userRatingCount || 0).toLocaleString('en-US')} 則評論 ・ ${link}</div>
+                    </div>
+                </div>`;
+
+            const reviews = d.reviews || [];
+            revEl.innerHTML = reviews.filter(r => r.text).map(r =>
+                `<li class="gm-review">
+                    <div class="rh">
+                        <span class="ra">${r.author || '訪客'} <span class="rs">${stars(r.rating)}</span></span>
+                        <span class="rt">${r.time || ''}</span>
+                    </div>
+                    <div class="rtext">${r.text}</div>
+                </li>`
+            ).join('');
+        })();
+    </script>
 
     <div class="card">
         <h2>📊 廣告成效報告</h2>

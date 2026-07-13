@@ -26,17 +26,29 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
         run: python3 sync_posts.py
 
+      - name: Sync YouTube channel stats
+        continue-on-error: true   # 缺金鑰時不擋整條流程
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python3 sync_youtube.py okiblues
+
+      - name: Sync Google Maps reviews
+        continue-on-error: true   # Places API 需 billing，缺金鑰時不擋整條流程
+        env:
+          GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+        run: python3 sync_maps.py okiblues
+
       - name: Commit and push if changed
         run: |
           git config --local user.name "SonaSNS Bot"
           git config --local user.email "noreply@github.com"
 
-          if git diff --quiet index.html; then
+          git add index.html okiblues.html
+          if git diff --cached --quiet; then
             echo "ℹ️ 沒有新更改，跳過提交"
           else
             echo "📝 發現更改，正在提交..."
-            git add index.html
-            git commit -m "chore: auto sync posts from Google Sheet" -m "時間：$(date -u '+%Y-%m-%d %H:%M:%S UTC')" -m "Co-Authored-By: SonaSNS Bot <noreply@github.com>"
+            git commit -m "chore: auto sync posts + YouTube/Maps data" -m "時間：$(date -u '+%Y-%m-%d %H:%M:%S UTC')" -m "Co-Authored-By: SonaSNS Bot <noreply@github.com>"
             git push
             echo "✅ 已推送到 GitHub"
           fi
