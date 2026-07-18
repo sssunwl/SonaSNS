@@ -88,6 +88,29 @@
     }
     .placeholder { color: #9a8ab0; text-align: center; padding: 30px 10px; }
 
+    /* 品牌模式切換 */
+    .brand { border-color: #6b3fa0; }
+    .brand-mode { display: none; gap: 8px; margin-top: 12px; }
+    .brand-mode.show { display: flex; flex-wrap: wrap; }
+    .mode-btn {
+        padding: 7px 15px; border-radius: 18px; border: 1.5px solid #b79fd6; background: white;
+        color: #6b3fa0; font-weight: 600; font-size: 0.85em; cursor: pointer; transition: all 0.2s;
+    }
+    .mode-btn.active { background: #6b3fa0; color: white; border-color: #6b3fa0; }
+
+    /* 雙輸出（Threads + IG） */
+    .out-block { margin-bottom: 14px; }
+    .out-block-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .out-block-head .lbl { font-weight: 700; font-size: 0.9em; }
+    .out-block.threads .lbl { color: #6b3fa0; }
+    .out-block.ig .lbl { color: #c13584; }
+    .out-block.threads .out-body { border-color: #e6dcf5; background: #faf8fe; }
+    .out-block.ig .out-body { border-color: #f5d7ea; background: #fef7fb; }
+    .out-body {
+        border: 1px solid #e6dcf5; border-radius: 12px; padding: 18px;
+        white-space: pre-wrap; line-height: 1.65; color: #2f2543; font-size: 0.98em;
+    }
+
     .copy-success {
         position: fixed; bottom: 24px; right: 24px; background: #27ae60; color: white; padding: 12px 22px;
         border-radius: 10px; font-weight: 600; box-shadow: 0 6px 20px rgba(0,0,0,0.2); z-index: 99;
@@ -142,7 +165,14 @@
             🔒 <strong>安全說明：</strong>正式版走 <strong>Meta 官方 API</strong> 授權，你只需在 Meta 官方頁面點擊授權即可，<strong>全程不需要提供帳號密碼</strong>，隨時可在 Meta 設定裡收回權限。此頁下方為<strong>範本產生器</strong>示範（在你瀏覽器本機運算、不上傳任何資料），可直接複製貼到 Threads 使用。
         </div>
 
-        <div class="picker-label">① 選擇產業人設</div>
+        <div class="picker-label">① 選品牌（依 Brand DNA + 當週行業資訊，出 Threads + IG）</div>
+        <div class="personas" id="brands"></div>
+        <div class="brand-mode" id="brandMode">
+            <button class="mode-btn active" data-mode="latest" onclick="setMode('latest', this)">🆕 最新（依當週資訊）</button>
+            <button class="mode-btn" data-mode="fixed" onclick="setMode('fixed', this)">📌 固定題材（從 BLOG 抓）</button>
+        </div>
+
+        <div class="picker-label" style="margin-top: 22px;">② 或選通用產業人設（出 Threads）</div>
         <div class="personas" id="personas"></div>
 
         <div class="output-wrap" id="outputWrap">
@@ -150,12 +180,11 @@
                 <span class="who" id="who"></span>
                 <div class="output-actions">
                     <button class="out-btn btn-regen" onclick="regen()">🔄 換一則</button>
-                    <button class="out-btn btn-copy" onclick="copyOut()">📋 複製</button>
                 </div>
             </div>
-            <div class="output" id="output"></div>
+            <div id="dualOut"></div>
         </div>
-        <div class="placeholder" id="placeholder">👆 選一個產業，馬上生成一則 Threads 貼文</div>
+        <div class="placeholder" id="placeholder">👆 選品牌或人設，馬上生成貼文</div>
     </div>
 
     <footer>
@@ -219,44 +248,126 @@
         ]
     };
 
-    let currentPersona = null;
+    // 品牌設定（IGcarousell 的 Brand；OKIPLAYGROUND / DiveInOut 之後接）
+    const brands = {
+        'OKIBLUES': { emoji: '🚗', path: 'content/okiblues/', cta: 'wa.link/nmhzeq',
+                      tags: '#OKIBLUES #沖繩租車 #沖繩自駕 #沖繩自由行' }
+    };
+    const brandCache = {};
+
+    let mode = 'persona';        // 'persona' | 'brand'
+    let currentPersona = null, currentBrand = null, brandMode = 'latest';
     let lastIndex = -1;
 
-    function pick(name, el) {
-        currentPersona = name;
+    async function loadBrand(path) {
+        if (brandCache[path]) return brandCache[path];
+        const pool = await fetch(path + 'social_pool.json').then(r => r.json()).catch(() => ({ posts: [] }));
+        const blog = await fetch(path + 'blog/index.json').then(r => r.json()).catch(() => []);
+        brandCache[path] = { pool: pool.posts || [], blog };
+        return brandCache[path];
+    }
+
+    async function pickBrand(name, el) {
+        mode = 'brand'; currentBrand = name; currentPersona = null; lastIndex = -1;
         document.querySelectorAll('.persona').forEach(p => p.classList.remove('active'));
         el.classList.add('active');
-        lastIndex = -1;
+        document.getElementById('brandMode').classList.add('show');
+        await loadBrand(brands[name].path);
+        regen(); show();
+    }
+
+    function pickPersona(name, el) {
+        mode = 'persona'; currentPersona = name; currentBrand = null; lastIndex = -1;
+        document.querySelectorAll('.persona').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('brandMode').classList.remove('show');
+        regen(); show();
+    }
+
+    function setMode(m, el) {
+        brandMode = m; lastIndex = -1;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
         regen();
+    }
+
+    function show() {
         document.getElementById('placeholder').style.display = 'none';
         document.getElementById('outputWrap').style.display = 'block';
     }
 
-    function regen() {
-        if (!currentPersona) return;
-        const arr = personas[currentPersona];
-        let i = Math.floor(Math.random() * arr.length);
-        if (arr.length > 1) { while (i === lastIndex) i = Math.floor(Math.random() * arr.length); }
-        lastIndex = i;
-        document.getElementById('who').textContent = currentPersona + ' 人設';
-        document.getElementById('output').textContent = arr[i];
+    function nextIdx(len) {
+        let i = Math.floor(Math.random() * len);
+        if (len > 1) { while (i === lastIndex) i = Math.floor(Math.random() * len); }
+        lastIndex = i; return i;
     }
 
-    function copyOut() {
-        navigator.clipboard.writeText(document.getElementById('output').textContent).then(() => {
+    function regen() {
+        const who = document.getElementById('who');
+        if (mode === 'persona') {
+            if (!currentPersona) return;
+            const arr = personas[currentPersona];
+            who.textContent = currentPersona + ' 人設';
+            renderDual([{ cls: 'threads', lbl: '🧵 Threads', text: arr[nextIdx(arr.length)] }]);
+            return;
+        }
+        const b = brands[currentBrand], data = brandCache[b.path];
+        if (brandMode === 'latest') {
+            const arr = data.pool;
+            if (!arr.length) { who.textContent = `${b.emoji} ${currentBrand} · 最新`; renderEmpty('social_pool 還沒有草稿，排程 agent 會依當週資訊回填'); return; }
+            const p = arr[nextIdx(arr.length)];
+            who.textContent = `${b.emoji} ${currentBrand} · 最新（${p.topic}）`;
+            renderDual([{ cls: 'threads', lbl: '🧵 Threads', text: p.threads }, { cls: 'ig', lbl: '📸 IG', text: p.ig }]);
+        } else {
+            const arr = data.blog;
+            if (!arr.length) { who.textContent = `${b.emoji} ${currentBrand} · 固定題材`; renderEmpty('BLOG 還沒有文章可抓'); return; }
+            const a = arr[nextIdx(arr.length)];
+            who.textContent = `${b.emoji} ${currentBrand} · 固定題材（${a.title.slice(0, 14)}…）`;
+            renderDual([
+                { cls: 'threads', lbl: '🧵 Threads', text: `${a.summary}\n\n完整攻略我們整理好了，出發前先看一眼最安心。\n\n👉 ${b.cta}` },
+                { cls: 'ig', lbl: '📸 IG', text: `📖 ${a.title}\n\n${a.summary}\n\n完整內容看品牌 BLOG，把功課交給我們。\n\n👉 預約諮詢：${b.cta}\n\n${b.tags}` }
+            ]);
+        }
+    }
+
+    function renderDual(blocks) {
+        document.getElementById('dualOut').innerHTML = blocks.map((blk, i) => `
+            <div class="out-block ${blk.cls}">
+                <div class="out-block-head">
+                    <span class="lbl">${blk.lbl}</span>
+                    <button class="out-btn btn-copy" onclick="copyBlock(${i})">📋 複製</button>
+                </div>
+                <div class="out-body" data-idx="${i}">${escapeHtml(blk.text)}</div>
+            </div>`).join('');
+    }
+    function renderEmpty(msg) {
+        document.getElementById('dualOut').innerHTML = `<div class="output" style="text-align:center;color:#9a8ab0;">📭 ${msg}</div>`;
+    }
+    function escapeHtml(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function copyBlock(i) {
+        const el = document.querySelector(`.out-body[data-idx="${i}"]`);
+        navigator.clipboard.writeText(el.innerText).then(() => {
             const m = document.createElement('div');
-            m.className = 'copy-success'; m.textContent = '✅ 已複製，可貼到 Threads';
+            m.className = 'copy-success'; m.textContent = '✅ 已複製';
             document.body.appendChild(m); setTimeout(() => m.remove(), 2000);
         });
     }
 
     (function init() {
-        const wrap = document.getElementById('personas');
+        const bwrap = document.getElementById('brands');
+        Object.keys(brands).forEach(name => {
+            const b = document.createElement('button');
+            b.className = 'persona brand'; b.textContent = brands[name].emoji + ' ' + name;
+            b.onclick = () => pickBrand(name, b);
+            bwrap.appendChild(b);
+        });
+        const pwrap = document.getElementById('personas');
         Object.keys(personas).forEach(name => {
             const b = document.createElement('button');
             b.className = 'persona'; b.textContent = name;
-            b.onclick = () => pick(name, b);
-            wrap.appendChild(b);
+            b.onclick = () => pickPersona(name, b);
+            pwrap.appendChild(b);
         });
     })();
 </script>

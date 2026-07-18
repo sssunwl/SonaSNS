@@ -168,9 +168,61 @@
         background: #f5f6f8; border: 1px dashed #c9d2da; border-radius: 10px;
         padding: 22px; text-align: center; color: #8a97a3; font-size: 0.92em;
     }
-    .crumb { text-align: center; margin: -10px 0 26px; font-size: 0.9em; color: #5a6c7d; }
+    .crumb { text-align: center; margin: -10px 0 20px; font-size: 0.9em; color: #5a6c7d; }
     .crumb a { color: #0b6ea8; text-decoration: none; font-weight: 600; }
     .crumb span { font-weight: 700; color: #0d2637; }
+
+    /* 品牌頁分頁列 */
+    .brand-tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px; }
+    .brand-tab {
+        padding: 10px 22px; border-radius: 25px; border: 2px solid #0b6ea8; background: white;
+        color: #0b6ea8; font-weight: 700; font-size: 0.95em; cursor: pointer; transition: all 0.2s;
+    }
+    .brand-tab:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(11,110,168,0.2); }
+    .brand-tab.active { background: #0b6ea8; color: white; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* 行業資訊 時間軸 */
+    .news-list { display: flex; flex-direction: column; gap: 14px; }
+    .news-item {
+        background: white; border-radius: 12px; padding: 18px 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        border-left: 4px solid #0b6ea8;
+    }
+    .news-item .meta { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+    .news-item .date { color: #0b6ea8; font-weight: 700; font-size: 0.85em; font-variant-numeric: tabular-nums; }
+    .news-item .cat { background: #eaf4fb; color: #0b6ea8; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: 600; }
+    .news-item h3 { color: #0d2637; font-size: 1.1em; margin-bottom: 6px; }
+    .news-item p { color: #566; font-size: 0.92em; line-height: 1.6; margin-bottom: 8px; }
+    .news-item .src { color: #0b6ea8; font-size: 0.82em; text-decoration: none; font-weight: 600; }
+    .news-item .src:hover { text-decoration: underline; }
+
+    /* BLOG */
+    .blog-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+    .blog-card {
+        background: white; border-radius: 14px; padding: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        cursor: pointer; transition: all 0.2s; border-top: 4px solid #0b6ea8;
+    }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(11,110,168,0.2); }
+    .blog-card .cat { color: #0b6ea8; font-weight: 700; font-size: 0.78em; }
+    .blog-card h3 { color: #0d2637; font-size: 1.15em; margin: 6px 0 8px; line-height: 1.4; }
+    .blog-card .summary { color: #667; font-size: 0.88em; line-height: 1.55; }
+    .blog-card .date { color: #9aa6b1; font-size: 0.8em; margin-top: 10px; }
+
+    .blog-article { background: white; border-radius: 14px; padding: 32px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+    .blog-back { color: #0b6ea8; font-weight: 600; cursor: pointer; margin-bottom: 18px; display: inline-block; }
+    .blog-article h1 { font-size: 1.7em; color: #0d2637; margin-bottom: 8px; line-height: 1.35; }
+    .blog-article h2 { font-size: 1.25em; color: #0b6ea8; margin: 24px 0 10px; }
+    .blog-article p { color: #3a4a52; line-height: 1.8; margin: 12px 0; }
+    .blog-article ul { margin: 12px 0 12px 22px; color: #3a4a52; line-height: 1.8; }
+    .blog-article a { color: #0b6ea8; }
+    .blog-article blockquote { border-left: 4px solid #0b6ea8; background: #f4f9fc; padding: 12px 18px; margin: 16px 0; border-radius: 8px; color: #3a4a52; }
+    .blog-article hr { border: none; border-top: 1px solid #e0e6ea; margin: 24px 0; }
+    .blog-article .art-meta { color: #9aa6b1; font-size: 0.88em; margin-bottom: 20px; }
+    .blog-article .sources { margin-top: 24px; padding-top: 16px; border-top: 1px solid #e0e6ea; font-size: 0.82em; color: #8a97a3; }
+    .blog-article .sources a { display: block; margin: 4px 0; word-break: break-all; }
+
+    .panel-empty { background: #f5f6f8; border: 1px dashed #c9d2da; border-radius: 12px; padding: 30px; text-align: center; color: #8a97a3; }
 
     footer {
         text-align: center;
@@ -254,6 +306,13 @@
         <p>沖繩最大中文租車品牌 — 品牌介紹與廣告成效報告</p>
     </header>
 
+    <div class="brand-tabs">
+        <button class="brand-tab active" data-tab="overview" onclick="switchTab('overview', this)">📋 概覽</button>
+        <button class="brand-tab" data-tab="news" onclick="switchTab('news', this)">📰 行業最新資訊</button>
+        <button class="brand-tab" data-tab="blog" onclick="switchTab('blog', this)">✍️ BLOG</button>
+    </div>
+
+    <div class="tab-panel active" id="panel-overview">
     <div class="card">
         <h2>📋 品牌概覽</h2>
         <div class="snapshot-grid">
@@ -628,11 +687,140 @@
             renderReport(latest);
         })();
     </script>
+    </div><!-- /panel-overview -->
+
+    <div class="tab-panel" id="panel-news">
+        <div class="news-list" id="newsList"><div class="panel-empty">載入中…</div></div>
+    </div>
+
+    <div class="tab-panel" id="panel-blog">
+        <div class="blog-list" id="blogList"><div class="panel-empty">載入中…</div></div>
+        <div class="blog-article" id="blogArticle" style="display:none;"></div>
+    </div>
 
     <footer>
         <p>語調：專業有溫度、質感、不誇張 ｜ Meta 廣告合規：禁用最高級詞（最便宜/第一/保證）</p>
         <p><a href="index.html">← 回帖文預覽</a></p>
     </footer>
 </div>
+
+<script>
+    // ---- 分頁切換（首次開啟才載入內容）----
+    let newsLoaded = false, blogLoaded = false;
+    function switchTab(tab, btn) {
+        document.querySelectorAll('.brand-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        if (tab === 'news' && !newsLoaded) { loadNews(); newsLoaded = true; }
+        if (tab === 'blog' && !blogLoaded) { loadBlog(); blogLoaded = true; }
+    }
+
+    const CONTENT = 'content/okiblues/';
+
+    // ---- 行業最新資訊 ----
+    async function loadNews() {
+        const el = document.getElementById('newsList');
+        try {
+            const items = await (await fetch(CONTENT + 'news.json')).json();
+            if (!items.length) { el.innerHTML = '<div class="panel-empty">📭 行業資訊準備中</div>'; return; }
+            items.sort((a, b) => b.date.localeCompare(a.date));
+            el.innerHTML = items.map(n => `
+                <div class="news-item">
+                    <div class="meta"><span class="date">${n.date}</span><span class="cat">${n.category || ''}</span></div>
+                    <h3>${esc(n.title)}</h3>
+                    <p>${esc(n.summary)}</p>
+                    ${n.source ? `<a class="src" href="${n.source}" target="_blank" rel="noopener">🔗 來源</a>` : ''}
+                </div>`).join('');
+        } catch (e) { el.innerHTML = '<div class="panel-empty">📭 行業資訊準備中</div>'; }
+    }
+
+    // ---- BLOG ----
+    async function loadBlog() {
+        const el = document.getElementById('blogList');
+        try {
+            const items = await (await fetch(CONTENT + 'blog/index.json')).json();
+            if (!items.length) { el.innerHTML = '<div class="panel-empty">📭 BLOG 準備中</div>'; return; }
+            items.sort((a, b) => b.date.localeCompare(a.date));
+            el.innerHTML = items.map(a => `
+                <div class="blog-card" onclick="openArticle('${a.file}')">
+                    <div class="cat">${esc(a.category || '')}</div>
+                    <h3>${esc(a.title)}</h3>
+                    <div class="summary">${esc(a.summary || '')}</div>
+                    <div class="date">${a.date}</div>
+                </div>`).join('');
+        } catch (e) { el.innerHTML = '<div class="panel-empty">📭 BLOG 準備中</div>'; }
+    }
+
+    async function openArticle(file) {
+        const listEl = document.getElementById('blogList');
+        const artEl = document.getElementById('blogArticle');
+        try {
+            const raw = await (await fetch(CONTENT + 'blog/' + file)).text();
+            const { meta, body } = parseFrontmatter(raw);
+            const sources = (meta.sources || []).map(s => `<a href="${s}" target="_blank" rel="noopener">${s}</a>`).join('');
+            artEl.innerHTML = `
+                <span class="blog-back" onclick="closeArticle()">← 回文章列表</span>
+                <h1>${esc(meta.title || '')}</h1>
+                <div class="art-meta">${meta.date || ''} ｜ ${esc(meta.category || '')}${meta.audience ? ' ｜ 給：' + esc([].concat(meta.audience).join('、')) : ''}</div>
+                ${mdToHtml(body)}
+                ${sources ? `<div class="sources">📚 參考來源<br>${sources}</div>` : ''}`;
+            listEl.style.display = 'none';
+            artEl.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (e) { alert('文章載入失敗'); }
+    }
+    function closeArticle() {
+        document.getElementById('blogArticle').style.display = 'none';
+        document.getElementById('blogList').style.display = 'grid';
+    }
+
+    // ---- 小工具：跳脫 + frontmatter 解析 + 極簡 markdown 轉譯（無外部 CDN）----
+    function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function parseFrontmatter(raw) {
+        const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+        if (!m) return { meta: {}, body: raw };
+        const meta = {}; let key = null;
+        m[1].split('\n').forEach(line => {
+            const kv = line.match(/^(\w+):\s*(.*)$/);
+            if (kv) {
+                key = kv[1];
+                let v = kv[2].trim();
+                if (v === '' ) { meta[key] = []; }              // 後續縮排項目
+                else if (v.startsWith('[') ) { meta[key] = v.replace(/^\[|\]$/g, '').split(',').map(x => x.trim().replace(/^["']|["']$/g, '')).filter(Boolean); }
+                else { meta[key] = v.replace(/^["']|["']$/g, ''); }
+            } else {
+                const li = line.match(/^\s*-\s*(.*)$/);
+                if (li && key) { if (!Array.isArray(meta[key])) meta[key] = []; meta[key].push(li[1].replace(/^["']|["']$/g, '')); }
+            }
+        });
+        return { meta, body: m[2] };
+    }
+
+    function mdToHtml(md) {
+        const lines = md.split('\n');
+        let html = '', inList = false;
+        const inline = t => esc(t)
+            .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2" style="max-width:100%;border-radius:8px;">')
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+        const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+        for (let line of lines) {
+            if (/^\s*[-*]\s+/.test(line)) { if (!inList) { html += '<ul>'; inList = true; } html += '<li>' + inline(line.replace(/^\s*[-*]\s+/, '')) + '</li>'; continue; }
+            closeList();
+            if (/^###\s+/.test(line)) html += '<h3>' + inline(line.replace(/^###\s+/, '')) + '</h3>';
+            else if (/^##\s+/.test(line)) html += '<h2>' + inline(line.replace(/^##\s+/, '')) + '</h2>';
+            else if (/^#\s+/.test(line)) html += '<h2>' + inline(line.replace(/^#\s+/, '')) + '</h2>';
+            else if (/^>\s?/.test(line)) html += '<blockquote>' + inline(line.replace(/^>\s?/, '')) + '</blockquote>';
+            else if (/^---\s*$/.test(line)) html += '<hr>';
+            else if (line.trim() === '') { /* skip */ }
+            else html += '<p>' + inline(line) + '</p>';
+        }
+        closeList();
+        return html;
+    }
+</script>
 </body>
 </html>
