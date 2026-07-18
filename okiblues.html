@@ -245,6 +245,28 @@
     table.cars th { background: #f7f3ec; color: #0d2637; font-weight: 700; }
     table.cars td.price { color: #0b6ea8; font-weight: 700; }
     table.cars tr:last-child td { border-bottom: none; }
+
+    /* 車款卡片區(2026-07-19 加) */
+    .season-legend { display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center;
+        background:#f7f3ec; border-radius:10px; padding:10px 14px; font-size:0.84em; color:#0d2637; margin:10px 0; }
+    .season-legend span { background:#fff; border:1px solid #e6ddcd; border-radius:20px; padding:2px 10px; }
+    .car-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:14px; }
+    .car-card { background:#fff; border:1px solid #eef2f5; border-radius:14px; overflow:hidden;
+        box-shadow:0 4px 14px rgba(11,110,168,0.08); display:flex; flex-direction:column; transition:transform .15s, box-shadow .15s; }
+    .car-card:hover { transform:translateY(-4px); box-shadow:0 10px 26px rgba(11,110,168,0.18); }
+    .car-card img { width:100%; aspect-ratio:4/3; object-fit:cover; background:#f2f6f9; display:block; }
+    .car-body { padding:12px 14px; display:flex; flex-direction:column; gap:8px; flex:1; }
+    .car-body h3 { color:#0d2637; font-size:1.02em; margin:0; }
+    .car-tags { display:flex; flex-wrap:wrap; gap:5px; }
+    .car-tags span { background:#eff7fc; color:#0b6ea8; font-size:0.74em; border-radius:6px; padding:2px 7px; }
+    .car-price { color:#0b6ea8; font-weight:800; font-size:1.28em; margin-top:auto; }
+    .car-price small { font-size:0.5em; font-weight:600; color:#8a97a2; margin-left:3px; }
+    .car-seasons { font-size:0.8em; color:#667; }
+    .car-seasons summary { cursor:pointer; color:#0b6ea8; }
+    .car-seasons div { margin-top:5px; line-height:1.7; color:#556; }
+    .car-yt { font-size:0.82em; color:#c0392b; text-decoration:none; font-weight:600; }
+    .car-yt:hover { text-decoration:underline; }
+
     .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 14px; }
     .tier { border: 1px solid #e2e8ee; border-radius: 12px; padding: 18px; }
     .tier.hl { border-color: #0b6ea8; box-shadow: 0 4px 14px rgba(11, 110, 168, 0.12); }
@@ -356,40 +378,267 @@
             <span class="series-badge">跑車系列</span>
             <span class="series-badge">輕型系列</span>
         </div>
-        <p class="section-note">130+ 台、25 車型。價格為每 24 小時（日圓），依日期價單 1–5 號浮動；全車系標配 GPS、倒車影像、行車記錄儀、手機支架＆充電、ETC。</p>
-        <div class="table-wrap">
-            <table class="cars">
-                <thead><tr><th>車款</th><th>座位</th><th>車型</th><th>排氣量</th><th>價格區間</th></tr></thead>
-                <tbody>
-                    <tr><td>Daihatsu Canbus</td><td>4</td><td>輕型車</td><td>660cc</td><td class="price">6,500–12,000</td></tr>
-                    <tr><td>Honda Freed</td><td>5</td><td>小型家庭車</td><td>1500cc</td><td class="price">8,000–15,000</td></tr>
-                    <tr><td>Honda Freed 第三代</td><td>5</td><td>小型家庭車</td><td>1500cc</td><td class="price">10,000–17,000</td></tr>
-                    <tr><td>Honda N-Box</td><td>4</td><td>輕型車</td><td>660cc</td><td class="price">4,500–9,000</td></tr>
-                    <tr><td>Honda N-One</td><td>4</td><td>輕型車</td><td>660cc</td><td class="price">4,000–8,500</td></tr>
-                    <tr><td>Honda Stepwagon</td><td>8</td><td>大型家庭車</td><td>1500cc</td><td class="price">8,000–14,000</td></tr>
-                    <tr><td>Mitsubishi Delica Mini</td><td>4</td><td>輕型 SUV</td><td>660cc</td><td class="price">7,000–13,000</td></tr>
-                    <tr><td>Nissan Serena</td><td>8</td><td>大型家庭車</td><td>2000cc</td><td class="price">12,000–20,000</td></tr>
-                    <tr><td>Porsche 718</td><td>2</td><td>跑車</td><td>2000cc</td><td class="price">24,000–32,000</td></tr>
-                    <tr><td>Range Rover Evoque</td><td>5</td><td>豪華 SUV</td><td>2000cc</td><td class="price">13,000–22,000</td></tr>
-                    <tr><td>Suzuki Hustler hybrid</td><td>4</td><td>輕型 SUV</td><td>660cc</td><td class="price">6,500–12,000</td></tr>
-                    <tr><td>Suzuki Jimny 660cc</td><td>4</td><td>輕型越野車</td><td>660cc</td><td class="price">7,000–13,000</td></tr>
-                    <tr><td>Suzuki Jimny 1500cc</td><td>4</td><td>越野 SUV</td><td>1500cc</td><td class="price">8,000–15,000</td></tr>
-                    <tr><td>Suzuki Solio 1200cc</td><td>5</td><td>低燃油家庭車</td><td>1200cc</td><td class="price">7,000–14,000</td></tr>
-                    <tr><td>Toyota Alphard 30系（8座）</td><td>8</td><td>豪華 MPV</td><td>2500cc</td><td class="price">16,000–28,000</td></tr>
-                    <tr><td>Toyota Alphard New30系（7座）</td><td>7</td><td>豪華 MPV</td><td>2500cc</td><td class="price">16,000–28,000</td></tr>
-                    <tr><td>Toyota Alphard 40系豪華（7座）</td><td>7</td><td>豪華 MPV</td><td>2500cc</td><td class="price">25,000–40,000</td></tr>
-                    <tr><td>Toyota Prius</td><td>5</td><td>低燃油車</td><td>1800cc</td><td class="price">9,000–16,000</td></tr>
-                    <tr><td>Toyota Raize SUV</td><td>5</td><td>小型 SUV</td><td>1000cc</td><td class="price">8,000–15,000</td></tr>
-                    <tr><td>Toyota Sienta</td><td>5</td><td>小型家庭車</td><td>1500cc</td><td class="price">7,000–14,000</td></tr>
-                    <tr><td>Toyota Sienta 第三代</td><td>5</td><td>低燃油家庭車</td><td>1500cc</td><td class="price">9,000–16,000</td></tr>
-                    <tr><td>Toyota Vellfire</td><td>7</td><td>豪華 MPV</td><td>2500cc</td><td class="price">11,000–18,000</td></tr>
-                    <tr><td>Toyota Voxy 80系</td><td>7</td><td>大型家庭車</td><td>2000cc</td><td class="price">12,000–16,000</td></tr>
-                    <tr><td>Toyota Voxy 90系</td><td>7</td><td>大型家庭車</td><td>2000cc</td><td class="price">9,000–20,000</td></tr>
-                    <tr><td>Toyota Yaris Cross</td><td>5</td><td>低燃油 SUV</td><td>1500cc</td><td class="price">8,000–15,000</td></tr>
-                </tbody>
-            </table>
+        <p class="section-note">130+ 台、25 車型。每日租金（日圓）依旅遊日期分 5 個時段浮動，下方顯示「時段①最低價起」；點「各時段每日價」看完整 5 段。全車系標配 GPS、倒車影像、行車記錄儀、手機支架＆充電、ETC。</p>
+        <div class="season-legend">
+          <strong>🗓️ 時段對照（依取車日期）：</strong>
+          <span>①11/01–12/20</span><span>②日期未定</span>
+          <span>③09/01–10/31、12/21–01/05</span><span>④07/01–08/31</span>
+          <span>⑤日期未定（旺季最高）</span>
         </div>
-        <p class="section-note" style="margin-top:14px;">📅 長租優惠：15 日以上 85 折｜30 日以上月租 7 折。</p>
+        <p class="section-note" style="margin-top:6px;">📌 目前只接受「取車日起 6 個月內」的預訂；<strong>2 月價格與預約預計 9 月公佈</strong>。</p>
+        <div class="car-grid">
+        <div class="car-card">
+          <img src="okiblues_cars/none.jpg" alt="Honda N-One" loading="lazy">
+          <div class="car-body">
+            <h3>Honda N-One</h3>
+            <div class="car-tags"><span>4人</span><span>輕型車</span><span>660cc</span><span>🧳 2×20吋</span></div>
+            <div class="car-price">¥4,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥4,000 · ②¥5,000 · ③¥6,000 · ④¥7,000 · ⑤¥8,500</div></details>
+            
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/nbox.jpg" alt="Honda N-Box" loading="lazy">
+          <div class="car-body">
+            <h3>Honda N-Box</h3>
+            <div class="car-tags"><span>4人</span><span>輕型車</span><span>660cc</span><span>🧳 2×20吋</span></div>
+            <div class="car-price">¥4,500<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥4,500 · ②¥5,500 · ③¥6,500 · ④¥7,500 · ⑤¥9,000</div></details>
+            <a class="car-yt" href="https://youtu.be/cbX4Zf33FlI" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/canbus.jpg" alt="Daihatsu Canbus" loading="lazy">
+          <div class="car-body">
+            <h3>Daihatsu Canbus</h3>
+            <div class="car-tags"><span>4人</span><span>輕型車</span><span>660cc</span><span>🧳 2×28吋</span></div>
+            <div class="car-price">¥6,500<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥6,500 · ②¥7,000 · ③¥8,000 · ④¥9,000 · ⑤¥12,000</div></details>
+            <a class="car-yt" href="https://youtu.be/jrNFu1yUBvg" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/hustler.jpg" alt="Suzuki Hustler Hybrid" loading="lazy">
+          <div class="car-body">
+            <h3>Suzuki Hustler Hybrid</h3>
+            <div class="car-tags"><span>4人</span><span>輕型 SUV</span><span>660cc</span><span>🧳 2×28吋</span></div>
+            <div class="car-price">¥6,500<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥6,500 · ②¥7,000 · ③¥8,000 · ④¥9,000 · ⑤¥12,000</div></details>
+            <a class="car-yt" href="https://youtu.be/y2Rkd-dDA3o" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/delicamini.jpg" alt="Mitsubishi Delica Mini" loading="lazy">
+          <div class="car-body">
+            <h3>Mitsubishi Delica Mini</h3>
+            <div class="car-tags"><span>4人</span><span>輕型 SUV</span><span>660cc</span><span>🧳 4×28吋</span></div>
+            <div class="car-price">¥7,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥7,000 · ②¥8,000 · ③¥9,000 · ④¥11,000 · ⑤¥13,000</div></details>
+            <a class="car-yt" href="https://youtu.be/u6uY-rh3xvw" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/jimny660.jpg" alt="Suzuki Jimny 660cc" loading="lazy">
+          <div class="car-body">
+            <h3>Suzuki Jimny 660cc</h3>
+            <div class="car-tags"><span>4人</span><span>輕型越野車</span><span>660cc</span><span>🧳 2×20吋</span></div>
+            <div class="car-price">¥7,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥7,000 · ②¥8,000 · ③¥9,000 · ④¥11,000 · ⑤¥13,000</div></details>
+            
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/jimny1500.jpg" alt="Suzuki Jimny 1500cc" loading="lazy">
+          <div class="car-body">
+            <h3>Suzuki Jimny 1500cc</h3>
+            <div class="car-tags"><span>4人</span><span>越野 SUV</span><span>1500cc</span><span>🧳 2×20吋</span></div>
+            <div class="car-price">¥8,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥8,000 · ②¥9,000 · ③¥10,000 · ④¥13,000 · ⑤¥15,000</div></details>
+            
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/solio.jpg" alt="Suzuki Solio" loading="lazy">
+          <div class="car-body">
+            <h3>Suzuki Solio</h3>
+            <div class="car-tags"><span>5人</span><span>低燃油家庭車</span><span>1200cc</span><span>🧳 4×28吋</span></div>
+            <div class="car-price">¥7,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥7,000 · ②¥8,000 · ③¥9,000 · ④¥10,000 · ⑤¥14,000</div></details>
+            <a class="car-yt" href="https://youtu.be/PfXsKPwR8A4" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/sienta.jpg" alt="Toyota Sienta 二代" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Sienta 二代</h3>
+            <div class="car-tags"><span>5人</span><span>小型家庭車</span><span>1500cc</span><span>🧳 3×28吋+2×24吋</span></div>
+            <div class="car-price">¥7,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥7,000 · ②¥8,000 · ③¥9,000 · ④¥10,000 · ⑤¥14,000</div></details>
+            
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/freed.jpg" alt="Honda Freed" loading="lazy">
+          <div class="car-body">
+            <h3>Honda Freed</h3>
+            <div class="car-tags"><span>5人</span><span>小型家庭車</span><span>1500cc</span><span>🧳 4×28吋+1×24吋</span></div>
+            <div class="car-price">¥8,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥8,000 · ②¥9,000 · ③¥10,000 · ④¥11,000 · ⑤¥15,000</div></details>
+            
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/yariscross.jpg" alt="Toyota Yaris Cross" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Yaris Cross</h3>
+            <div class="car-tags"><span>5人</span><span>低燃油 SUV</span><span>1500cc</span><span>🧳 2×28吋+1×24吋+1×20吋</span></div>
+            <div class="car-price">¥8,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥8,000 · ②¥9,000 · ③¥10,000 · ④¥12,000 · ⑤¥15,000</div></details>
+            <a class="car-yt" href="https://youtu.be/aty3JdK-DnI" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/raize.jpg" alt="Toyota Raize" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Raize</h3>
+            <div class="car-tags"><span>5人</span><span>小型 SUV</span><span>1000cc</span><span>🧳 2×28吋+1×24吋+1×20吋</span></div>
+            <div class="car-price">¥8,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥8,000 · ②¥9,000 · ③¥10,000 · ④¥12,000 · ⑤¥15,000</div></details>
+            <a class="car-yt" href="https://youtu.be/goTMgkgm8WE" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/prius.jpg" alt="Toyota Prius" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Prius</h3>
+            <div class="car-tags"><span>5人</span><span>低燃油車</span><span>1800cc</span><span>🧳 2×28吋</span></div>
+            <div class="car-price">¥9,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥9,000 · ②¥10,000 · ③¥11,000 · ④¥13,000 · ⑤¥16,000</div></details>
+            <a class="car-yt" href="https://youtu.be/8JJp-qN7jdI" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/sienta3rd.jpg" alt="Toyota Sienta 三代" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Sienta 三代</h3>
+            <div class="car-tags"><span>5人</span><span>低燃油家庭車</span><span>1500cc</span><span>🧳 3×28吋+2×24吋</span></div>
+            <div class="car-price">¥9,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥9,000 · ②¥10,000 · ③¥11,000 · ④¥13,000 · ⑤¥16,000</div></details>
+            
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/freed3rd.jpg" alt="Honda Freed 三代" loading="lazy">
+          <div class="car-body">
+            <h3>Honda Freed 三代</h3>
+            <div class="car-tags"><span>5人</span><span>小型家庭車</span><span>1500cc</span><span>🧳 4×28吋+1×24吋</span></div>
+            <div class="car-price">¥10,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥10,000 · ②¥11,000 · ③¥12,000 · ④¥14,000 · ⑤¥17,000</div></details>
+            
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/stepwgn.jpg" alt="Honda Stepwagon" loading="lazy">
+          <div class="car-body">
+            <h3>Honda Stepwagon</h3>
+            <div class="car-tags"><span>8人</span><span>大型家庭車</span><span>1500cc</span><span>🧳 2×28吋+2×20吋</span></div>
+            <div class="car-price">¥8,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥8,000 · ②¥9,000 · ③¥10,000 · ④¥12,000 · ⑤¥14,000</div></details>
+            <a class="car-yt" href="https://youtu.be/pqvRADh9x2w" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/voxy80.jpg" alt="Toyota Voxy 80系" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Voxy 80系</h3>
+            <div class="car-tags"><span>7人</span><span>大型家庭車</span><span>2000cc</span><span>🧳 2×28吋+2×20吋</span></div>
+            <div class="car-price">¥9,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥9,000 · ②¥10,000 · ③¥12,000 · ④¥14,000 · ⑤¥16,000</div></details>
+            <a class="car-yt" href="https://youtu.be/LglYJJbh5Io" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/voxy90.jpg" alt="Toyota Voxy 90系" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Voxy 90系</h3>
+            <div class="car-tags"><span>7人</span><span>大型家庭車</span><span>2000cc</span><span>🧳 2×28吋+2×20吋</span></div>
+            <div class="car-price">¥12,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥12,000 · ②¥13,000 · ③¥15,000 · ④¥17,000 · ⑤¥20,000</div></details>
+            <a class="car-yt" href="https://youtu.be/am3LXZOiGcQ" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/serena.jpg" alt="Nissan Serena" loading="lazy">
+          <div class="car-body">
+            <h3>Nissan Serena</h3>
+            <div class="car-tags"><span>8人</span><span>大型家庭車</span><span>2000cc</span><span>🧳 2×28吋+2×20吋</span></div>
+            <div class="car-price">¥12,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥12,000 · ②¥13,000 · ③¥15,000 · ④¥17,000 · ⑤¥20,000</div></details>
+            <a class="car-yt" href="https://youtu.be/WNQ0ikXp4rE" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/vellfire.jpg" alt="Toyota Vellfire 20系" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Vellfire 20系</h3>
+            <div class="car-tags"><span>7人</span><span>豪華 MPV</span><span>2500cc</span><span>🧳 4×28吋+2×20吋</span></div>
+            <div class="car-price">¥11,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥11,000 · ②¥12,000 · ③¥13,000 · ④¥14,000 · ⑤¥18,000</div></details>
+            <a class="car-yt" href="https://youtu.be/ANabCTyB24o" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/alp308.jpg" alt="Toyota Alphard 30系（8座）" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Alphard 30系（8座）</h3>
+            <div class="car-tags"><span>8人</span><span>豪華 MPV</span><span>2500cc</span><span>🧳 4×28吋+2×20吋</span></div>
+            <div class="car-price">¥16,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥16,000 · ②¥18,000 · ③¥20,000 · ④¥22,000 · ⑤¥28,000</div></details>
+            <a class="car-yt" href="https://youtu.be/0lBbPEMyUqE" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/alp307.jpg" alt="Toyota Alphard 30系（7座）" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Alphard 30系（7座）</h3>
+            <div class="car-tags"><span>7人</span><span>豪華 MPV</span><span>2500cc</span><span>🧳 4×28吋+2×20吋</span></div>
+            <div class="car-price">¥16,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥16,000 · ②¥18,000 · ③¥20,000 · ④¥22,000 · ⑤¥28,000</div></details>
+            <a class="car-yt" href="https://youtu.be/UmE9ER4SHLk" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/alp40.jpg" alt="Toyota Alphard 40系（7座）" loading="lazy">
+          <div class="car-body">
+            <h3>Toyota Alphard 40系（7座）</h3>
+            <div class="car-tags"><span>7人</span><span>豪華 MPV</span><span>2500cc</span><span>🧳 4×28吋+2×20吋</span></div>
+            <div class="car-price">¥25,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥25,000 · ②¥28,000 · ③¥30,000 · ④¥35,000 · ⑤¥40,000</div></details>
+            
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/rangerover.jpg" alt="Range Rover Evoque" loading="lazy">
+          <div class="car-body">
+            <h3>Range Rover Evoque</h3>
+            <div class="car-tags"><span>5人</span><span>豪華 SUV</span><span>2000cc</span><span>🧳 2×28吋+1×20吋</span></div>
+            <div class="car-price">¥13,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥13,000 · ②¥15,000 · ③¥16,000 · ④¥17,000 · ⑤¥22,000</div></details>
+            <a class="car-yt" href="https://youtu.be/PVUWEG-0nLA" target="_blank" rel="noopener">▶ 實拍影片</a>
+          </div>
+        </div>
+        <div class="car-card">
+          <img src="okiblues_cars/porsche718.jpg" alt="Porsche 718" loading="lazy">
+          <div class="car-body">
+            <h3>Porsche 718</h3>
+            <div class="car-tags"><span>2人</span><span>跑車</span><span>2000cc</span><span>🧳 2×20吋</span></div>
+            <div class="car-price">¥24,000<small>起／日</small></div>
+            <details class="car-seasons"><summary>各時段每日價</summary><div>①¥24,000 · ②¥26,000 · ③¥28,000 · ④¥30,000 · ⑤¥32,000</div></details>
+            
+          </div>
+        </div>
+        </div>
+        <p class="section-note" style="margin-top:14px;">📅 長租優惠：15 日以上 85 折｜30 日以上月租 7 折。
     </div>
 
     <div class="card">
@@ -399,6 +648,7 @@
                 <h3>基本保險</h3>
                 <div class="price">已含租金內</div>
                 <ul>
+                    <li><strong>適合</strong>：熟悉日本駕駛、短期或預算型旅客</li>
                     <li>車輛自負額 15–40 萬日圓（依車款）</li>
                     <li>含第三者責任保險（無上限）</li>
                     <li>含 NOC 營業損失費</li>
@@ -409,6 +659,7 @@
                 <h3>一般保險</h3>
                 <div class="price">+¥1,500／天</div>
                 <ul>
+                    <li><strong>適合</strong>：多數一般旅客</li>
                     <li>自負額降為 5–10 萬日圓</li>
                     <li>對人／對物／車輛皆適用</li>
                     <li>第三者責任無上限、含 NOC</li>
@@ -419,6 +670,7 @@
                 <h3>全面保險</h3>
                 <div class="price">+¥2,500／天</div>
                 <ul>
+                    <li><strong>適合</strong>：初次沖繩自駕、家庭旅遊、求安心（唯一零自付）</li>
                     <li>事故自負額 0 日圓</li>
                     <li>NOC 0 日圓</li>
                     <li>對人／對物／車損皆免負擔</li>
