@@ -1,0 +1,45 @@
+name: Sona Daily Draft
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 21 * * *'  # UTC 21:00 = 台灣 05:00，比 06:00 的帖文同步早一小時
+
+permissions:
+  contents: read
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Asia/Taipei  # sheet_draft_io.py 的「今天」要用台灣時間算
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install gspread
+
+      - name: Sona 起草（Claude Code）
+        uses: anthropics/claude-code-action@v1
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          DISCORD_WEBHOOK_SONA: ${{ secrets.DISCORD_WEBHOOK_SONA }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: '讀 tools/draft_instructions.md，嚴格照著執行。'
+          claude_args: '--allowedTools "Bash(python3:*),Bash(pip:*),Bash(cd:*),Read,Glob,Grep"'
+
+      - name: 失敗通知 Discord
+        if: failure()
+        env:
+          DISCORD_WEBHOOK_SONA: ${{ secrets.DISCORD_WEBHOOK_SONA }}
+        run: |
+          python3 -c "from _discord import notify_discord; notify_discord('❌ Sona 每日起草 workflow 失敗,請查 GitHub Actions log')"

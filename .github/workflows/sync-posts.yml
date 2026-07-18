@@ -24,6 +24,7 @@ jobs:
       - name: Sync posts from Google Sheet
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          DISCORD_WEBHOOK_SONA: ${{ secrets.DISCORD_WEBHOOK_SONA }}
         run: python3 sync_posts.py
 
       - name: Sync YouTube channel stats
