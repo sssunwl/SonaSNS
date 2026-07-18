@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKIPLAYGROUND — 品牌介紹與報告 | SonaSNS</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif;
+        background: linear-gradient(135deg, #fff6ec 0%, #ffe0c2 100%);
+        min-height: 100vh; padding: 20px; color: #3a2c1a;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .site-nav { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+    .site-nav a {
+        padding: 10px 22px; border: 2px solid #e8871e; background: white; color: #e8871e;
+        border-radius: 25px; font-weight: 600; text-decoration: none; transition: all 0.3s;
+    }
+    .site-nav a.active { background: #e8871e; color: white; }
+    .site-nav a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(232, 135, 30, 0.3); }
+
+    .crumb { text-align: center; margin-bottom: 26px; font-size: 0.9em; color: #7a6a55; }
+    .crumb a { color: #e8871e; text-decoration: none; font-weight: 600; }
+    .crumb span { font-weight: 700; color: #3a2c1a; }
+
+    header { text-align: center; margin-bottom: 30px; }
+    header h1 { font-size: 2.6em; margin-bottom: 8px; }
+    header .slogan { color: #e8871e; font-weight: 700; font-size: 1.1em; margin-bottom: 6px; }
+    header p { color: #7a6a55; }
+
+    .card {
+        background: white; border-radius: 16px; padding: 28px; margin-bottom: 22px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+    .card h2 { font-size: 1.35em; margin-bottom: 16px; color: #3a2c1a; }
+
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .info-item { background: #fff8f0; border-radius: 10px; padding: 14px 16px; border-left: 4px solid #e8871e; }
+    .info-item .k { font-size: 0.8em; color: #b0895f; font-weight: 600; margin-bottom: 4px; }
+    .info-item .v { color: #3a2c1a; font-weight: 600; }
+    .info-item .v a { color: #e8871e; text-decoration: none; }
+
+    ul.pts { list-style: none; }
+    ul.pts li { padding: 8px 0 8px 26px; position: relative; color: #4a3c2a; line-height: 1.5; }
+    ul.pts li::before { content: '🎡'; position: absolute; left: 0; }
+
+    .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .col-item { background: #fff8f0; border-radius: 10px; padding: 16px; }
+    .col-item h3 { font-size: 1em; color: #e8871e; margin-bottom: 6px; }
+    .col-item p { font-size: 0.88em; color: #6a5a45; line-height: 1.5; }
+
+    .month-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .month-tab {
+        padding: 7px 16px; border-radius: 20px; border: 2px solid #e8871e; background: white;
+        color: #e8871e; font-weight: 600; font-size: 0.9em; cursor: pointer; transition: all 0.2s;
+    }
+    .month-tab.active { background: #e8871e; color: white; }
+    .month-tab.empty { border-color: #d8c4ad; color: #b0a08a; }
+    .report-item {
+        display: flex; justify-content: space-between; align-items: center; background: #fff8f0;
+        border-radius: 10px; padding: 16px 20px; text-decoration: none; border-left: 4px solid #e8871e;
+        transition: all 0.2s;
+    }
+    .report-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(232,135,30,0.2); }
+    .report-item .title { color: #3a2c1a; font-weight: 700; }
+    .report-item .desc { color: #8a7a65; font-size: 0.85em; margin-top: 2px; }
+    .report-item .arrow { color: #e8871e; font-size: 1.3em; }
+    .report-empty {
+        background: #faf6f0; border: 1px dashed #d8c4ad; border-radius: 10px; padding: 22px;
+        text-align: center; color: #a89880; font-size: 0.92em;
+    }
+
+    .cta-btn {
+        display: inline-block; background: #e8871e; color: white; padding: 12px 26px;
+        border-radius: 25px; text-decoration: none; font-weight: 700; margin-top: 6px;
+    }
+
+    footer { text-align: center; color: #a89880; font-size: 0.9em; margin-top: 30px; padding-top: 20px; }
+    footer a { color: #e8871e; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="site-nav">
+        <a href="index.html">📅 首頁</a>
+        <a href="brand.html">🏢 BRAND</a>
+        <a href="tools.html">🧰 工具</a>
+    </div>
+    <div class="crumb"><a href="brand.html">BRAND</a> ／ <span>🎡 OKIPLAYGROUND</span></div>
+
+    <header>
+        <h1>🎡 OKIPLAYGROUND</h1>
+        <p class="slogan">沖繩最在地的中文旅遊資訊社群</p>
+        <p>沖繩遊樂園 — 品牌介紹與自然發文成效報告</p>
+    </header>
+
+    <div class="card">
+        <h2>📋 品牌概覽</h2>
+        <div class="info-grid">
+            <div class="info-item"><div class="k">定位</div><div class="v">在地中文旅遊資訊平台</div></div>
+            <div class="info-item"><div class="k">核心精神</div><div class="v">在地感 · 實用 · 探索真實沖繩</div></div>
+            <div class="info-item"><div class="k">主力平台</div><div class="v"><a href="https://www.facebook.com/groups/okiplayground/" target="_blank">Facebook 社群 →</a></div></div>
+            <div class="info-item"><div class="k">資訊網站</div><div class="v"><a href="https://sssunwl.github.io/okinews/" target="_blank">okinews →</a></div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🎯 受眾與內容</h2>
+        <ul class="pts">
+            <li>計劃來沖繩或已在沖繩的華人旅客</li>
+            <li>對沖繩在地文化、祭典、美食有興趣的人</li>
+            <li>想避開觀光人潮、找私房景點的旅客</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🗂️ 固定欄目</h2>
+        <div class="cols">
+            <div class="col-item"><h3>今天是… 系列</h3><p>逢特殊節日／紀念日，從沖繩角度切入的在地體驗建議。</p></div>
+            <div class="col-item"><h3>週天氣速報</h3><p>每週固定模板：降雨機率 + UV 指數 + 穿搭與海上活動安全提醒。</p></div>
+            <div class="col-item"><h3>活動祭典・航班優惠</h3><p>第一手在地情報，帶旅客探索真實的沖繩。</p></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📊 自然發文成效報告</h2>
+        <div class="month-tabs" id="monthTabs"></div>
+        <div id="reportBody"></div>
+    </div>
+
+    <div class="card" style="text-align:center;">
+        <h2>📣 加入社群</h2>
+        <p style="color:#6a5a45; margin-bottom:12px;">所有內容導流到 Facebook 社群交流</p>
+        <a class="cta-btn" href="https://www.facebook.com/groups/okiplayground/" target="_blank">前往 OKIPLAYGROUND 社群 →</a>
+    </div>
+
+    <footer>
+        <p>語調：像在地熟朋友、輕鬆有溫度帶點詩意 ｜ Hashtag 中日混合，最多 5 個</p>
+        <p><a href="brand.html">← 回 BRAND</a></p>
+    </footer>
+</div>
+
+<script>
+    // 註：organic 報告依「內部先審→確認才對外」規則，暫不公開。
+    // 要上線某月，把該月 url 改成 reports/okiplayground/organic_YYYY-MM.html 並一起 commit 報告檔即可。
+    const organicReports = {
+        '2026-03': null,
+        '2026-04': null,
+        '2026-05': null,
+        '2026-06': null,
+        '2026-07': null
+    };
+
+    function renderReport(month) {
+        document.querySelectorAll('.month-tab').forEach(t => t.classList.toggle('active', t.dataset.month === month));
+        const body = document.getElementById('reportBody');
+        const r = organicReports[month];
+        if (r) {
+            body.innerHTML = `<a class="report-item" href="${r.url}">
+                <div><div class="title">${r.title}</div><div class="desc">${r.desc}</div></div>
+                <div class="arrow">→</div></a>`;
+        } else {
+            const [y, m] = month.split('-');
+            body.innerHTML = `<div class="report-empty">📭 ${y}年${parseInt(m)}月 報告準備中<br><small>此月份尚未產出成效報告</small></div>`;
+        }
+    }
+
+    (function init() {
+        const tabs = document.getElementById('monthTabs');
+        const months = Object.keys(organicReports);
+        months.forEach(month => {
+            const [, m] = month.split('-');
+            const btn = document.createElement('button');
+            btn.className = 'month-tab' + (organicReports[month] ? '' : ' empty');
+            btn.dataset.month = month;
+            btn.textContent = `${parseInt(m)}月`;
+            btn.onclick = () => renderReport(month);
+            tabs.appendChild(btn);
+        });
+        const latest = months.filter(mo => organicReports[mo]).pop() || months[months.length - 1];
+        renderReport(latest);
+    })();
+</script>
+</body>
+</html>

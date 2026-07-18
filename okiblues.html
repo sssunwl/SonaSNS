@@ -155,6 +155,23 @@
     .report-item .desc { color: #777; font-size: 0.85em; margin-top: 2px; }
     .report-item .arrow { color: #0b6ea8; font-size: 1.3em; }
 
+    .month-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .month-tab {
+        padding: 7px 16px; border-radius: 20px; border: 2px solid #0b6ea8;
+        background: white; color: #0b6ea8; font-weight: 600; font-size: 0.9em;
+        cursor: pointer; transition: all 0.2s;
+    }
+    .month-tab.active { background: #0b6ea8; color: white; }
+    .month-tab.empty { border-color: #c9d2da; color: #9aa6b1; }
+    .month-tab.empty.active { background: #9aa6b1; border-color: #9aa6b1; color: white; }
+    .report-empty {
+        background: #f5f6f8; border: 1px dashed #c9d2da; border-radius: 10px;
+        padding: 22px; text-align: center; color: #8a97a3; font-size: 0.92em;
+    }
+    .crumb { text-align: center; margin: -10px 0 26px; font-size: 0.9em; color: #5a6c7d; }
+    .crumb a { color: #0b6ea8; text-decoration: none; font-weight: 600; }
+    .crumb span { font-weight: 700; color: #0d2637; }
+
     footer {
         text-align: center;
         color: #7f8c8d;
@@ -225,11 +242,11 @@
 <body>
 <div class="container">
     <div class="site-nav">
-        <a href="index.html">📅 帖文預覽</a>
-        <a href="brand.html">🏢 Brand</a>
-        <a href="okiblues.html" class="active">🚗 OKIBLUES</a>
-        <a href="IGcarousell/">🎠 IGcarousell</a>
+        <a href="index.html">📅 首頁</a>
+        <a href="brand.html">🏢 BRAND</a>
+        <a href="tools.html">🧰 工具</a>
     </div>
+    <div class="crumb"><a href="brand.html">BRAND</a> ／ <span>🚗 OKIBLUES</span></div>
 
     <header>
         <h1>🚗 OKIBLUES</h1>
@@ -563,16 +580,54 @@
 
     <div class="card">
         <h2>📊 廣告成效報告</h2>
-        <div class="report-list">
-            <a class="report-item" href="reports/okiblues/ads_report_2026-06.html">
-                <div>
-                    <div class="title">2026年6月 廣告成效互動報告</div>
-                    <div class="desc">Meta Ads 帳戶成效分析 — Awareness 組排名、HK/TW 受眾異常值拆解、素材診斷、可執行建議</div>
-                </div>
-                <div class="arrow">→</div>
-            </a>
-        </div>
+        <div class="month-tabs" id="monthTabs"></div>
+        <div class="report-list" id="reportBody"></div>
     </div>
+
+    <script>
+        // 每月報告：有檔案就給連結，沒有標「準備中」
+        const adsReports = {
+            '2026-03': null,
+            '2026-04': null,
+            '2026-05': null,
+            '2026-06': {
+                url: 'reports/okiblues/ads_report_2026-06.html',
+                title: '2026年6月 廣告成效互動報告',
+                desc: 'Meta Ads 帳戶成效分析 — Awareness 組排名、HK/TW 受眾異常值拆解、素材診斷、可執行建議'
+            }
+        };
+
+        function renderReport(month) {
+            document.querySelectorAll('.month-tab').forEach(t => t.classList.toggle('active', t.dataset.month === month));
+            const body = document.getElementById('reportBody');
+            const r = adsReports[month];
+            if (r) {
+                body.innerHTML = `<a class="report-item" href="${r.url}">
+                    <div><div class="title">${r.title}</div><div class="desc">${r.desc}</div></div>
+                    <div class="arrow">→</div></a>`;
+            } else {
+                const [y, m] = month.split('-');
+                body.innerHTML = `<div class="report-empty">📭 ${y}年${parseInt(m)}月 報告準備中<br><small>此月份尚未產出廣告成效報告</small></div>`;
+            }
+        }
+
+        (function initReports() {
+            const tabs = document.getElementById('monthTabs');
+            const months = Object.keys(adsReports);
+            months.forEach(month => {
+                const [y, m] = month.split('-');
+                const btn = document.createElement('button');
+                btn.className = 'month-tab' + (adsReports[month] ? '' : ' empty');
+                btn.dataset.month = month;
+                btn.textContent = `${parseInt(m)}月`;
+                btn.onclick = () => renderReport(month);
+                tabs.appendChild(btn);
+            });
+            // 預設顯示最新一個有報告的月份，沒有就顯示最後一個月
+            const latest = months.filter(mo => adsReports[mo]).pop() || months[months.length - 1];
+            renderReport(latest);
+        })();
+    </script>
 
     <footer>
         <p>語調：專業有溫度、質感、不誇張 ｜ Meta 廣告合規：禁用最高級詞（最便宜/第一/保證）</p>

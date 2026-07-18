@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工具 — SonaSNS</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh; padding: 20px; color: #2c3e50;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .site-nav { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
+    .site-nav a {
+        padding: 10px 22px; border: 2px solid #667eea; background: white; color: #667eea;
+        border-radius: 25px; font-weight: 600; text-decoration: none; transition: all 0.3s;
+    }
+    .site-nav a.active { background: #667eea; color: white; }
+    .site-nav a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
+
+    header { text-align: center; margin-bottom: 34px; }
+    header h1 {
+        font-size: 2.5em; margin-bottom: 8px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    header p { color: #5a6c7d; }
+
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .tool-card {
+        display: block; background: white; border-radius: 16px; padding: 26px; text-decoration: none;
+        color: inherit; box-shadow: 0 6px 20px rgba(0,0,0,0.06); border-top: 4px solid #667eea; transition: all 0.25s;
+    }
+    .tool-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(102,126,234,0.25); }
+    .tool-card.threads { border-top-color: #6b3fa0; }
+    .tool-card .emoji { font-size: 2.2em; }
+    .tool-card h2 { font-size: 1.4em; margin: 8px 0 6px; }
+    .tool-card .desc { color: #777; font-size: 0.9em; line-height: 1.5; }
+    .tool-card .enter { color: #667eea; font-weight: 700; margin-top: 12px; display: inline-block; }
+    .tool-card.threads .enter { color: #6b3fa0; }
+
+    /* Threads 生成器 */
+    .gen {
+        background: white; border-radius: 18px; padding: 30px; box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        border-top: 5px solid #6b3fa0;
+    }
+    .gen h2 { font-size: 1.6em; margin-bottom: 6px; color: #4a2d73; }
+    .gen .sub { color: #7a6a90; margin-bottom: 20px; }
+
+    .sell { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-bottom: 26px; }
+    .sell-item { background: #f4f0fb; border-radius: 12px; padding: 14px 16px; }
+    .sell-item .ico { font-size: 1.3em; }
+    .sell-item .t { font-weight: 700; color: #4a2d73; margin: 4px 0 2px; font-size: 0.95em; }
+    .sell-item .d { color: #6a5a80; font-size: 0.82em; line-height: 1.45; }
+
+    .safe-note {
+        background: linear-gradient(135deg, #eef6ff, #f4f0fb); border: 1px solid #d7e3f5; border-radius: 12px;
+        padding: 14px 18px; margin-bottom: 26px; font-size: 0.9em; color: #3a4a63; line-height: 1.55;
+    }
+    .safe-note strong { color: #6b3fa0; }
+
+    .picker-label { font-weight: 700; color: #4a2d73; margin-bottom: 10px; }
+    .personas { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+    .persona {
+        padding: 9px 16px; border-radius: 22px; border: 2px solid #6b3fa0; background: white; color: #6b3fa0;
+        font-weight: 600; font-size: 0.9em; cursor: pointer; transition: all 0.2s;
+    }
+    .persona:hover { background: #f4f0fb; }
+    .persona.active { background: #6b3fa0; color: white; }
+
+    .output-wrap { display: none; }
+    .output-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
+    .output-head .who { font-weight: 700; color: #4a2d73; }
+    .output-actions { display: flex; gap: 8px; }
+    .out-btn {
+        border: none; border-radius: 8px; padding: 8px 16px; font-weight: 600; font-size: 0.85em; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-regen { background: #eee7f7; color: #6b3fa0; }
+    .btn-regen:hover { background: #e0d3f0; }
+    .btn-copy { background: #6b3fa0; color: white; }
+    .btn-copy:hover { background: #57318a; }
+    .output {
+        background: #faf8fe; border: 1px solid #e6dcf5; border-radius: 12px; padding: 20px;
+        white-space: pre-wrap; line-height: 1.7; color: #2f2543; font-size: 1.02em; min-height: 80px;
+    }
+    .placeholder { color: #9a8ab0; text-align: center; padding: 30px 10px; }
+
+    .copy-success {
+        position: fixed; bottom: 24px; right: 24px; background: #27ae60; color: white; padding: 12px 22px;
+        border-radius: 10px; font-weight: 600; box-shadow: 0 6px 20px rgba(0,0,0,0.2); z-index: 99;
+    }
+
+    footer { text-align: center; color: #7f8c8d; font-size: 0.88em; margin-top: 34px; padding-top: 20px; }
+    footer a { color: #667eea; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="site-nav">
+        <a href="index.html">📅 首頁</a>
+        <a href="brand.html">🏢 BRAND</a>
+        <a href="tools.html" class="active">🧰 工具</a>
+    </div>
+
+    <header>
+        <h1>🧰 工具</h1>
+        <p>SonaSNS 內容生產工具箱</p>
+    </header>
+
+    <div class="tool-grid">
+        <a class="tool-card" href="IGcarousell/">
+            <div class="emoji">🎠</div>
+            <h2>IG Carousell</h2>
+            <div class="desc">IG 輪播貼文模板生成器 — 每週推薦題材、一鍵填整篇 10 頁內容。</div>
+            <span class="enter">開啟工具 →</span>
+        </a>
+        <a class="tool-card threads" href="#threads-gen">
+            <div class="emoji">🧵</div>
+            <h2>Threads 帖文生成器</h2>
+            <div class="desc">選產業人設，一鍵套用出可複製的 Threads 貼文範本。</div>
+            <span class="enter">往下開始 →</span>
+        </a>
+    </div>
+
+    <div class="gen" id="threads-gen">
+        <h2>🧵 Threads 帖文生成器</h2>
+        <p class="sub">選一個產業人設，直接套用產出貼文 — 增加曝光，讓客人主動找上門。</p>
+
+        <div class="sell">
+            <div class="sell-item"><div class="ico">🔥</div><div class="t">每天自動出新梗</div><div class="d">持續有內容可發，維持帳號活躍與觸及。</div></div>
+            <div class="sell-item"><div class="ico">📈</div><div class="t">增加曝光</div><div class="d">高頻優質貼文推升演算法能見度。</div></div>
+            <div class="sell-item"><div class="ico">🎯</div><div class="t">客人主動找上門</div><div class="d">內容帶出信任，把讀者變成詢問。</div></div>
+            <div class="sell-item"><div class="ico">💬</div><div class="t">留言秒回不漏接</div><div class="d">互動即時跟上，機會不流失。</div></div>
+            <div class="sell-item"><div class="ico">🧑‍💼</div><div class="t">10 種產業人設</div><div class="d">房仲、汽車、保險、美業…直接套用。</div></div>
+            <div class="sell-item"><div class="ico">🔒</div><div class="t">Meta 官方 API</div><div class="d">不需提供帳號密碼，安全合規。</div></div>
+        </div>
+
+        <div class="safe-note">
+            🔒 <strong>安全說明：</strong>正式版走 <strong>Meta 官方 API</strong> 授權，你只需在 Meta 官方頁面點擊授權即可，<strong>全程不需要提供帳號密碼</strong>，隨時可在 Meta 設定裡收回權限。此頁下方為<strong>範本產生器</strong>示範（在你瀏覽器本機運算、不上傳任何資料），可直接複製貼到 Threads 使用。
+        </div>
+
+        <div class="picker-label">① 選擇產業人設</div>
+        <div class="personas" id="personas"></div>
+
+        <div class="output-wrap" id="outputWrap">
+            <div class="output-head">
+                <span class="who" id="who"></span>
+                <div class="output-actions">
+                    <button class="out-btn btn-regen" onclick="regen()">🔄 換一則</button>
+                    <button class="out-btn btn-copy" onclick="copyOut()">📋 複製</button>
+                </div>
+            </div>
+            <div class="output" id="output"></div>
+        </div>
+        <div class="placeholder" id="placeholder">👆 選一個產業，馬上生成一則 Threads 貼文</div>
+    </div>
+
+    <footer>
+        <p>💡 範本為示範用途，發佈前請依實際店家資訊與 Meta 廣告規範微調</p>
+        <p><a href="index.html">← 回首頁</a></p>
+    </footer>
+</div>
+
+<script>
+    // 10 種產業人設，每個含數則 Threads 風格範本（鉤子→價值→軟性 CTA）
+    const personas = {
+        '🏠 房仲': [
+            "很多人買房只看總價，卻忽略了「每月實際負擔」。\n\n同樣 1000 萬的房子，貸款方案不同，20 年下來差距可以買一台車。\n\n看房前先算清楚這 3 個數字，你會少走很多冤枉路 👇\n有問題歡迎留言，我一題一題回。",
+            "「現在是進場好時機嗎？」這題我每天被問。\n\n說真的，沒有絕對答案 — 但有絕對錯的做法：等到完全沒風險才出手。\n\n那一天不會來。準備好自備款和穩定收入，比猜時機更重要。",
+            "帶看 100 間房教會我一件事：\n\n屋主最想藏的，往往不是漏水，是「鄰居」。\n\n看房挑平日晚上再去一次，你會看到白天看不到的真相。"
+        ],
+        '🚗 汽車': [
+            "買車最貴的不是車價，是「你沒問清楚的那些」。\n\n領牌、保險、稅金、後續保養 — 這些加起來常常嚇到人。\n\n下訂前把這張總花費清單問過一輪，業務會對你另眼相看。",
+            "二手車看里程數就好？\n\n那你可能會踩雷。里程可以調，但這 3 個地方不會騙人：安全帶織帶、煞車踏板、油門橡皮的磨損。\n\n下次看車先看它們。",
+            "很多人以為休旅車一定比較耗油。\n\n其實同級距下，開車習慣的影響比車型大得多。\n\n猛踩猛煞一趟市區，再省油的車也救不回來。"
+        ],
+        '🛡️ 保險': [
+            "保險不是買越多越好，是「買對缺口」。\n\n先問自己一個問題：如果我明天無法工作 6 個月，家裡撐得住嗎？\n\n答案會告訴你，該優先補的是哪一塊。",
+            "「這張保單我繳了好幾年，到底保什麼？」\n\n如果你也答不出來，代表該做一次健檢了。\n\n花 30 分鐘把保單攤開看清楚，比再買一張新的更重要。",
+            "理賠被拒最常見的原因不是保險公司壞，\n\n是投保時「沒據實告知」。\n\n誠實填健康告知，是對未來的自己最好的保護。"
+        ],
+        '💅 美業': [
+            "做臉不是越痛越有效。\n\n過度清潔、過度去角質，反而讓皮膚屏障越來越薄。\n\n真正的保養，是讓皮膚有能力自己好起來。",
+            "很多人染完髮三週就變色，以為是設計師技術問題。\n\n其實 8 成是「洗頭水太熱 + 洗太勤」。\n\n護色，從你家浴室開始。",
+            "指甲一直斷，擦鈣油沒用？\n\n因為問題常常不在指甲，在你的卸甲方式。\n\n硬摳硬撕，再貴的保養都白費。"
+        ],
+        '🍽️ 餐飲': [
+            "外帶生意好不好，關鍵不在菜，在「打開那一刻」。\n\n湯灑了、麵糊了、包裝冷冰冰 — 再好吃都扣分。\n\n我們花最多心思的，其實是你看不到的包裝細節。",
+            "點餐選擇障礙？教你一招：\n\n第一次來，直接點「招牌 + 老闆推薦」。\n\n這兩樣通常是一間店最有把握、也最想被記住的味道。",
+            "為什麼有些店你會一去再去？\n\n不是因為最好吃，是因為「穩定」。\n\n每一次都一樣好，才是真功夫。"
+        ],
+        '💪 健身': [
+            "練了三個月沒變化？先別怪自己不夠努力。\n\n多數人卡關不是訓練不夠，是「吃不對 + 睡不夠」。\n\n身體是在休息時變強的，不是在健身房。",
+            "深蹲膝蓋痛，不一定是姿勢錯。\n\n很多時候是「腳踝太緊」，讓膝蓋替它扛。\n\n練前花 5 分鐘鬆開腳踝，你會有感。",
+            "減脂最大的敵人不是甜點，是「週末心態」。\n\n平日很自律，週末兩天全放掉 — 一週的努力就這樣還回去。\n\n允許自己吃，但別失控。"
+        ],
+        '📚 教育補習': [
+            "孩子成績卡住，補更多不一定有用。\n\n很多時候問題不是「不夠努力」，是「用錯方法背」。\n\n找到適合他的學習節奏，比多上兩堂課更關鍵。",
+            "考前狂刷題有用嗎？有，但有前提：\n\n你得「訂正到懂」，不是訂正到有寫。\n\n錯題本才是分數的金礦。",
+            "英文學不好，常常不是不夠聰明，\n\n是「怕講錯」。\n\n開口的勇氣，比背更多單字重要得多。"
+        ],
+        '🛒 電商': [
+            "商品照拍得漂亮卻不出單？\n\n問題可能不在照片，在「第一句文案」。\n\n消費者滑手機只給你 1 秒 — 那句話要打中痛點，不是形容美。",
+            "退貨率高，別急著怪客人。\n\n很多時候是「商品頁講得太美、太模糊」。\n\n把尺寸、材質、實際使用情境寫清楚，退貨自然降。",
+            "為什麼有些小店回購率超高？\n\n因為他們把「出貨」當成第二次行銷。\n\n一張手寫小卡的成本，遠低於再獲客一次。"
+        ],
+        '💉 醫美診所': [
+            "醫美不是越貴越好，是「適合你的臉」。\n\n同一項療程，有人做完自然發光，有人做完很僵。\n\n差別常常在「劑量與佈點」，也就是醫師的判斷。",
+            "諮詢時只問價格，你可能會後悔。\n\n更該問的是：這位醫師一年做幾例？併發症怎麼處理？\n\n安全，永遠排在效果前面。",
+            "打完玻尿酸就想馬上看到完美？\n\n給它 1–2 週消腫定型。\n\n太早評價、太早補打，反而容易過量。"
+        ],
+        '✈️ 旅遊': [
+            "自由行最花時間的不是玩，是「決定」。\n\n景點、交通、餐廳 — 每一個都在燒你的假期。\n\n先訂好每天 1 個主軸，其他隨性，你會玩得更放鬆。",
+            "訂房別只看評分，看「最新的三則差評」。\n\n5 星裡藏著最真實的雷點。\n\n花兩分鐘，省下一趟壞心情。",
+            "旅行最值得花錢的地方，是「體驗」不是「住宿」。\n\n房間你只是睡覺，但那頓在地料理、那場夕陽，會記一輩子。"
+        ]
+    };
+
+    let currentPersona = null;
+    let lastIndex = -1;
+
+    function pick(name, el) {
+        currentPersona = name;
+        document.querySelectorAll('.persona').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+        lastIndex = -1;
+        regen();
+        document.getElementById('placeholder').style.display = 'none';
+        document.getElementById('outputWrap').style.display = 'block';
+    }
+
+    function regen() {
+        if (!currentPersona) return;
+        const arr = personas[currentPersona];
+        let i = Math.floor(Math.random() * arr.length);
+        if (arr.length > 1) { while (i === lastIndex) i = Math.floor(Math.random() * arr.length); }
+        lastIndex = i;
+        document.getElementById('who').textContent = currentPersona + ' 人設';
+        document.getElementById('output').textContent = arr[i];
+    }
+
+    function copyOut() {
+        navigator.clipboard.writeText(document.getElementById('output').textContent).then(() => {
+            const m = document.createElement('div');
+            m.className = 'copy-success'; m.textContent = '✅ 已複製，可貼到 Threads';
+            document.body.appendChild(m); setTimeout(() => m.remove(), 2000);
+        });
+    }
+
+    (function init() {
+        const wrap = document.getElementById('personas');
+        Object.keys(personas).forEach(name => {
+            const b = document.createElement('button');
+            b.className = 'persona'; b.textContent = name;
+            b.onclick = () => pick(name, b);
+            wrap.appendChild(b);
+        });
+    })();
+</script>
+</body>
+</html>

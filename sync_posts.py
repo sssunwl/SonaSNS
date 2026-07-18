@@ -44,6 +44,7 @@ def get_posts_from_sheet():
     hashtags_idx = headers.index('Hashtags')
     youtube_idx = headers.index('YouTube連結')
     status_idx = headers.index('發佈狀態')
+    threads_idx = headers.index('Threads文案') if 'Threads文案' in headers else -1
 
     posts = []
     for row in all_data[1:]:
@@ -70,7 +71,8 @@ def get_posts_from_sheet():
                     'content': content,
                     'hashtags': (row[hashtags_idx].split() if hashtags_idx < len(row) else []),
                     'mediaLink': (row[youtube_idx] if youtube_idx < len(row) and row[youtube_idx].startswith('http') else None),
-                    'status': (row[status_idx] if status_idx < len(row) else '待起稿')
+                    'status': (row[status_idx] if status_idx < len(row) else '待起稿'),
+                    'threads': (row[threads_idx].strip() if 0 <= threads_idx < len(row) else '')
                 }
                 posts.append(post)
 
@@ -81,6 +83,7 @@ def generate_posts_js(posts):
     js_code = "const posts = [\n"
     for i, post in enumerate(posts):
         content = post['content'].replace('\\', '\\\\').replace('`', '\\`')
+        threads = post.get('threads', '').replace('\\', '\\\\').replace('`', '\\`')
         hashtags_str = ', '.join([f"'{h}'" for h in post['hashtags']])
         media = f"'{post['mediaLink']}'" if post['mediaLink'] else "null"
         comma = "," if i < len(posts) - 1 else ""
@@ -94,6 +97,7 @@ def generate_posts_js(posts):
                 topic: '{topic}',
                 type: '{post['type']}',
                 content: `{content}`,
+                threads: `{threads}`,
                 hashtags: [{hashtags_str}],
                 mediaLink: {media},
                 status: '{post['status']}'
