@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visnow — 品牌介紹與報告 | SonaSNS</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif;
+        background: linear-gradient(135deg, #eef8fb 0%, #d3ecf5 100%);
+        min-height: 100vh; padding: 20px; color: #14313d;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .site-nav { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+    .site-nav a {
+        padding: 10px 22px; border: 2px solid #0e7c9c; background: white; color: #0e7c9c;
+        border-radius: 25px; font-weight: 600; text-decoration: none; transition: all 0.3s;
+    }
+    .site-nav a.active { background: #0e7c9c; color: white; }
+    .site-nav a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(14, 124, 156, 0.3); }
+
+    .crumb { text-align: center; margin-bottom: 20px; font-size: 0.9em; color: #4a6b78; }
+    .crumb a { color: #0e7c9c; text-decoration: none; font-weight: 600; }
+    .crumb span { font-weight: 700; color: #14313d; }
+
+    header { text-align: center; margin-bottom: 30px; }
+    header h1 { font-size: 2.6em; margin-bottom: 8px; }
+    header .slogan { color: #0e7c9c; font-weight: 700; font-size: 1.1em; margin-bottom: 6px; }
+    header p { color: #4a6b78; }
+
+    /* 品牌頁分頁列 */
+    .brand-tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px; }
+    .brand-tab {
+        padding: 10px 22px; border-radius: 25px; border: 2px solid #0e7c9c; background: white;
+        color: #0e7c9c; font-weight: 700; font-size: 0.95em; cursor: pointer; transition: all 0.2s;
+    }
+    .brand-tab:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(14,124,156,0.2); }
+    .brand-tab.active { background: #0e7c9c; color: white; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .card {
+        background: white; border-radius: 16px; padding: 28px; margin-bottom: 22px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+    .card h2 { font-size: 1.35em; margin-bottom: 16px; color: #14313d; }
+
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .info-item { background: #f2fafc; border-radius: 10px; padding: 14px 16px; border-left: 4px solid #0e7c9c; }
+    .info-item .k { font-size: 0.8em; color: #6a95a4; font-weight: 600; margin-bottom: 4px; }
+    .info-item .v { color: #14313d; font-weight: 600; }
+    .info-item .v a { color: #0e7c9c; text-decoration: none; }
+
+    ul.pts { list-style: none; }
+    ul.pts li { padding: 8px 0 8px 26px; position: relative; color: #2a4a55; line-height: 1.5; }
+    ul.pts li::before { content: '❄️'; position: absolute; left: 0; }
+
+    .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .col-item { background: #f2fafc; border-radius: 10px; padding: 16px; }
+    .col-item h3 { font-size: 1em; color: #0e7c9c; margin-bottom: 6px; }
+    .col-item p { font-size: 0.88em; color: #4a6b78; line-height: 1.5; }
+
+    table.price { width: 100%; border-collapse: collapse; margin-top: 6px; }
+    table.price th, table.price td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e4eef2; font-size: 0.92em; }
+    table.price th { color: #6a95a4; font-weight: 700; font-size: 0.8em; text-transform: uppercase; }
+    table.price td { color: #2a4a55; }
+    table.price tr:last-child td { border-bottom: none; }
+    .pending-note {
+        background: #fff8ec; border: 1px dashed #e8cf9a; border-radius: 10px; padding: 14px 18px;
+        margin-top: 14px; font-size: 0.88em; color: #8a6a2e; line-height: 1.55;
+    }
+
+    /* 行業資訊 時間軸 */
+    .news-list { display: flex; flex-direction: column; gap: 14px; }
+    .news-item {
+        background: white; border-radius: 12px; padding: 18px 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        border-left: 4px solid #0e7c9c;
+    }
+    .news-item .meta { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+    .news-item .date { color: #0e7c9c; font-weight: 700; font-size: 0.85em; font-variant-numeric: tabular-nums; }
+    .news-item .cat { background: #e3f4f8; color: #0e7c9c; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: 600; }
+    .news-item h3 { color: #14313d; font-size: 1.1em; margin-bottom: 6px; }
+    .news-item p { color: #4a6b78; font-size: 0.92em; line-height: 1.6; margin-bottom: 8px; }
+    .news-item .src { color: #0e7c9c; font-size: 0.82em; text-decoration: none; font-weight: 600; }
+    .news-item .src:hover { text-decoration: underline; }
+
+    /* BLOG */
+    .blog-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+    .blog-card {
+        background: white; border-radius: 14px; padding: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        cursor: pointer; transition: all 0.2s; border-top: 4px solid #0e7c9c;
+    }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(14,124,156,0.2); }
+    .blog-card .cat { color: #0e7c9c; font-weight: 700; font-size: 0.78em; }
+    .blog-card h3 { color: #14313d; font-size: 1.15em; margin: 6px 0 8px; line-height: 1.4; }
+    .blog-card .summary { color: #4a6b78; font-size: 0.88em; line-height: 1.55; }
+    .blog-card .date { color: #8aa8b3; font-size: 0.8em; margin-top: 10px; }
+
+    .blog-article { background: white; border-radius: 14px; padding: 32px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+    .blog-back { color: #0e7c9c; font-weight: 600; cursor: pointer; margin-bottom: 18px; display: inline-block; }
+    .blog-article h1 { font-size: 1.7em; color: #14313d; margin-bottom: 8px; line-height: 1.35; }
+    .blog-article h2 { font-size: 1.25em; color: #0e7c9c; margin: 24px 0 10px; }
+    .blog-article p { color: #2a4a55; line-height: 1.8; margin: 12px 0; }
+    .blog-article ul { margin: 12px 0 12px 22px; color: #2a4a55; line-height: 1.8; }
+    .blog-article a { color: #0e7c9c; }
+    .blog-article blockquote { border-left: 4px solid #0e7c9c; background: #f2fafc; padding: 12px 18px; margin: 16px 0; border-radius: 8px; color: #2a4a55; }
+    .blog-article hr { border: none; border-top: 1px solid #e4eef2; margin: 24px 0; }
+    .blog-article .art-meta { color: #8aa8b3; font-size: 0.88em; margin-bottom: 20px; }
+    .blog-article .sources { margin-top: 24px; padding-top: 16px; border-top: 1px solid #e4eef2; font-size: 0.82em; color: #6a95a4; }
+    .blog-article .sources a { display: block; margin: 4px 0; word-break: break-all; }
+
+    .panel-empty { background: #f2fafc; border: 1px dashed #b9dbe6; border-radius: 12px; padding: 30px; text-align: center; color: #6a95a4; }
+
+    .cta-btn {
+        display: inline-block; background: #0e7c9c; color: white; padding: 12px 26px;
+        border-radius: 25px; text-decoration: none; font-weight: 700; margin-top: 6px;
+    }
+
+    footer { text-align: center; color: #8aa8b3; font-size: 0.9em; margin-top: 30px; padding-top: 20px; }
+    footer a { color: #0e7c9c; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="site-nav">
+        <a href="index.html">📅 首頁</a>
+        <a href="brand.html">🏢 BRAND</a>
+        <a href="tools.html">🧰 工具</a>
+    </div>
+    <div class="crumb"><a href="brand.html">BRAND</a> ／ <span>❄️ Visnow</span></div>
+
+    <header>
+        <h1>❄️ Visnow</h1>
+        <p class="slogan">本校只提供雪場授權合規課程</p>
+        <p>北海道滑雪學校 — 廣東話・國語滑雪教學＋雪地人像攝影</p>
+    </header>
+
+    <div class="brand-tabs">
+        <button class="brand-tab active" data-tab="overview" onclick="switchTab('overview', this)">📋 概覽</button>
+        <button class="brand-tab" data-tab="news" onclick="switchTab('news', this)">📰 行業最新資訊</button>
+        <button class="brand-tab" data-tab="blog" onclick="switchTab('blog', this)">✍️ BLOG</button>
+    </div>
+
+    <div class="tab-panel active" id="panel-overview">
+    <div class="card">
+        <h2>📋 品牌概覽</h2>
+        <div class="info-grid">
+            <div class="info-item"><div class="k">定位</div><div class="v">北海道滑雪教學＋雪地人像攝影</div></div>
+            <div class="info-item"><div class="k">教學語言</div><div class="v">廣東話・國語・英語</div></div>
+            <div class="info-item"><div class="k">官網</div><div class="v"><a href="https://www.visnow.jp/" target="_blank">visnow.jp</a></div></div>
+            <div class="info-item"><div class="k">線上預約</div><div class="v"><a href="https://www.visnow.jp/book-online" target="_blank">book-online →</a></div></div>
+            <div class="info-item"><div class="k">預約 CTA</div><div class="v"><a href="https://wa.me/817022396688?text=Hello!Visnow~" target="_blank">WhatsApp 聯絡</a></div></div>
+            <div class="info-item"><div class="k">電話 / Email</div><div class="v">+81 70-2239-6688<br>info@visnow.jp</div></div>
+            <div class="info-item"><div class="k">Instagram</div><div class="v"><a href="https://www.instagram.com/visnow_jp" target="_blank">@visnow_jp</a></div></div>
+            <div class="info-item"><div class="k">Threads</div><div class="v"><a href="https://www.threads.com/@visnow_jp" target="_blank">@visnow_jp</a></div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🎿 服務項目</h2>
+        <ul class="pts">
+            <li>滑雪課程（單板 Snowboard／雙板 Ski），分「初次滑雪」「新手友善」「進階滑雪」三級</li>
+            <li>親子滑雪課程（3 歲以上可報名，單板建議 5 歲起）</li>
+            <li>雪地人像攝影（情侶／家庭／滑雪造型定點／求婚與輕婚紗／動態攝影）</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🏔️ 雪場據點</h2>
+        <div class="cols">
+            <div class="col-item"><h3>星野 Tomamu</h3><p>29 條滑雪道，山頂高度差約 585 米，雲海平台＋雪地兒童王國。</p></div>
+            <div class="col-item"><h3>札幌 Sapporo</h3><p>手稻 Teine／札幌國際，距市區最近的大型雪場，優質粉雪。</p></div>
+            <div class="col-item"><h3>富良野 Furano</h3><p>國際旅客喜愛的優良粉雪雪場。</p></div>
+            <div class="col-item"><h3>旭川 Asahikawa（Kamui）</h3><p></p></div>
+            <div class="col-item"><h3>小樽 Otaru（ONZE）</h3><p></p></div>
+            <div class="col-item"><h3>喜樂樂 Kiroro</h3><p></p></div>
+            <div class="col-item"><h3>留壽都 Rusutsu</h3><p></p></div>
+            <div class="col-item"><h3>旭岳 Asahidake</h3><p></p></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>💰 課程與攝影價格</h2>
+        <table class="price">
+            <tr><th>方案</th><th>內容</th><th>價格</th></tr>
+            <tr><td>札幌手稻半天團課</td><td>2.5 小時，6 人成團</td><td>¥12,000／人</td></tr>
+            <tr><td>攝影 Standard</td><td>1.5 小時，情侶／家庭最多 2 大 2 小，含所有底片＋5 張精修</td><td>指定攝影師 ¥88,000／不指定 ¥50,000</td></tr>
+            <tr><td>攝影 Express</td><td>45 分鐘，限滑雪課程學員加購，滑雪造型定點拍攝＋3 張精修</td><td>¥30,000／組</td></tr>
+        </table>
+        <div class="pending-note">
+            📋 其餘 7 個雪場（星野／富良野／旭川／小樽／喜樂樂／留壽都／旭岳）的課程價格、私人教練與親子課完整費用，官網未公開完整價目，建議直接洽詢客服確認最新報價，避免使用未經確認的數字。
+        </div>
+    </div>
+    </div><!-- /panel-overview -->
+
+    <div class="tab-panel" id="panel-news">
+        <div class="news-list" id="newsList"><div class="panel-empty">載入中…</div></div>
+    </div>
+
+    <div class="tab-panel" id="panel-blog">
+        <div class="blog-list" id="blogList"><div class="panel-empty">載入中…</div></div>
+        <div class="blog-article" id="blogArticle" style="display:none;"></div>
+    </div>
+
+    <div class="card" style="text-align:center;">
+        <h2>📣 立即預約</h2>
+        <p style="color:#4a6b78; margin-bottom:12px;">廣東話・國語教練，語言通了，第一次滑雪的回憶才會是開心的</p>
+        <a class="cta-btn" href="https://wa.me/817022396688?text=Hello!Visnow~" target="_blank">WhatsApp 預約諮詢 →</a>
+    </div>
+
+    <footer>
+        <p>語調：專業帶點鼓勵，像會帶你玩的滑雪教練 ｜ 不保證雪況/天氣，不亂猜檔期或庫存</p>
+        <p><a href="brand.html">← 回 BRAND</a></p>
+    </footer>
+</div>
+
+<script>
+    // ---- 分頁切換（首次開啟才載入內容）----
+    let newsLoaded = false, blogLoaded = false;
+    function switchTab(tab, btn) {
+        document.querySelectorAll('.brand-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        if (tab === 'news' && !newsLoaded) { loadNews(); newsLoaded = true; }
+        if (tab === 'blog' && !blogLoaded) { loadBlog(); blogLoaded = true; }
+    }
+
+    const CONTENT = 'content/visnow/';
+
+    // ---- 行業最新資訊 ----
+    async function loadNews() {
+        const el = document.getElementById('newsList');
+        try {
+            const items = await (await fetch(CONTENT + 'news.json')).json();
+            if (!items.length) { el.innerHTML = '<div class="panel-empty">📭 行業資訊準備中</div>'; return; }
+            items.sort((a, b) => b.date.localeCompare(a.date));
+            el.innerHTML = items.map(n => `
+                <div class="news-item">
+                    <div class="meta"><span class="date">${n.date}</span><span class="cat">${n.category || ''}</span></div>
+                    <h3>${esc(n.title)}</h3>
+                    <p>${esc(n.summary)}</p>
+                    ${n.source ? `<a class="src" href="${n.source}" target="_blank" rel="noopener">🔗 來源</a>` : ''}
+                </div>`).join('');
+        } catch (e) { el.innerHTML = '<div class="panel-empty">📭 行業資訊準備中</div>'; }
+    }
+
+    // ---- BLOG ----
+    async function loadBlog() {
+        const el = document.getElementById('blogList');
+        try {
+            const items = await (await fetch(CONTENT + 'blog/index.json')).json();
+            if (!items.length) { el.innerHTML = '<div class="panel-empty">📭 BLOG 準備中</div>'; return; }
+            items.sort((a, b) => b.date.localeCompare(a.date));
+            el.innerHTML = items.map(a => `
+                <div class="blog-card" onclick="openArticle('${a.file}')">
+                    <div class="cat">${esc(a.category || '')}</div>
+                    <h3>${esc(a.title)}</h3>
+                    <div class="summary">${esc(a.summary || '')}</div>
+                    <div class="date">${a.date}</div>
+                </div>`).join('');
+        } catch (e) { el.innerHTML = '<div class="panel-empty">📭 BLOG 準備中</div>'; }
+    }
+
+    async function openArticle(file) {
+        const listEl = document.getElementById('blogList');
+        const artEl = document.getElementById('blogArticle');
+        try {
+            const raw = await (await fetch(CONTENT + 'blog/' + file)).text();
+            const { meta, body } = parseFrontmatter(raw);
+            const sources = (meta.sources || []).map(s => `<a href="${s}" target="_blank" rel="noopener">${s}</a>`).join('');
+            artEl.innerHTML = `
+                <span class="blog-back" onclick="closeArticle()">← 回文章列表</span>
+                <h1>${esc(meta.title || '')}</h1>
+                <div class="art-meta">${meta.date || ''} ｜ ${esc(meta.category || '')}${meta.audience ? ' ｜ 給：' + esc([].concat(meta.audience).join('、')) : ''}</div>
+                ${mdToHtml(body)}
+                ${sources ? `<div class="sources">📚 參考來源<br>${sources}</div>` : ''}`;
+            listEl.style.display = 'none';
+            artEl.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (e) { alert('文章載入失敗'); }
+    }
+    function closeArticle() {
+        document.getElementById('blogArticle').style.display = 'none';
+        document.getElementById('blogList').style.display = 'grid';
+    }
+
+    // ---- 小工具：跳脫 + frontmatter 解析 + 極簡 markdown 轉譯（無外部 CDN）----
+    function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function parseFrontmatter(raw) {
+        const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+        if (!m) return { meta: {}, body: raw };
+        const meta = {}; let key = null;
+        m[1].split('\n').forEach(line => {
+            const kv = line.match(/^(\w+):\s*(.*)$/);
+            if (kv) {
+                key = kv[1];
+                let v = kv[2].trim();
+                if (v === '' ) { meta[key] = []; }              // 後續縮排項目
+                else if (v.startsWith('[') ) { meta[key] = v.replace(/^\[|\]$/g, '').split(',').map(x => x.trim().replace(/^["']|["']$/g, '')).filter(Boolean); }
+                else { meta[key] = v.replace(/^["']|["']$/g, ''); }
+            } else {
+                const li = line.match(/^\s*-\s*(.*)$/);
+                if (li && key) { if (!Array.isArray(meta[key])) meta[key] = []; meta[key].push(li[1].replace(/^["']|["']$/g, '')); }
+            }
+        });
+        return { meta, body: m[2] };
+    }
+
+    function mdToHtml(md) {
+        const lines = md.split('\n');
+        let html = '', inList = false;
+        const inline = t => esc(t)
+            .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2" style="max-width:100%;border-radius:8px;">')
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+        const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+        for (let line of lines) {
+            if (/^\s*[-*]\s+/.test(line)) { if (!inList) { html += '<ul>'; inList = true; } html += '<li>' + inline(line.replace(/^\s*[-*]\s+/, '')) + '</li>'; continue; }
+            closeList();
+            if (/^###\s+/.test(line)) html += '<h3>' + inline(line.replace(/^###\s+/, '')) + '</h3>';
+            else if (/^##\s+/.test(line)) html += '<h2>' + inline(line.replace(/^##\s+/, '')) + '</h2>';
+            else if (/^#\s+/.test(line)) html += '<h2>' + inline(line.replace(/^#\s+/, '')) + '</h2>';
+            else if (/^>\s?/.test(line)) html += '<blockquote>' + inline(line.replace(/^>\s?/, '')) + '</blockquote>';
+            else if (/^---\s*$/.test(line)) html += '<hr>';
+            else if (line.trim() === '') { /* skip */ }
+            else html += '<p>' + inline(line) + '</p>';
+        }
+        closeList();
+        return html;
+    }
+</script>
+</body>
+</html>
