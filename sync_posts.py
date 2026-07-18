@@ -53,9 +53,9 @@ def get_posts_from_sheet():
         date = row[date_idx]
         # 讀取 6 月和 7 月資料
         if date.startswith('2026/06/') or date.startswith('2026/07/'):
-            # 優先用發佈版本，沒有就用 IG/FB文案
+            # 優先用發佈版本，沒有就用 IG/FB文案（純空白視同空，避免誤按空格蓋掉草稿）
             content = row[published_idx] if published_idx < len(row) else ''
-            if not content and ig_fb_idx < len(row):
+            if not content.strip() and ig_fb_idx < len(row):
                 content = row[ig_fb_idx]
 
             topic = (row[topic_idx] if topic_idx < len(row) else '').replace('\n', ' ').replace('\r', ' ').strip()
