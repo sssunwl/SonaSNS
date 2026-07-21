@@ -1,0 +1,42 @@
+name: OKIPLAYGROUND Weekly Weather
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub Actions cron uses UTC: Monday 16:58 = Tuesday 01:58 JST.
+    - cron: '58 16 * * 1'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: okiplayground-weekly-weather
+  cancel-in-progress: false
+
+jobs:
+  publish-weather:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install image dependencies and Traditional Chinese font
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          python -m pip install --upgrade pip Pillow
+      - name: Generate forecast image and caption
+        run: python tools/generate_okiplayground_weather.py
+      - name: Commit the downloadable forecast
+        run: |
+          git config user.name "SonaSNS Weather Bot"
+          git config user.email "noreply@github.com"
+          git add weather/
+          if git diff --cached --quiet; then
+            echo "No forecast changes to commit."
+          else
+            git commit -m "chore(okiplayground): update weekly weather forecast"
+            git push
+          fi

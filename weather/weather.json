@@ -1,0 +1,95 @@
+{
+  "generated_at": "2026-07-21T12:29:34.488379+09:00",
+  "provider": "Open-Meteo",
+  "location": "Okinawa City",
+  "days": [
+    {
+      "time": "2026-07-22",
+      "weather_code": 95,
+      "temperature_2m_max": 31.0,
+      "temperature_2m_min": 27.0,
+      "apparent_temperature_max": 38.2,
+      "precipitation_probability_max": 100,
+      "uv_index_max": 7.55,
+      "wind_speed_10m_max": 9.2,
+      "wind_gusts_10m_max": 24.5
+    },
+    {
+      "time": "2026-07-23",
+      "weather_code": 95,
+      "temperature_2m_max": 31.0,
+      "temperature_2m_min": 26.6,
+      "apparent_temperature_max": 39.6,
+      "precipitation_probability_max": 100,
+      "uv_index_max": 8.8,
+      "wind_speed_10m_max": 7.5,
+      "wind_gusts_10m_max": 22.3
+    },
+    {
+      "time": "2026-07-24",
+      "weather_code": 95,
+      "temperature_2m_max": 32.4,
+      "temperature_2m_min": 27.6,
+      "apparent_temperature_max": 39.2,
+      "precipitation_probability_max": 76,
+      "uv_index_max": 8.9,
+      "wind_speed_10m_max": 13.8,
+      "wind_gusts_10m_max": 29.5
+    },
+    {
+      "time": "2026-07-25",
+      "weather_code": 53,
+      "temperature_2m_max": 32.2,
+      "temperature_2m_min": 27.6,
+      "apparent_temperature_max": 39.2,
+      "precipitation_probability_max": 70,
+      "uv_index_max": 8.85,
+      "wind_speed_10m_max": 15.4,
+      "wind_gusts_10m_max": 35.3
+    },
+    {
+      "time": "2026-07-26",
+      "weather_code": 95,
+      "temperature_2m_max": 31.9,
+      "temperature_2m_min": 27.4,
+      "apparent_temperature_max": 38.8,
+      "precipitation_probability_max": 70,
+      "uv_index_max": 8.6,
+      "wind_speed_10m_max": 14.9,
+      "wind_gusts_10m_max": 33.5
+    },
+    {
+      "time": "2026-07-27",
+      "weather_code": 51,
+      "temperature_2m_max": 31.5,
+      "temperature_2m_min": 26.7,
+      "apparent_temperature_max": 37.9,
+      "precipitation_probability_max": 74,
+      "uv_index_max": 7.65,
+      "wind_speed_10m_max": 13.6,
+      "wind_gusts_10m_max": 34.2
+    },
+    {
+      "time": "2026-07-28",
+      "weather_code": 53,
+      "temperature_2m_max": 31.4,
+      "temperature_2m_min": 27.4,
+      "apparent_temperature_max": 38.5,
+      "precipitation_probability_max": 86,
+      "uv_index_max": 0.55,
+      "wind_speed_10m_max": 8.5,
+      "wind_gusts_10m_max": 25.9
+    },
+    {
+      "time": "2026-07-29",
+      "weather_code": 51,
+      "temperature_2m_max": 30.8,
+      "temperature_2m_min": 27.3,
+      "apparent_temperature_max": 39.0,
+      "precipitation_probability_max": 75,
+      "uv_index_max": 1.35,
+      "wind_speed_10m_max": 4.9,
+      "wind_gusts_10m_max": 21.2
+    }
+  ]
+}
