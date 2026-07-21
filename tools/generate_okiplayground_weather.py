@@ -153,74 +153,92 @@ def draw_condition(draw, x, y, kind, size=42):
 
 
 def generate_image(days: list[dict], target: Path) -> None:
-    width, height = 1600, 2000
+    """Render the established seven-column OKIPLAYGROUND poster format."""
+    days = days[:7]
+    width, height = 1080, 1440
     image = Image.new("RGB", (width, height), "#dff5ff")
     draw = ImageDraw.Draw(image)
-    # Tropical sky + sea bands.
+    # Tropical sky, sea and foliage — deliberately follows the existing poster layout.
     for y in range(height):
-        if y < 360:
-            blend = y / 360
-            color = (int(225 - 20*blend), int(247 - 8*blend), 255)
+        if y < 225:
+            blend = y / 225
+            color = (int(235 - 20*blend), int(249 - 8*blend), 255)
         else:
-            blend = min(1, (y - 360) / (height - 360))
-            color = (int(200 - 15*blend), int(240 + 10*blend), int(249 + 4*blend))
+            blend = min(1, (y - 225) / (height - 225))
+            color = (int(207 - 14*blend), int(243 + 8*blend), int(250 + 4*blend))
         draw.line((0, y, width, y), fill=color)
-    for x in range(-100, width + 200, 110):
-        draw.arc((x, 1690, x+280, 1940), 200, 340, fill="#b2e9ed", width=5)
+    for x in range(-50, width + 120, 95):
+        draw.arc((x, 1295, x+230, 1460), 200, 340, fill="#a9e5ec", width=4)
 
     navy, red, orange = "#092e74", "#ed2524", "#f18622"
-    centered(draw, (width/2, 95), "OKIPLAYGROUND", font(44, True), navy)
-    centered(draw, (535, 178), "沖繩", font(78, True), navy)
-    centered(draw, (800, 178), "8", font(106, True), red)
-    centered(draw, (1088, 178), "日天氣預報", font(78, True), navy)
-    rounded(draw, (140, 250, 1460, 326), 34, "#ffffff", outline=navy, width=3)
-    centered(draw, (width/2, 289), "一週天氣早知道，輕鬆安排沖繩行程！", font(32, True), navy)
-    draw_sun(draw, 132, 90, 27)
-    # Decorative leaves.
-    for i in range(6):
-        draw.line((1420, 0, 1350-i*23, 35+i*25), fill="#338955", width=9)
+    # Compact brand mark, leaving the same generous title area as the supplied template.
+    draw.ellipse((43, 23, 121, 101), fill="#fff5bd", outline=navy, width=3)
+    draw.arc((55, 39, 110, 90), 200, 335, fill="#22a8d6", width=8)
+    draw.arc((52, 29, 108, 73), 205, 325, fill="#ee5540", width=4)
+    centered(draw, (82, 112), "OKIPLAYGROUND", font(12, True), navy)
+    centered(draw, (598, 77), "沖繩", font(54, True), navy)
+    centered(draw, (737, 77), "7", font(72, True), red)
+    centered(draw, (890, 77), "天天氣預報", font(54, True), navy)
+    rounded(draw, (231, 128, 970, 177), 22, "#ffffff", outline=navy, width=2)
+    centered(draw, (600, 153), "一週天氣早知道，輕鬆安排沖繩行程！", font(23, True), navy)
+    draw_sun(draw, 198, 61, 17)
+    for i in range(5):
+        draw.line((1040, 0, 1000-i*15, 25+i*19), fill="#338955", width=7)
 
-    card_w, card_h = 350, 560
-    x_positions, y_positions = [55, 445, 835, 1225], [385, 990]
+    card_w, card_h, gap, start_x, y = 138, 770, 10, 20, 205
     for idx, day in enumerate(days):
-        x, y = x_positions[idx % 4], y_positions[idx // 4]
-        rounded(draw, (x, y, x+card_w, y+card_h), 28, "#ffffff", outline="#b9d4e6", width=3)
-        rounded(draw, (x, y, x+card_w, y+110), 28, navy)
-        draw.rectangle((x, y+70, x+card_w, y+110), fill=navy)
+        x = start_x + idx * (card_w + gap)
+        rounded(draw, (x, y, x+card_w, y+card_h), 18, "#ffffff", outline="#c0dce9", width=2)
+        rounded(draw, (x, y, x+card_w, y+102), 18, navy)
+        draw.rectangle((x, y+70, x+card_w, y+102), fill=navy)
         dt = date.fromisoformat(day["time"])
         weekday = WEEKDAYS[dt.weekday()]
-        centered(draw, (x+card_w/2, y+43), f"{dt.month}/{dt.day}", font(42, True), "#ffffff")
-        centered(draw, (x+card_w/2, y+82), f"星期{weekday}", font(27, True), red if weekday in "六日" else "#ffffff")
+        centered(draw, (x+card_w/2, y+37), f"{dt.month}/{dt.day}", font(29, True), "#ffffff")
+        centered(draw, (x+card_w/2, y+76), f"星期{weekday}", font(20, True), red if weekday in "六日" else "#ffffff")
         label, kind = weather_label(int(day["weather_code"]))
-        draw_condition(draw, x+card_w/2, y+190, kind, 52)
-        centered(draw, (x+card_w/2, y+305), label, font(31, True), navy)
-        centered(draw, (x+card_w/2, y+365), f"{round(day['temperature_2m_max'])}°C", font(58, True), red)
-        centered(draw, (x+card_w/2, y+423), f"{round(day['temperature_2m_min'])}°C", font(48, True), "#1760bd")
-        draw.line((x+35, y+462, x+card_w-35, y+462), fill="#d8e2e8", width=2)
-        centered(draw, (x+card_w/2, y+494), f"降雨機率 {round(day['precipitation_probability_max'])}%", font(25, True), navy)
-        centered(draw, (x+card_w/2, y+531), f"UV {day['uv_index_max']:.1f} · {uv_label(day['uv_index_max'])}", font(23, True), "#42607d")
+        draw_condition(draw, x+card_w/2, y+178, kind, 27)
+        centered(draw, (x+card_w/2, y+282), label, font(19, True), navy)
+        centered(draw, (x+card_w/2, y+350), f"{round(day['temperature_2m_max'])}°", font(41, True), red)
+        centered(draw, (x+card_w/2, y+402), f"{round(day['temperature_2m_min'])}°", font(34, True), "#1760bd")
+        draw.line((x+14, y+446, x+card_w-14, y+446), fill="#d8e2e8", width=2)
+        centered(draw, (x+card_w/2, y+486), f"雨 {round(day['precipitation_probability_max'])}%", font(22, True), navy)
+        centered(draw, (x+card_w/2, y+518), "降雨機率", font(15, True), navy)
+        draw.line((x+14, y+548, x+card_w-14, y+548), fill="#d8e2e8", width=2)
+        centered(draw, (x+card_w/2, y+582), f"UV {day['uv_index_max']:.1f}", font(19, True), navy)
+        uv_fill = "#ef7c22" if day["uv_index_max"] >= 8 else "#63be36" if day["uv_index_max"] >= 6 else "#ffc31b"
+        rounded(draw, (x+16, y+606, x+card_w-16, y+631), 10, uv_fill)
+        centered(draw, (x+card_w/2, y+619), uv_label(day["uv_index_max"]), font(14, True), "#ffffff")
+        draw.line((x+14, y+654, x+card_w-14, y+654), fill="#d8e2e8", width=2)
+        centered(draw, (x+card_w/2, y+686), f"風 {round(day['wind_speed_10m_max'])} km/h", font(16, True), navy)
+        clothing = "短袖＋雨具" if day["precipitation_probability_max"] >= 40 else "短袖＋防曬"
+        centered(draw, (x+card_w/2, y+731), clothing, font(16, True), navy)
 
-    rounded(draw, (55, 1605, 1545, 1910), 28, "#ffffff", outline=navy, width=4)
-    centered(draw, (130, 1660), "本週沖繩旅遊觀察", font(38, True), navy, "lm")
+    rounded(draw, (20, 1000, 1060, 1187), 20, "#ffffff", outline=navy, width=3)
+    centered(draw, (66, 1035), "本週沖繩旅遊觀察", font(28, True), navy, "lm")
     rainiest = max(days, key=lambda x: x["precipitation_probability_max"])
     hottest = max(days, key=lambda x: x["temperature_2m_max"])
     windiest = max(days, key=lambda x: x["wind_gusts_10m_max"])
     sunniest = min(days, key=lambda x: (x["precipitation_probability_max"], x["weather_code"]))
     notes = [
-        ("行程", f"{date.fromisoformat(sunniest['time']).month}/{date.fromisoformat(sunniest['time']).day}較適合戶外行程", "行程建議"),
-        ("雨具", f"最高降雨機率 {round(rainiest['precipitation_probability_max'])}%", "雨具隨身帶"),
-        ("防曬", f"最高 {round(hottest['temperature_2m_max'])}°C／體感注意補水", "防曬防中暑"),
-        ("海況", f"最大陣風 {round(windiest['wind_gusts_10m_max'])} km/h", "海上活動看公告"),
+        ("行程", f"{date.fromisoformat(sunniest['time']).month}/{date.fromisoformat(sunniest['time']).day}相對穩定", "戶外行程優先"),
+        ("雨具", f"最高 {round(rainiest['precipitation_probability_max'])}%", "折傘記得帶"),
+        ("防曬", f"最高 {round(hottest['temperature_2m_max'])}°C", "補水、防曬"),
+        ("海況", f"陣風 {round(windiest['wind_gusts_10m_max'])} km/h", "海上活動看公告"),
     ]
     for i, (tag, line1, line2) in enumerate(notes):
-        cx = 230 + i * 365
-        rounded(draw, (cx-55, 1712, cx+55, 1764), 18, "#fff1df", outline=orange, width=2)
-        centered(draw, (cx, 1739), tag, font(22, True), orange)
-        centered(draw, (cx, 1810), line1, font(25, True), navy)
-        centered(draw, (cx, 1850), line2, font(24), "#42607d")
+        cx = 145 + i * 260
+        rounded(draw, (cx-39, 1060, cx+39, 1092), 12, "#fff1df", outline=orange, width=1)
+        centered(draw, (cx, 1076), tag, font(15, True), orange)
+        centered(draw, (cx, 1123), line1, font(16, True), navy)
+        centered(draw, (cx, 1153), line2, font(15), "#42607d")
         if i < 3:
-            draw.line((cx+175, 1705, cx+175, 1870), fill="#d3dce6", width=2)
-    centered(draw, (width/2, 1950), "資料：Open-Meteo 預報模型｜生成時間：" + datetime.now(TZ).strftime("%Y/%m/%d %H:%M JST"), font(20), "#42607d")
+            draw.line((cx+130, 1055, cx+130, 1168), fill="#d3dce6", width=1)
+    rounded(draw, (20, 1210, 1060, 1385), 18, "#fffefb", outline="#ec7777", width=3)
+    centered(draw, (540, 1250), "沖繩小知識  ·  夏日旅遊提醒", font(29, True), red)
+    centered(draw, (540, 1295), "紫外線強、午後天氣變化快；就算多雲也別省略防曬。", font(20, True), navy)
+    centered(draw, (540, 1331), "出門前準備：防曬乳　帽子　太陽眼鏡　飲用水　折疊傘", font(20, True), navy)
+    centered(draw, (540, 1363), "海上活動與船班請以當天業者公告為準。", font(18), navy)
+    centered(draw, (width/2, 1412), "資料：Open-Meteo 預報模型｜" + datetime.now(TZ).strftime("%Y/%m/%d %H:%M JST"), font(14), "#42607d")
     target.parent.mkdir(parents=True, exist_ok=True)
     image.save(target, "PNG", optimize=True)
 
@@ -260,7 +278,7 @@ def write_page(days: list[dict], generated_at: str, image_name: str) -> None:
         dt = date.fromisoformat(item["time"])
         label, _ = weather_label(int(item["weather_code"]))
         rows.append(f"<tr><td>{dt.month}/{dt.day}（週{WEEKDAYS[dt.weekday()]}）</td><td>{label}</td><td>{round(item['temperature_2m_max'])}° / {round(item['temperature_2m_min'])}°</td><td>{round(item['precipitation_probability_max'])}%</td><td>{item['uv_index_max']:.1f}</td></tr>")
-    html = f'''<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OKIPLAYGROUND｜沖繩一週天氣速報</title><style>body{{margin:0;background:#e3f6ff;color:#082d72;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC",sans-serif}}main{{max-width:900px;margin:auto;padding:32px 18px 60px}}section{{background:#fff;border-radius:20px;padding:22px;margin:18px 0;box-shadow:0 5px 18px #6094aa33}}h1{{margin:.1em 0;text-align:center}}.sub{{text-align:center;color:#42607d}}img{{width:100%;border-radius:14px}}a.button{{display:inline-block;background:#ed2524;color:white;padding:12px 20px;border-radius:99px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0}}pre{{white-space:pre-wrap;font:15px/1.75 inherit;color:#243a56;background:#f3f8fb;padding:18px;border-radius:12px}}table{{width:100%;border-collapse:collapse;color:#243a56}}td,th{{padding:9px;border-bottom:1px solid #dae5ea;text-align:left}}small{{color:#58718a}}</style><main><h1>🌺 OKIPLAYGROUND 沖繩一週天氣速報</h1><p class="sub">每週二 01:58（JST）自動更新｜本次生成：{generated_at}</p><section><img src="{image_name}" alt="沖繩八日天氣預報"><p><a class="button" href="{image_name}" download>下載預報圖 PNG</a><a class="button" href="caption.txt" download>下載帖文 TXT</a></p></section><section><h2>可直接貼上的文案</h2><pre>{make_caption(days)}</pre></section><section><h2>每日資料</h2><table><tr><th>日期</th><th>天氣</th><th>高／低溫</th><th>降雨</th><th>UV</th></tr>{''.join(rows)}</table><p><small>資料來源：Open-Meteo 預報模型（沖繩市）。預報會隨每日模型更新而變動；海況、警報與颱風資訊請另以日本氣象廳及業者公告確認。</small></p></section></main></html>'''
+    html = f'''<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OKIPLAYGROUND｜沖繩一週天氣速報</title><style>body{{margin:0;background:#e3f6ff;color:#082d72;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC",sans-serif}}main{{max-width:900px;margin:auto;padding:32px 18px 60px}}section{{background:#fff;border-radius:20px;padding:22px;margin:18px 0;box-shadow:0 5px 18px #6094aa33}}h1{{margin:.1em 0;text-align:center}}.sub{{text-align:center;color:#42607d}}img{{width:100%;border-radius:14px}}a.button{{display:inline-block;background:#ed2524;color:white;padding:12px 20px;border-radius:99px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0}}pre{{white-space:pre-wrap;font:15px/1.75 inherit;color:#243a56;background:#f3f8fb;padding:18px;border-radius:12px}}table{{width:100%;border-collapse:collapse;color:#243a56}}td,th{{padding:9px;border-bottom:1px solid #dae5ea;text-align:left}}small{{color:#58718a}}</style><main><h1>🌺 OKIPLAYGROUND 沖繩一週天氣速報</h1><p class="sub">每週二 01:58（JST）自動更新｜本次生成：{generated_at}</p><section><img src="{image_name}" alt="沖繩七日天氣預報"><p><a class="button" href="{image_name}" download>下載預報圖 PNG</a><a class="button" href="caption.txt" download>下載帖文 TXT</a></p></section><section><h2>可直接貼上的文案</h2><pre>{make_caption(days)}</pre></section><section><h2>每日資料</h2><table><tr><th>日期</th><th>天氣</th><th>高／低溫</th><th>降雨</th><th>UV</th></tr>{''.join(rows)}</table><p><small>資料來源：Open-Meteo 預報模型（沖繩市）。預報會隨每日模型更新而變動；海況、警報與颱風資訊請另以日本氣象廳及業者公告確認。</small></p></section></main></html>'''
     (OUTPUT / "index.html").write_text(html, encoding="utf-8")
 
 
@@ -277,7 +295,7 @@ def main() -> int:
     OUTPUT.mkdir(exist_ok=True)
     stamp = f"{forecast[0]['time']}_to_{forecast[-1]['time']}"
     dated_image = OUTPUT / f"okinawa-weather-{stamp}.png"
-    generate_image(forecast, dated_image)
+    generate_image(forecast[:7], dated_image)
     shutil.copy2(dated_image, OUTPUT / "current.png")
     caption = make_caption(forecast)
     (OUTPUT / f"caption-{stamp}.txt").write_text(caption + "\n", encoding="utf-8")

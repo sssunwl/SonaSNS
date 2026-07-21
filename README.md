@@ -44,7 +44,7 @@ SonaSNS/
 
 ### 🌦️ OKIPLAYGROUND 每週天氣速報
 
-每週二 **01:58 JST**，GitHub Actions 會在雲端以 Open-Meteo 的沖繩市預報，自動產生「週三到下週三」共 8 日的 PNG 圖與繁中帖文，並更新 GitHub Pages：
+每週二 **01:58 JST**，GitHub Actions 會在雲端以 Open-Meteo 的沖繩市預報，自動產生與既有範本一致的「週三到週二」7 日 PNG 圖與繁中帖文，並更新 GitHub Pages：
 
 **[下載最新天氣圖與帖文](https://sssunwl.github.io/SonaSNS/weather/)**
 
