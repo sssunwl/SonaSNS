@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: okiplayground-weekly-weather
+  group: site-content-publish
   cancel-in-progress: false
 
 jobs:
@@ -22,13 +22,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install Sheet sync dependency
+        run: python -m pip install gspread
       - name: Generate forecast facts, post copy, and ChatGPT image prompt
         run: python tools/generate_okiplayground_weather.py
+      - name: Put this week's image prompt above the calendar weather post
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: python sync_posts.py
       - name: Commit the weekly forecast package
         run: |
           git config user.name "SonaSNS Weather Bot"
           git config user.email "noreply@github.com"
-          git add weather/
+          git add weather/ index.html
           if git diff --cached --quiet; then
             echo "No forecast changes to commit."
           else

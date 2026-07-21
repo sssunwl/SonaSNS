@@ -10,17 +10,40 @@ import re
 import os
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
+from pathlib import Path
 
 def get_service_account_info():
     """從環境變數中讀取 Service Account 憑證"""
     creds_json = os.environ.get('GOOGLE_SERVICE_ACCOUNT_JSON')
 
-    if not creds_json:
-        print("❌ 缺少 GOOGLE_SERVICE_ACCOUNT_JSON 認證信息")
-        sys.exit(1)
+    if creds_json:
+        return json.loads(creds_json)
 
-    return json.loads(creds_json)
+    # Local verification uses the same credential location as the drafting tool.
+    local_creds = Path.home() / '.config' / 'sonasns' / 'credentials.json'
+    if local_creds.exists():
+        return json.loads(local_creds.read_text(encoding='utf-8'))
+
+    print("❌ 缺少 GOOGLE_SERVICE_ACCOUNT_JSON 認證信息")
+    sys.exit(1)
+
+
+def get_weather_prompt():
+    """Return the current weekly weather prompt and the Wednesday it belongs to."""
+    prompt_path = Path('weather/image-prompt.txt')
+    data_path = Path('weather/weather.json')
+    if not prompt_path.exists() or not data_path.exists():
+        return None, None
+    try:
+        days = json.loads(data_path.read_text(encoding='utf-8')).get('days', [])
+        if not days:
+            return None, None
+        prompt = prompt_path.read_text(encoding='utf-8').strip()
+        return prompt, days[0]['time'].replace('-', '/')
+    except (OSError, ValueError, KeyError) as exc:
+        print(f"⚠️ 無法讀取天氣 Prompt，略過嵌入：{exc}")
+        return None, None
 
 def get_posts_from_sheet():
     """從 Google Sheet 讀取帖文"""
@@ -46,14 +69,21 @@ def get_posts_from_sheet():
     status_idx = headers.index('發佈狀態')
     threads_idx = headers.index('Threads文案') if 'Threads文案' in headers else -1
 
+    # Keep the current calendar useful without hard-coding specific months.
+    today = datetime.now().date()
+    earliest, latest = today - timedelta(days=45), today + timedelta(days=120)
+    weather_prompt, weather_date = get_weather_prompt()
     posts = []
     for row in all_data[1:]:
         if not row or not row[0]:
             continue
 
-        date = row[date_idx]
-        # 讀取 6 月和 7 月資料
-        if date.startswith('2026/06/') or date.startswith('2026/07/'):
+        date = row[date_idx].strip()
+        try:
+            post_date = datetime.strptime(date, '%Y/%m/%d').date()
+        except ValueError:
+            continue
+        if earliest <= post_date <= latest:
             # 優先用發佈版本，沒有就用 IG/FB文案（純空白視同空，避免誤按空格蓋掉草稿）
             content = row[published_idx] if published_idx < len(row) else ''
             if not content.strip() and ig_fb_idx < len(row):
@@ -74,6 +104,10 @@ def get_posts_from_sheet():
                     'status': (row[status_idx] if status_idx < len(row) else '待起稿'),
                     'threads': (row[threads_idx].strip() if 0 <= threads_idx < len(row) else '')
                 }
+                # Only the matching Wednesday OKIP weather post gets this week's prompt.
+                if (weather_prompt and date == weather_date and post['platform'] == 'OKIP'
+                        and ('天氣' in post['type'] or '天氣' in post['topic'] or '天氣' in post['content'])):
+                    post['imagePrompt'] = weather_prompt
                 posts.append(post)
 
     return posts
@@ -84,6 +118,7 @@ def generate_posts_js(posts):
     for i, post in enumerate(posts):
         content = post['content'].replace('\\', '\\\\').replace('`', '\\`')
         threads = post.get('threads', '').replace('\\', '\\\\').replace('`', '\\`')
+        image_prompt = post.get('imagePrompt', '').replace('\\', '\\\\').replace('`', '\\`')
         hashtags_str = ', '.join([f"'{h}'" for h in post['hashtags']])
         media = f"'{post['mediaLink']}'" if post['mediaLink'] else "null"
         comma = "," if i < len(posts) - 1 else ""
@@ -98,6 +133,7 @@ def generate_posts_js(posts):
                 type: '{post['type']}',
                 content: `{content}`,
                 threads: `{threads}`,
+                imagePrompt: `{image_prompt}`,
                 hashtags: [{hashtags_str}],
                 mediaLink: {media},
                 status: '{post['status']}'

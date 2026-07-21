@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '0 22 * * *'  # 每天 UTC 22:00（台灣時間早上 6:00）
 
+concurrency:
+  group: site-content-publish
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest

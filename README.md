@@ -50,6 +50,8 @@ SonaSNS/
 
 此流程不使用 ChatGPT／Claude API，也不需要本機電腦開著。若天氣 API 暫時無法回應，工作流程會失敗而不覆蓋上一次成功版本，可在 GitHub Actions 的執行紀錄重新執行。
 
+天氣 Prompt 會直接顯示在首頁月曆相應週三的 OKIP 天氣帖文上方。每日起草流程只寫入 Sheet 的空白草稿欄位；網站同步流程則只讀取 Sheet 與本週天氣 Prompt 後重建首頁，兩者不會互相覆寫。
+
 ## 📋 Google Sheet 欄位說明
 
 | 欄位 | 說明 |
