@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21T12:58:50.961785+09:00",
+  "generated_at": "2026-07-21T13:27:38.682203+09:00",
   "provider": "Open-Meteo",
   "location": "Okinawa City",
   "days": [
@@ -12,7 +12,8 @@
       "precipitation_probability_max": 100,
       "uv_index_max": 7.55,
       "wind_speed_10m_max": 9.2,
-      "wind_gusts_10m_max": 24.5
+      "wind_gusts_10m_max": 24.5,
+      "wind_direction_10m_dominant": 267
     },
     {
       "time": "2026-07-23",
@@ -23,7 +24,8 @@
       "precipitation_probability_max": 100,
       "uv_index_max": 8.8,
       "wind_speed_10m_max": 7.5,
-      "wind_gusts_10m_max": 22.3
+      "wind_gusts_10m_max": 22.3,
+      "wind_direction_10m_dominant": 66
     },
     {
       "time": "2026-07-24",
@@ -34,7 +36,8 @@
       "precipitation_probability_max": 76,
       "uv_index_max": 8.9,
       "wind_speed_10m_max": 13.8,
-      "wind_gusts_10m_max": 29.5
+      "wind_gusts_10m_max": 29.5,
+      "wind_direction_10m_dominant": 121
     },
     {
       "time": "2026-07-25",
@@ -45,7 +48,8 @@
       "precipitation_probability_max": 70,
       "uv_index_max": 8.85,
       "wind_speed_10m_max": 15.4,
-      "wind_gusts_10m_max": 35.3
+      "wind_gusts_10m_max": 35.3,
+      "wind_direction_10m_dominant": 122
     },
     {
       "time": "2026-07-26",
@@ -56,7 +60,8 @@
       "precipitation_probability_max": 70,
       "uv_index_max": 8.6,
       "wind_speed_10m_max": 14.9,
-      "wind_gusts_10m_max": 33.5
+      "wind_gusts_10m_max": 33.5,
+      "wind_direction_10m_dominant": 136
     },
     {
       "time": "2026-07-27",
@@ -67,7 +72,8 @@
       "precipitation_probability_max": 74,
       "uv_index_max": 7.65,
       "wind_speed_10m_max": 13.6,
-      "wind_gusts_10m_max": 34.2
+      "wind_gusts_10m_max": 34.2,
+      "wind_direction_10m_dominant": 140
     },
     {
       "time": "2026-07-28",
@@ -78,7 +84,8 @@
       "precipitation_probability_max": 86,
       "uv_index_max": 0.55,
       "wind_speed_10m_max": 8.5,
-      "wind_gusts_10m_max": 25.9
+      "wind_gusts_10m_max": 25.9,
+      "wind_direction_10m_dominant": 156
     }
   ]
 }

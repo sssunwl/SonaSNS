@@ -32,7 +32,7 @@ def fetch_forecast() -> list[dict]:
         "&forecast_days=16"
         "&daily=weather_code,temperature_2m_max,temperature_2m_min,"
         "apparent_temperature_max,precipitation_probability_max,uv_index_max,"
-        "wind_speed_10m_max,wind_gusts_10m_max"
+        "wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant"
     )
     request = urllib.request.Request(
         f"https://api.open-meteo.com/v1/forecast?{params}",
@@ -47,7 +47,7 @@ def fetch_forecast() -> list[dict]:
     fields = [
         "time", "weather_code", "temperature_2m_max", "temperature_2m_min",
         "apparent_temperature_max", "precipitation_probability_max", "uv_index_max",
-        "wind_speed_10m_max", "wind_gusts_10m_max",
+        "wind_speed_10m_max", "wind_gusts_10m_max", "wind_direction_10m_dominant",
     ]
     if any(field not in daily for field in fields):
         raise RuntimeError("Open-Meteo 回傳缺少必要的每日預報欄位")
@@ -90,13 +90,20 @@ def uv_label(value: float) -> str:
     return "極高"
 
 
+def wind_direction_label(degrees: float) -> str:
+    """Convert Open-Meteo's daily dominant wind bearing to a Chinese 16-wind label."""
+    labels = ("北", "北北東", "東北", "東北東", "東", "東南東", "東南", "南南東",
+              "南", "南南西", "西南", "西南西", "西", "西北西", "西北", "北北西")
+    return labels[round(float(degrees) / 22.5) % 16] + "風"
+
+
 def day_line(day: dict) -> str:
     dt = date.fromisoformat(day["time"])
     return (
         f"{dt.month}/{dt.day}（星期{WEEKDAYS[dt.weekday()]}）：{weather_label(int(day['weather_code']))}；"
         f"{round(day['temperature_2m_max'])}°C / {round(day['temperature_2m_min'])}°C；"
         f"降雨 {round(day['precipitation_probability_max'])}%；UV {day['uv_index_max']:.1f}（{uv_label(day['uv_index_max'])}）；"
-        f"風 {round(day['wind_speed_10m_max'])} km/h"
+        f"{wind_direction_label(day['wind_direction_10m_dominant'])} {round(day['wind_speed_10m_max'])} km/h"
     )
 
 
@@ -148,7 +155,7 @@ def make_image_prompt(days: list[dict]) -> str:
 這次的 7 欄日期與資料必須逐字依下列內容填入（由左至右）：
 {daily}
 
-每一欄依天氣畫對應圖示，並保留：日期／星期、天氣描述、紅色高溫、藍色低溫、降雨機率、UV 數字與等級色條、風速、短袖＋雨具或短袖＋防曬的建議。星期六與星期日使用紅色星期字。
+每一欄依天氣畫對應圖示，並保留：日期／星期、天氣描述、紅色高溫、藍色低溫、降雨機率、UV 數字與等級色條、上面指定的風向與風速、短袖＋雨具或短袖＋防曬的建議。星期六與星期日使用紅色星期字。風向必須完全依照上方逐日資料，不可自行統一成同一個方向或猜測。
 
 底部「本週沖繩旅遊觀察」請濃縮成四項：
 1. {date.fromisoformat(sunniest['time']).month}/{date.fromisoformat(sunniest['time']).day}相對適合戶外行程（降雨 {round(sunniest['precipitation_probability_max'])}%）

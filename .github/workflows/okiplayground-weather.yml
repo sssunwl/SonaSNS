@@ -26,6 +26,10 @@ jobs:
         run: python -m pip install gspread
       - name: Generate forecast facts, post copy, and ChatGPT image prompt
         run: python tools/generate_okiplayground_weather.py
+      - name: Write this week's weather post into its verified Google Sheet row
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: python tools/sync_weather_to_sheet.py --apply
       - name: Put this week's image prompt above the calendar weather post
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
