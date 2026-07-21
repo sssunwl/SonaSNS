@@ -44,9 +44,9 @@ SonaSNS/
 
 ### 🌦️ OKIPLAYGROUND 每週天氣速報
 
-每週二 **01:58 JST**，GitHub Actions 會在雲端以 Open-Meteo 的沖繩市預報，自動產生與既有範本一致的「週三到週二」7 日 PNG 圖與繁中帖文，並更新 GitHub Pages：
+每週二 **01:58 JST**，GitHub Actions 會在雲端以 Open-Meteo 的沖繩市預報，自動整理「週三到週二」7 日資料、繁中帖文及可連同範例圖交給 ChatGPT 的圖片生成 Prompt，並更新 GitHub Pages：
 
-**[下載最新天氣圖與帖文](https://sssunwl.github.io/SonaSNS/weather/)**
+**[查看本週天氣資料、帖文與圖片 Prompt](https://sssunwl.github.io/SonaSNS/weather/)**
 
 此流程不使用 ChatGPT／Claude API，也不需要本機電腦開著。若天氣 API 暫時無法回應，工作流程會失敗而不覆蓋上一次成功版本，可在 GitHub Actions 的執行紀錄重新執行。
 
