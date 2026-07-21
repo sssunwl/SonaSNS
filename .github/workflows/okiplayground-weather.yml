@@ -40,3 +40,9 @@ jobs:
             git commit -m "chore(okiplayground): update weekly weather forecast"
             git push
           fi
+      - name: Notify Discord when generation fails
+        if: failure()
+        env:
+          DISCORD_WEBHOOK_SONA: ${{ secrets.DISCORD_WEBHOOK_SONA }}
+        run: |
+          python3 -c "from _discord import notify_discord; notify_discord('❌ OKIPLAYGROUND 每週天氣速報產生失敗，舊版下載頁已保留。請至 GitHub Actions 重新執行。')"
